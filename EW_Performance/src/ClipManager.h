@@ -92,6 +92,7 @@ public:
 			cout << f.getAbsolutePath() << endl;
             clips.back().setup( f.getAbsolutePath() );
             clips.back().v().play();
+			clips.back().v().setVolume(0);
             clips.back().v().setFrame(500);
             clips.back().v().setPaused(true);
         }
@@ -105,9 +106,9 @@ public:
         // de hg
 //        ofAddListener(ofEvents().mouseMoved, this, &ClipManager::onMouseMoved);
         
-        bool fontLoaded = font.load("fonts/DIN.otf", 300);
-        fontSmall.load("fonts/DIN.otf", 100);
-        fontSmall.setLineHeight(110.);
+        bool fontLoaded = font.load("fonts/DIN.otf", 200);
+        fontSmall.load("fonts/DIN.otf", 50);
+        fontSmall.setLineHeight(60.);
         
         cout <<"FONT: "<<fontLoaded<<endl;
     }
@@ -169,12 +170,11 @@ public:
                 float x = 0;
                 float y = 0;
                 float sp = 50;
-				ofLogError() << "mute" << endl;
                 for ( auto & c : clips ){
 					c.v().setVolume(0);
                     c.draw(x,y);
-                    y += c.v().getHeight();
-                    y += sp;
+                    x += c.v().getWidth();
+                    x += sp;
                 }
             }
                 break;
@@ -191,7 +191,7 @@ public:
         
     }
     
-    void draw( float x, float y, float w, float h ){
+    void draw(bool bVert, float x, float y, float w, float h ){
         update();
         switch (currentMode ){
             case MODE_SELECT:
@@ -200,14 +200,15 @@ public:
                 float ch = 0;
                 float sp = 50;
                 static int bSet = 0;
-                
+
+				string s = bVert ? "Select a clip\nto begin" : "Select a clip to begin";
                 float fw = font.stringWidth( ofToString(getCurrentCountdown(),0) );
-                float fx = w/2. - fw/2.;
-                float fy = 50 + fontSmall.getSize();
+                float fx = bVert ? x + w / 2. - fontSmall.stringWidth(s) / 2. : x + 20;
+                float fy = 40 + fontSmall.getLineHeight() / 2.;
                 ofSetColor(255);
-                fontSmall.drawString( "Select a clip\nto begin", x + w/2. - fontSmall.stringWidth( "Select a clip\nto begin!" )/2., fy);
+                fontSmall.drawString( s, fx, fy);
                 
-                y += fy; + fontSmall.getLineHeight()/2.;
+               if ( !bVert) y -= 50; //+ fontSmall.getLineHeight()/2.;
                 
                 for ( auto & c : clips ){
 					c.v().setVolume(0);
@@ -220,9 +221,12 @@ public:
                     c.v().update();
                     if ( cw == 0 ){
                         float s = h/ ((c.v().getHeight() * clips.size()) + (sp * clips.size()));
+						if (!bVert) {
+							s = (h - 100) / c.v().getHeight();
+						}
                         ch = c.v().getHeight() * s;
                         cw = c.v().getWidth() * s;
-                        x = x + (w/2.0) - cw/2.0;
+                        x = bVert ? x + (w/2.0) - cw/2.0 : x + 20;
                     }
                     static bool bLogged = false;
                     if (!bLogged){
@@ -230,33 +234,58 @@ public:
                     }
                     c.draw(x,y,cw,ch);
                     c.set(x,y,cw,ch);
-                    y += ch;
-                    y += sp;
+					if (bVert) {
+						y += ch;
+						y += sp;
+
+					}
+					else {
+						x += cw;
+						x += sp;
+					}
                 }
             }
                 break;
             case MODE_PREVIEW:
             {
-                float fw = font.stringWidth( ofToString(getCurrentCountdown(),0) );
-                float fx = x + w/2. - fw/2.;
-                float fy = h/2.0 - font.getSize()/2.0;// + font.getSize();
-                
-                ofSetColor(255);
-                fontSmall.drawString( "Preview", x + w/2. - fontSmall.stringWidth( "Preview" )/2., fy);
-                fy += font.getSize() * 1.5;
-                font.drawString( ofToString(getCurrentCountdown(),0), fx, fy);
+				if (bVert) {
+					float fw = font.stringWidth(ofToString(getCurrentCountdown(), 0));
+					float fx = x + w / 2. - fw / 2.;
+					float fy = h / 2.0 - font.getSize() / 2.0;// + font.getSize();
+
+					ofSetColor(255);
+					fontSmall.drawString("Preview", x + w / 2. - fontSmall.stringWidth("Preview") / 2., fy);
+					fy += font.getSize() * 1.5;
+					font.drawString(ofToString(getCurrentCountdown(), 0), fx, fy);
+				}
+				else {
+					float fw = font.stringWidth(ofToString(getCurrentCountdown(), 0));
+					float fx = x + w / 2. - fw / 2.;
+					float fy = h / 2.0 - fontSmall.getSize() + 20;// + font.getSize();
+
+					ofSetColor(255);
+					fontSmall.drawString("Preview", x + w / 2. - fontSmall.stringWidth("Preview") / 2., fy);
+				}
             }
                 break;
                 
             case MODE_GETREADY:
             {
-                float fw = font.stringWidth( ofToString(getCurrentCountdown(),0) );
-                float fx = x + w/2. - fw/2.;
-                float fy = h/2.0 - font.getSize()/2.0;// + font.getSize();
-                ofSetColor(255);
-                fontSmall.drawString( "Get Ready!", x + w/2. - fontSmall.stringWidth( "Get Ready!" )/2., fy);
-                fy += font.getSize() * 1.5;
-                font.drawString( ofToString(getCurrentCountdown(),0), fx, fy);
+				if (bVert) {
+					float fw = font.stringWidth(ofToString(getCurrentCountdown(), 0));
+					float fx = x + w / 2. - fw / 2.;
+					float fy = h / 2.0 - fontSmall.getSize();// + font.getSize();
+					ofSetColor(255);
+					fontSmall.drawString("Get Ready!", x + w / 2. - fontSmall.stringWidth("Get Ready!") / 2., fy);
+					fy += font.getSize() * 1.5;
+					font.drawString(ofToString(getCurrentCountdown(), 0), fx, fy);
+				}
+				else {
+					float fy = h / 2.0 - fontSmall.getSize() + 20;// + font.getSize();
+					ofSetColor(255);
+					fontSmall.drawString("Get Ready!", x + w / 2. - fontSmall.stringWidth("Get Ready!") / 2., fy);
+
+				}
             }
                 break;
                 
@@ -264,7 +293,7 @@ public:
             {
                 float fw = font.stringWidth( ofToString(getCurrentCountdown(),0) );
                 float fx = x + w/2. - fw/2.;
-                float fy = h/2.0 - font.getSize()/2.0;// + font.getSize();
+                float fy = h/2.0 - fontSmall.getSize() + 20;// + font.getSize();
                 ofSetColor(255);
                 fontSmall.drawString( "Perform!", x + w/2. - fontSmall.stringWidth( "Perform!" )/2., fy);
                 fy += font.getSize() * 1.5;
@@ -274,15 +303,16 @@ public:
             case MODE_WATCH:
                 float fw = font.stringWidth( ofToString(10,0) );
                 float fx = x + w/2. - fw/2.;
-                float fy = h/2.0 - font.getSize();// + font.getSize();
+                float fy = h/2.0 - fontSmall.getSize() + 20;// + font.getSize();
                 ofSetColor(255);
-                fontSmall.drawString( "Share your \nperformance!", x + w/2. - fontSmall.stringWidth( "Share your \nperformance!" )/2., fy);
+				string s = bVert ? "Share your \nperformance!" : "Share your performance!";
+                fontSmall.drawString( s, x + w/2. - fontSmall.stringWidth( s )/2., fy);
                 break;
         }
         
     }
     
-    void drawPreview(float x, float y, float w, float h ){
+    void drawPreview(bool bVert, float x, float y, float w, float h ){
         switch (currentMode ){
             case MODE_SELECT:
                 break;
@@ -320,6 +350,8 @@ public:
     void setMode( Mode m ){
         currentMode = m;
         
+		static float pos = ofRandom(.2, .7);
+
         switch ( currentMode ){
             case MODE_SELECT:
                 for ( auto & c : clips ){
@@ -339,9 +371,10 @@ public:
                 
             case MODE_GETREADY:
                 if ( currentClip != NULL ){
+					pos = ofRandom(.2, .7);
                     //                    currentClip->v().setPaused(true);
                     currentClip->v().setVolume(1);
-                    currentClip->v().setPosition(0);
+					currentClip->v().setPosition(pos);
                 }
                 time = ofGetElapsedTimef();
                 break;
@@ -349,7 +382,7 @@ public:
             case MODE_PERFORM:
                 if ( currentClip != NULL ){
                     currentClip->v().play();
-                    currentClip->v().setPosition(0);
+					currentClip->v().setPosition(pos);
                     currentClip->v().setVolume(1);
                 }
                 time = ofGetElapsedTimef();
@@ -358,6 +391,9 @@ public:
             case MODE_WATCH:
                 if ( currentClip != NULL ){
                     currentClip->v().setPaused(true);
+					currentClip->v().play();
+					currentClip->v().setPosition(pos);
+					currentClip->v().setVolume(1);
                 }
                 time = ofGetElapsedTimef();
                 break;

@@ -1,10 +1,8 @@
-#pragma once
+    #pragma once
 
 #include "ofMain.h"
-#include "RecManager.h"
-#include "ClipManager.h"
-
 #include "ofxGui.h"
+#include "Lines.h"
 
 class ofApp : public ofBaseApp{
 
@@ -25,25 +23,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        // bg
-        ofImage background;
-    
-        // ofxUI
         ofxPanel gui;
-		ofParameter<bool> useOverlay, doRecord;
-		ofParameter<ofVec2f> lScreenPos,rScreenPos;
-		ofParameter<float> min, max;
-		ofParameter<bool> screenRight;
-
-        // clipz
-        ClipManager clips;
     
-        // recording
-        RecManager recorder;
-
-		ofVideoGrabber cameraLeft, cameraRight;
-
-		ofFbo leftScreen, rightScreen, saver;
     
-        ofMesh test;
+        ofTrueTypeFont font, fontBold;
+    
+        vector<Line> lines;
 };

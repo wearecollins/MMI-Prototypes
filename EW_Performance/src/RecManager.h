@@ -18,30 +18,35 @@ public:
         rate    = 16.67;
         index   = 0;
 		bNeedToRender = false;
+        bumper.load("images/mmi_bumper.png");
+        bumperDur = 1000;
     }
     
     void update(){
-        if ( ofGetElapsedTimeMillis() - lastChanged > rate ){
-            lastChanged = ofGetElapsedTimeMillis();
-            index++;
-            if ( index >= pixels.size()){
-                index = 0;
+        if ( index == -1 ){
+            if ( ofGetElapsedTimeMillis() - lastChanged > bumperDur ){
+                nextFrame();
             }
-			bNeedToRender = true;
+        } else if ( ofGetElapsedTimeMillis() - lastChanged > rate ){
+            nextFrame();
         }
     }
     
     void draw(){
+        if ( !bDrawing ) return;
         update();
 		static ofImage image;
-		if (bNeedToRender) {
-			image.clear();
-			image.setFromPixels(pixels[index]);
-			image.update();
-			bNeedToRender = false;
-			ofLogError() << "load " << index << endl;
-		}
-		image.draw(0,0);
+        if ( index == -1){
+            bumper.draw(0,0);
+        } else {
+            if (bNeedToRender) {
+                image.clear();
+                image.setFromPixels(pixels[index]);
+                image.update();
+                bNeedToRender = false;
+            }
+            image.draw(0,0);
+        }
     }
     
     void addFrame( ofPixels & pix ){
@@ -50,17 +55,40 @@ public:
     }
     
     void clear(){
-        images.clear();
 		pixels.clear();
 		bNeedToRender = true;
+        endRender();
+    }
+    
+    void beginRender(){
+        if ( bDrawing ) return;
+        bDrawing = true;
+        lastChanged = ofGetElapsedTimeMillis();
+        index = -1;
+    }
+    
+    void endRender(){
+        bDrawing = false;
+        index = -1;
     }
     
     int rate;
     
 protected:
+    
+    void nextFrame(){
+        lastChanged = ofGetElapsedTimeMillis();
+        index++;
+        if ( index >= pixels.size()){
+            index = -1;
+        }
+        bNeedToRender = true;
+    }
+    
     uint64_t lastChanged;
     int index;
     vector<ofPixels> pixels;
-	vector<ofImage> images;
-	bool bNeedToRender;
+    ofImage bumper;
+	bool bNeedToRender, bDrawing;
+    int bumperDur;
 };

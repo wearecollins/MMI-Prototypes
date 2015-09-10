@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "RecManager.h"
-#include "ClipManager.h"
-
+#include "Kinect2Utils.h"
 #include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
@@ -25,25 +23,8 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        // bg
-        ofImage background;
-    
-        // ofxUI
         ofxPanel gui;
-		ofParameter<bool> useOverlay, doRecord;
-		ofParameter<ofVec2f> lScreenPos,rScreenPos;
-		ofParameter<float> min, max;
-		ofParameter<bool> screenRight;
-
-        // clipz
-        ClipManager clips;
-    
-        // recording
-        RecManager recorder;
-
-		ofVideoGrabber cameraLeft, cameraRight;
-
-		ofFbo leftScreen, rightScreen, saver;
-    
-        ofMesh test;
+        Kinect2Manager kinect;
+        ofParameter<bool> saving;
+        ofFbo renderer;
 };
