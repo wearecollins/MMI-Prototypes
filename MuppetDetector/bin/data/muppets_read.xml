@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>
+<dataset>
+<name>imglab dataset</name>
+<comment>Created by imglab tool.</comment>
+<images>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/001.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/002.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/003.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/004.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/005.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/006.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/007.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/008.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/009.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/010.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/011.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/012.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/013.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/014.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/015.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/016.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/017.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/018.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/019.jpg'>
+  </image>
+  <image file='/Users/brettrenfer/Dropbox/Code/OF/of_v0.8.4_osx_release/apps/MMI/MuppetDetector/bin/data/read/020.jpg'>
+  </image>
+</images>
+</dataset>
