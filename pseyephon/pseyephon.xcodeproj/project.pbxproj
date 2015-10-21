@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01E652151B98F8EA000160F8 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E652091B98F8EA000160F8 /* Syphon.framework */; };
+		010B599C1BD555B0006AC9E4 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E652091B98F8EA000160F8 /* Syphon.framework */; };
+		010B599F1BD55626006AC9E4 /* ps3eye.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 010B599D1BD55626006AC9E4 /* ps3eye.cpp */; };
+		010B59A21BD567DA006AC9E4 /* USBManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 010B59A01BD567DA006AC9E4 /* USBManager.cpp */; };
 		01E652161B98F8EA000160F8 /* SyphonNameboundClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E6520C1B98F8EA000160F8 /* SyphonNameboundClient.m */; };
 		01E652171B98F8EA000160F8 /* ofxSyphonClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01E652101B98F8EA000160F8 /* ofxSyphonClient.mm */; };
 		01E652181B98F8EA000160F8 /* ofxSyphonServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01E652121B98F8EA000160F8 /* ofxSyphonServer.mm */; };
@@ -26,7 +28,6 @@
 		01E652B21B98F941000160F8 /* ofxKinectExtras.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E6529A1B98F941000160F8 /* ofxKinectExtras.cpp */; };
 		01E652B31B98F941000160F8 /* ofxKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01E6529D1B98F941000160F8 /* ofxKinect.cpp */; };
 		01E652B51B98FB8A000160F8 /* Syphon.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 01E652091B98F8EA000160F8 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		09EE94AD9ABEC70041CA97AA /* ps3eye.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D21410D0B3185CB33ED3F /* ps3eye.cpp */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
 		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
 		5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C88333E71C9457E441C33474 /* ofxButton.cpp */; };
@@ -72,6 +73,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		010B599B1BD55300006AC9E4 /* ofPS3Eye.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofPS3Eye.h; sourceTree = "<group>"; };
+		010B599D1BD55626006AC9E4 /* ps3eye.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ps3eye.cpp; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/ps3eye.cpp; sourceTree = "<group>"; };
+		010B599E1BD55626006AC9E4 /* ps3eye.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ps3eye.h; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/ps3eye.h; sourceTree = "<group>"; };
+		010B59A01BD567DA006AC9E4 /* USBManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = USBManager.cpp; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/USBManager.cpp; sourceTree = "<group>"; };
+		010B59A11BD567DA006AC9E4 /* USBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = USBManager.h; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/USBManager.h; sourceTree = "<group>"; };
 		01E652091B98F8EA000160F8 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		01E6520B1B98F8EA000160F8 /* SyphonNameboundClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyphonNameboundClient.h; sourceTree = "<group>"; };
 		01E6520C1B98F8EA000160F8 /* SyphonNameboundClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyphonNameboundClient.m; sourceTree = "<group>"; };
@@ -116,7 +122,6 @@
 		01E6529C1B98F941000160F8 /* ofxBase3DVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBase3DVideo.h; sourceTree = "<group>"; };
 		01E6529D1B98F941000160F8 /* ofxKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinect.cpp; sourceTree = "<group>"; };
 		01E6529E1B98F941000160F8 /* ofxKinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinect.h; sourceTree = "<group>"; };
-		032D21410D0B3185CB33ED3F /* ps3eye.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ps3eye.cpp; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/ps3eye.cpp; sourceTree = SOURCE_ROOT; };
 		0A1DAC09F322AE313A40706D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
 		0E4545828121E97099CEE5CA /* ofxPS3EyeGrabber.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPS3EyeGrabber.h; path = ../../../addons/ofxPS3EyeGrabber/src/ofxPS3EyeGrabber.h; sourceTree = SOURCE_ROOT; };
 		15F2C6477A769C03A56D1401 /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxSlider.cpp; path = ../../../addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
@@ -131,7 +136,6 @@
 		89449E3044D456F7DE7BEA14 /* ofxPanel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxPanel.h; path = ../../../addons/ofxGui/src/ofxPanel.h; sourceTree = SOURCE_ROOT; };
 		907C5B5E104864A2D3A25745 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxToggle.cpp; path = ../../../addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
 		9604B925D32EE39065747725 /* ofxBaseGui.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxBaseGui.cpp; path = ../../../addons/ofxGui/src/ofxBaseGui.cpp; sourceTree = SOURCE_ROOT; };
-		A19C5A296C0C8DCCA9DCCBC1 /* ps3eye.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ps3eye.h; path = ../../../addons/ofxPS3EyeGrabber/libs/ps3eye/src/ps3eye.h; sourceTree = SOURCE_ROOT; };
 		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
@@ -154,7 +158,7 @@
 			files = (
 				01E652AA1B98F941000160F8 /* usb-1.0.a in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
-				01E652151B98F8EA000160F8 /* Syphon.framework in Frameworks */,
+				010B599C1BD555B0006AC9E4 /* Syphon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,8 +423,10 @@
 		9A01EC31DA93280D15B28DC1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				032D21410D0B3185CB33ED3F /* ps3eye.cpp */,
-				A19C5A296C0C8DCCA9DCCBC1 /* ps3eye.h */,
+				010B59A01BD567DA006AC9E4 /* USBManager.cpp */,
+				010B59A11BD567DA006AC9E4 /* USBManager.h */,
+				010B599D1BD55626006AC9E4 /* ps3eye.cpp */,
+				010B599E1BD55626006AC9E4 /* ps3eye.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -494,6 +500,7 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				010B599B1BD55300006AC9E4 /* ofPS3Eye.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -598,6 +605,7 @@
 				01E652A81B98F941000160F8 /* tilt.c in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				01E652B21B98F941000160F8 /* ofxKinectExtras.cpp in Sources */,
+				010B599F1BD55626006AC9E4 /* ps3eye.cpp in Sources */,
 				01E652A21B98F941000160F8 /* cameras.c in Sources */,
 				01E652A51B98F941000160F8 /* keep_alive.c in Sources */,
 				01E652A41B98F941000160F8 /* flags.c in Sources */,
@@ -621,7 +629,7 @@
 				01E652A31B98F941000160F8 /* core.c in Sources */,
 				01E652191B98F8EA000160F8 /* ofxSyphonServerDirectory.mm in Sources */,
 				01E652161B98F8EA000160F8 /* SyphonNameboundClient.m in Sources */,
-				09EE94AD9ABEC70041CA97AA /* ps3eye.cpp in Sources */,
+				010B59A21BD567DA006AC9E4 /* USBManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +731,8 @@
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 					/Users/brettrenfer/Dropbox,
 					"(Personal)/Code/OF/of_v0.X.X_github/addons/ofxSyphon/libs/Syphon/lib/osx",
+					/Users/brettrenfer/Dropbox,
+					"(Personal)/Code/OF/of_v0.X.X_github/addons/ofxSyphon/libs/Syphon/lib/osx",
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -766,6 +776,8 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					/Users/brettrenfer/Dropbox,
+					"(Personal)/Code/OF/of_v0.X.X_github/addons/ofxSyphon/libs/Syphon/lib/osx",
 					/Users/brettrenfer/Dropbox,
 					"(Personal)/Code/OF/of_v0.X.X_github/addons/ofxSyphon/libs/Syphon/lib/osx",
 				);

@@ -46,6 +46,7 @@ void ofApp::setup(){
     saver.allocate(512, 424);
     
     recorder.setup();
+    ofAddListener(recorder.donePlaying, this, &ofApp::donePlayback);
     
     background.load("background.png");
     
@@ -83,7 +84,7 @@ void ofApp::update(){
 			rightScreen.allocate(800, 1280);
 		}
 		else {
-			rightScreen.allocate(1280, 200);
+			rightScreen.allocate(1920, 1200);
 		}
 	}
 
@@ -186,33 +187,50 @@ void ofApp::draw(){
     {
         ofClear(0);
         
-        ofPushStyle();
-        switch( clips.getMode() ){
-            case MODE_SELECT:
-                ofSetColor(50);
-                break;
-                
-            case MODE_PREVIEW:
-                ofSetHexColor(0xe2d000);
-                break;
-                
-            case MODE_GETREADY:
-                ofSetHexColor( 0xe27000);
-                break;
-                
-            case MODE_WATCH:
-                ofSetHexColor(0x7500e2);
-                break;
-                
-            case MODE_PERFORM:
-                ofSetHexColor(0x6ae200);
-                break;
+        if ( screenRight.get() ){
+            ofPushStyle();
+            switch( clips.getMode() ){
+                case MODE_SELECT:
+                    ofSetColor(50);
+                    break;
+                    
+                case MODE_PREVIEW:
+                    ofSetHexColor(0xe2d000);
+                    break;
+                    
+                case MODE_GETREADY:
+                    ofSetHexColor( 0xe27000);
+                    break;
+                    
+                case MODE_WATCH:
+                    ofSetHexColor(0x7500e2);
+                    break;
+                    
+                case MODE_PERFORM:
+                    ofSetHexColor(0x6ae200);
+                    break;
+            }
+            ofDrawRectangle(0,0,rightScreen.getWidth(), rightScreen.getHeight());
+            ofPopStyle();
         }
-        ofDrawRectangle(0,0,rightScreen.getWidth(), rightScreen.getHeight());
-        ofPopStyle();
         
-        clips.draw(screenRight.get(), 0, 150, rightScreen.getWidth(), rightScreen.getHeight());
+        clips.draw(screenRight.get(), 0, 0, rightScreen.getWidth(), rightScreen.getHeight());
         
+        if ( clips.getMode() == MODE_SHARE ){
+            
+            float k_width = 640.;
+            float scale = k_width / cam_width;
+            
+            ofPushMatrix();
+            ofTranslate(rightScreen.getWidth()/2.0, rightScreen.getHeight()/2.0);
+            ofScale(-1., 1.);
+            ofTranslate(-rightScreen.getWidth()/2.0, -rightScreen.getHeight()/2.0);
+			ofTranslate(rightScreen.getWidth() / 2.0, rightScreen.getHeight() / 2.0);
+            ofScale(scale, scale);
+			ofTranslate(-640. / 2., -480. / 2.);
+            recorder.draw();
+            ofPopMatrix();
+        }
     }
     rightScreen.end();
     
@@ -225,7 +243,7 @@ void ofApp::draw(){
     leftScreen.draw(lScreenPos.get().x, lScreenPos.get().y, lw, lh );
    
     clips.setPos(rScreenPos.get().x, rScreenPos.get().y, 1.0 );
-    rightScreen.draw(rScreenPos.get().x, rScreenPos.get().y + (clips.getMode() == MODE_SELECT ? 0 : 100));
+    rightScreen.draw(rScreenPos.get().x, rScreenPos.get().y);
     
 //    ofSetColor(255,100);
 	if (useOverlay)	
@@ -237,6 +255,11 @@ void ofApp::draw(){
 		cameraRight.draw(640, 0);
         gui.draw();
     }
+}
+
+//--------------------------------------------------------------
+void ofApp::donePlayback(){
+    clips.setMode(MODE_SHARE);
 }
 
 //--------------------------------------------------------------

@@ -2,14 +2,21 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetVerticalSync(true);
-    
     camWidth = 640;
     camHeight = 480;
-    camFrameRate = 60;
+    camFrameRate = 30;
+    
+    ofSetFrameRate(camFrameRate);
+    ofSetVerticalSync(true);
+    
+    // start gui
+    
+    panel.setup();
     
     //we can now get back a list of devices.
-    std::vector<ofVideoDevice> devices = vidGrabber.listDevices();
+    ofxPS3EyeGrabber dummy;
+    
+    std::vector<ofVideoDevice> devices = dummy.listDevices();
     
     for(std::size_t i = 0; i < devices.size(); ++i)
     {
@@ -20,53 +27,46 @@ void ofApp::setup(){
         if(!devices[i].bAvailable)
         {
             ss << " - unavailable ";
+        } else {
+            cameras.push_back( new ofPS3Eye() );
+            cameras.back()->setFrameRate(camFrameRate);
+            cameras.back()->setup(i, "PS3 Eye "+ofToString(i));
+            panel.add( cameras.back()->params );
         }
         
         ofLogNotice("ofApp::setup") << ss.str();
     }
     
-    vidGrabber.setDeviceID(0);
-    vidGrabber.setDesiredFrameRate(camFrameRate);
-    vidGrabber.setup(camWidth, camHeight);
-    
-    vidGrabber.setAutogain(false);
-    vidGrabber.setAutoWhiteBalance(false);
-    
+    videoTexture.allocate(camWidth, camHeight * ( (int) devices.size()) );
     
     mainOutputSyphonServer.setName("Screen Output");
     
-    panel.setup();
-    panel.add(gain.set("Gain", 1., 0., 100.));
-    panel.add(exposure.set("exposure", 1., 0., 100.));
-    panel.add(sharpness.set("sharpness", 1., 0., 100.));
-    panel.add(contrast.set("contrast", 1., 0., 100.));
-    panel.add(brightness.set("brightness", 1., 0., 100.));
-    panel.add(hue.set("hue", 1., 0., 255.));
-    panel.add(redBalance.set("redBalance", 1., 0., 255.));
-    panel.add(blueBalance.set("blueBalance", 1., 0., 255.));
+    
     panel.loadFromFile("settings.xml");
     bDrawGui = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    vidGrabber.update();
+    videoTexture.begin();
+    int y = 0;
     
-    if (vidGrabber.isFrameNew())
-    {
-        videoTexture.loadData(vidGrabber.getPixels());
-        if ( videoTexture.isAllocated() )
-            mainOutputSyphonServer.publishTexture(&videoTexture);
+    bool bNewFrame = false;
+    for ( auto * c : cameras ){
+        bool b = c->update();
+        if ( b || true ){
+            bNewFrame = true;
+            c->draw(0,y);
+        }
+        y += camHeight;
     }
+    videoTexture.end();
     
-    vidGrabber.setGain(gain.get());
-    vidGrabber.setExposure(exposure.get());
-    vidGrabber.setSharpness(sharpness.get());
-    vidGrabber.setContrast(contrast.get());
-    vidGrabber.setBrightness(brightness.get());
-    vidGrabber.setHue(hue.get());
-    vidGrabber.setRedBalance(redBalance.get());
-    vidGrabber.setBlueBalance(blueBalance.get());
+    if (bNewFrame)
+    {
+        if ( videoTexture.isAllocated() )
+            mainOutputSyphonServer.publishTexture(&(videoTexture.getTexture()));
+    }
 }
 
 //--------------------------------------------------------------
@@ -74,12 +74,16 @@ void ofApp::draw(){
     ofBackground(0);
     ofSetColor(255);
     
+    float s = MIN( ofGetWidth() / videoTexture.getWidth(), ofGetHeight() / videoTexture.getHeight());
+    
+    ofPushMatrix();
+    ofScale(s, s);
     videoTexture.draw(0, 0);
+    ofPopMatrix();
     
     std::stringstream ss;
     
     ss << "App FPS: " << ofGetFrameRate() << std::endl;
-    ss << "Cam FPS: " << vidGrabber.getFPS();
     
     ofDrawBitmapStringHighlight(ss.str(), ofPoint(10, 15));
     if ( bDrawGui ) panel.draw();
@@ -88,7 +92,10 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-    vidGrabber.close();
+    for ( auto * c : cameras ){
+        c->close();
+        delete c;
+    }
 }
 
 //--------------------------------------------------------------

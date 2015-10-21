@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxPS3EyeGrabber.h"
+#include "ofPS3Eye.h"
 #include "ofxSyphon.h"
 #include "ofxGui.h"
 
@@ -15,8 +15,8 @@ class ofApp : public ofBaseApp{
         void keyPressed(int key);
 
     
-    ofxPS3EyeGrabber vidGrabber;
-    ofTexture videoTexture;
+    vector<ofPS3Eye *> cameras;
+    ofFbo videoTexture;
     
     int camWidth;
     int camHeight;
@@ -26,5 +26,4 @@ class ofApp : public ofBaseApp{
     ofxPanel panel;
     bool bDrawGui;
     
-    ofParameter<float> gain, exposure, sharpness, contrast, brightness, hue, redBalance, blueBalance;
 };

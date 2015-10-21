@@ -19,7 +19,9 @@ public:
         index   = 0;
 		bNeedToRender = false;
         bumper.load("images/mmi_bumper.png");
-        bumperDur = 1000;
+		bumper.resize(640, 480);
+		bumper.mirror(false, true);
+        bumperDur = 2000;
     }
     
     void update(){
@@ -74,6 +76,8 @@ public:
     
     int rate;
     
+    ofEvent<void> donePlaying;
+    
 protected:
     
     void nextFrame(){
@@ -81,6 +85,7 @@ protected:
         index++;
         if ( index >= pixels.size()){
             index = -1;
+            ofNotifyEvent(donePlaying, this);
         }
         bNeedToRender = true;
     }
