@@ -1,0 +1,45 @@
+<!-- 
+	data: {
+		title:string
+	}
+ -->
+<div id="wrapper">
+	<div class="title top">{{title}}</div>
+	<div id="scripts" class="middle">
+		<div id="prev" class="noselect"><</div>
+		<div id="script_container">
+		{{#each scripts}}
+			<div id="{{id}}" name="{{name}}" class="script">
+				<div id="space_l" class="script_space"></div>
+				<div id="script_img_{{id}}" class="script_img">
+					<img src="{{img}}" />
+					<div id="more_info_{{name}}" class="more_info" name="{{name}}"></div>
+				</div>
+				<div id="space_r" class="script_space"></div>
+			</div>
+	  	{{/each}}
+	  	</div>
+		<div id="next" class="noselect">></div>
+	</div>
+	<div id="prompt_container" class="bottom">
+		<div id="info_prompt" class="prompt noselect">
+			<div>
+				<div id="">Build A</div>
+				<div id="info_name"></div>
+			</div>
+		</div>
+		<div id="drawer_prompt" class="prompt noselect">
+			<div>
+				<div id="d_text"><strong>Open a Drawer</strong><br />to Start Building</div>
+				<audio id="a_drawer" src="sound/v03.mp3" />
+			</div>
+		</div>
+		<div id="spin_prompt" class="prompt noselect">
+			<div>
+				<div id="d_text"><strong>Spin the Puppet</strong><br />to Test on Camera</div>
+				<audio id="a_spin" src="sound/v04.mp3" />
+			</div>
+		</div>
+	</div>
+	<audio src="sound/v02.mp3" autoplay />
+</div>

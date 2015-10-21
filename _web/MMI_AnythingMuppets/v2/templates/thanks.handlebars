@@ -1,0 +1,25 @@
+<!-- 
+	data: {
+		name: string (character name),
+		img:  string (image)
+	}
+ -->
+<div id="wrapper">
+	<div class="title" class="top">
+	</div>
+	<div id="capture" class="middle">
+	{{#if didInteract }}
+		<img src="{{img}}" />
+	{{/if}}
+	<div id="Text">
+	Thanks For Sharing<br /><br />
+	<strong>Please Return the Features to Drawers</strong>
+	</div>
+	{{#if didInteract }}
+		<img src="{{img_original}}" />
+	{{/if}}
+	</div>
+	<div id="buttons" class="bottom">
+		<div id="b_startover" class="button">Start Over</div>
+	</div>
+</div>
