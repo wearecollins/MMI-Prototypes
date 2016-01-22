@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CycliaTestOne</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_debug</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxDetectDisplays\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxSyphon\libs;..\..\..\addons\ofxSyphon\libs\Syphon;..\..\..\addons\ofxSyphon\libs\Syphon\lib;..\..\..\addons\ofxSyphon\libs\Syphon\src;..\..\..\addons\ofxSyphon\src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMtlMapping2D\src;..\..\..\addons\ofxMtlMapping2D\src\controls;..\..\..\addons\ofxMtlMapping2D\src\settings;..\..\..\addons\ofxMtlMapping2D\src\shapes;..\..\..\addons\ofxMtlMapping2D\src\utils;..\..\..\addons\ofxMtlMapping2D\src\utils\homography</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxDetectDisplays\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxSyphon\libs;..\..\..\addons\ofxSyphon\libs\Syphon;..\..\..\addons\ofxSyphon\libs\Syphon\lib;..\..\..\addons\ofxSyphon\libs\Syphon\src;..\..\..\addons\ofxSyphon\src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMtlMapping2D\src;..\..\..\addons\ofxMtlMapping2D\src\controls;..\..\..\addons\ofxMtlMapping2D\src\settings;..\..\..\addons\ofxMtlMapping2D\src\shapes;..\..\..\addons\ofxMtlMapping2D\src\utils;..\..\..\addons\ofxMtlMapping2D\src\utils\homography</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxDetectDisplays\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxSyphon\libs;..\..\..\addons\ofxSyphon\libs\Syphon;..\..\..\addons\ofxSyphon\libs\Syphon\lib;..\..\..\addons\ofxSyphon\libs\Syphon\src;..\..\..\addons\ofxSyphon\src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMtlMapping2D\src;..\..\..\addons\ofxMtlMapping2D\src\controls;..\..\..\addons\ofxMtlMapping2D\src\settings;..\..\..\addons\ofxMtlMapping2D\src\shapes;..\..\..\addons\ofxMtlMapping2D\src\utils;..\..\..\addons\ofxMtlMapping2D\src\utils\homography</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxDetectDisplays\src;..\..\..\addons\ofxMSAInteractiveObject\src;..\..\..\addons\ofxSyphon\libs;..\..\..\addons\ofxSyphon\libs\Syphon;..\..\..\addons\ofxSyphon\libs\Syphon\lib;..\..\..\addons\ofxSyphon\libs\Syphon\src;..\..\..\addons\ofxSyphon\src;..\..\..\addons\ofxUI\src;..\..\..\addons\ofxXmlSettings\libs;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxMtlMapping2D\src;..\..\..\addons\ofxMtlMapping2D\src\controls;..\..\..\addons\ofxMtlMapping2D\src\settings;..\..\..\addons\ofxMtlMapping2D\src\shapes;..\..\..\addons\ofxMtlMapping2D\src\utils;..\..\..\addons\ofxMtlMapping2D\src\utils\homography</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\controls\ofxGemcutterControls.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterGlobal.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterShapes.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\settings\ofxGemcutterSettings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterGrid.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterInput.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterMask.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterPolygon.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterQuad.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterShape.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterTriangle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterVertex.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxDetectDisplays\src\ofxDetectDisplays.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIBaseDraws.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIBiLabelSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUICanvas.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUICircleSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIDragableLabelButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIDropDownList.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIEventArgs.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIFPS.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIFPSSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIImage.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIImageButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIImageSampler.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIImageSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIImageToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUILabel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUILabelButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUILabelToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIMinimalSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIMovingGraph.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageButton.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUINumberDialer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIRadio.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIRangeSlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIRectangle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIRotarySlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIScrollableCanvas.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUISlider.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUISortableList.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUISpacer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUISpectrum.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUISuperCanvas.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUITabBar.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUITextArea.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUITextInput.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIToggle.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIToggleMatrix.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIValuePlotter.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWaveform.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidget.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\controls\ofxGemcutterControls.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutter.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterDefines.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterGlobal.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterShapes.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\ofxGemcutterShapeType.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\settings\ofxGemcutterSettings.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterGrid.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterInput.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterMask.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterPolygon.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterQuad.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterShape.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterTriangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\shapes\ofxGemcutterVertex.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\utils\homography\homography.h" />
+    <ClInclude Include="..\..\..\addons\ofxMtlMapping2D\src\utils\mtlUtils.h" />
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="..\..\..\addons\ofxDetectDisplays\src\ofxDetectDisplays.h" />
+    <ClInclude Include="..\..\..\addons\ofxMSAInteractiveObject\src\ofxMSAInteractiveObject.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DGraph.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUI2DPad.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIBaseDraws.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIBiLabelSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUICanvas.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUICircleSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIDefines.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIDragableLabelButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIDropDownList.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIEventArgs.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIFPS.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIFPSSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImage.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageSampler.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIImageToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabel.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabelButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUILabelToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMinimalSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMovingGraph.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageButton.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIMultiImageToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUINumberDialer.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIOFWrapper.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRadio.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRangeSlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRectangle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIRotarySlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIScrollableCanvas.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISlider.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISortableList.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISpacer.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISpectrum.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUISuperCanvas.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUITabBar.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUITextArea.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUITextInput.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIToggle.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIToggleMatrix.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIValuePlotter.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWaveform.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWidget.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWidgets.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWidgetWithLabel.h" />
+    <ClInclude Include="..\..\..\addons\ofxUI\src\ofxUIWrapper.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="icon.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

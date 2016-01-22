@@ -264,6 +264,7 @@ Carthage/Build
 
 # DESIGNS
 *.mov
+*.webm
 *.otf
 *.ttf
 =======

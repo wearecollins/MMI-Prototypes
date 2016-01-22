@@ -1,0 +1,23 @@
+<div id="wrapper">
+	<div class="title">Select a Clip</div>
+	<div id="spacer" class="top"></div>
+	<div id="clip_container" class="middle">
+		{{#each clips}}
+			<div id="{{id}}" name="{{name}}" class="">
+				<div id="video_{{id}}">
+					<video autoplay muted loop class="video">
+						<source src="{{video}}" />
+					</video>
+					<div id="more_info_{{name}}" class="more_info" name="{{name}}"></div>
+					<div id="content">
+						<strong>{{name}}</strong><br />
+						{{content}}
+					</div>
+				</div>
+			</div>
+	  	{{/each}}
+	</div>
+	<div class="bottom">
+	</div>
+	<audio src="sound/Pv04.mp3" autoplay></audio>
+</div>

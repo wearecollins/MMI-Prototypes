@@ -1,0 +1,19 @@
+{
+  "name": "mmi-performance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "forever-monitor": "^1.7.0",
+    "http-server": "^0.8.5",
+    "spacebrew": "^0.0.2",
+    "ws": "^0.4.32"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brett Renfer",
+  "license": "MIT"
+}

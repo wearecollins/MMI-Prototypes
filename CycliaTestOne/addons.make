@@ -1,0 +1,5 @@
+ofxDetectDisplays
+ofxMSAInteractiveObject
+ofxSyphon
+ofxUI
+ofxXmlSettings

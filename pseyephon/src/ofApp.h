@@ -4,6 +4,7 @@
 #include "ofPS3Eye.h"
 #include "ofxSyphon.h"
 #include "ofxGui.h"
+#include "ofxChromaKeyShader.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,4 +27,15 @@ class ofApp : public ofBaseApp{
     ofxPanel panel;
     bool bDrawGui;
     
+    // fx
+    ofShader effect;
+    ofxToggle bUseBw, bUseChroma, bUpdateColor;
+    
+    // Chroma
+    ofImage bg_image;
+    
+    ofxChromaKeyShader *chromakey;
+    
+    bool bShowGui;
+    bool bUpdateBgColor;
 };

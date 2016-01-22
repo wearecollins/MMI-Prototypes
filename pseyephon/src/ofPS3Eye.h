@@ -87,6 +87,10 @@ public:
         vidGrabber.close();
     }
     
+    const ofTexture & getTexture(){
+        return tex;
+    }
+    
     ofParameterGroup params;
     
 protected:
