@@ -11,6 +11,13 @@
 #include "ofMain.h"
 #include "ofxEasingFunc.h"
 
+
+enum Mode {
+    MODE_STACK = 0,
+    MODE_FAN,
+    MODE_SIDE_BY
+};
+
 class Script : public ofRectangle {
 public:
     
@@ -53,13 +60,21 @@ public:
         return bPressed;
     }
     
-    bool mouseMoved( int x, int y ){
+    bool mouseMoved( int x, int y, Mode m ){
         if (!bPressed) return;
         else {
-            this->x -= (lastMouse.x - x);
-            this->y -= (lastMouse.y - y);
-            lastMouse.set(x,y);
+            switch (m){
+                case MODE_FAN:
+                    this->x -= (lastMouse.x - x);
+                    this->y -= (lastMouse.y - y);
+                    lastMouse.set(x,y);
+                    break;
+            }
         }
+    }
+    
+    bool mouseReleased(int x, int y ){
+        bPressed = false;
     }
     
     float rotation;
@@ -73,8 +88,8 @@ protected:
     
     bool bInside( int x, int y ){
         ofVec2f start(ofGetWidth()/2.0, ofGetHeight()/2.0);
-        ofVec2f minDim(-width/2.0, -height/2.0);
-        ofVec2f maxDim(width/2.0, height/2.0);
+        ofVec2f minDim(this->x-width/2.0, this->y-height/2.0);
+        ofVec2f maxDim(this->x+width/2.0, this->y+height/2.0);
         
         if ( x < (start.x + maxDim.x ) && x > start.x + minDim.x &&
             y < start.y + maxDim.y && y > start.y + minDim.y ){

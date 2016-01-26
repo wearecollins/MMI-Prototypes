@@ -23,4 +23,8 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
         vector<Script> scripts;
+    
+        Mode mode;
+    
+        void setupScripts( Mode m );
 };
