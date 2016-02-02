@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "RecManager.h"
-#include "ClipManager.h"
+#include "EW_Performance.h"
+#include "CameraPS3.h"
 
 #include "ofxGui.h"
 
@@ -25,26 +25,20 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-        // bg
-        ofImage background;
-    
         // ofxUI
         ofxPanel gui;
-		ofParameter<bool> useOverlay, doRecord;
-		ofParameter<ofVec2f> lScreenPos,rScreenPos;
-		ofParameter<float> min, max;
-		ofParameter<bool> screenRight;
-
-        // clipz
-        ClipManager clips;
+		ofParameter<bool> doRecord;
+    
+        // screens
+        map<mmi::Mode, mmi::Screen *> screens;
     
         // recording
         RecManager recorder;
         void donePlayback();
 
-		ofVideoGrabber cameraLeft, cameraRight;
-
-		ofFbo leftScreen, rightScreen, saver;
+		mmi::Camera * cameraLeft, * cameraRight;
+    
+        void nextMode();
     
         ofMesh test;
 };

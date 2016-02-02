@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxVideoRecorder.h"
 
 class RecManager {
 public:
