@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+//#define USE_VG
 #include "ofPS3Eye.h"
 #include "ofxSyphon.h"
 #include "ofxGui.h"
@@ -9,6 +10,8 @@
 #include "Clip.h"
 #include "RecordManager.h"
 #include "ofxSpacebrew.h"
+
+#include "WebsocketStreamer.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,14 +25,22 @@ class ofApp : public ofBaseApp{
     void setupCameras();
     void setupSpacebrew();
     
+#ifdef USE_VG
+    vector<ofVideoGrabber *> cameras;
+#else
     vector<ofPS3Eye *> cameras;
-    ofFbo videoTexture;
+#endif
+    ofFbo videoTexture, cameraTop, cameraSide;
+    ofBufferObject pixelBufferBack[2];
+    ofBufferObject pixelBufferFront[2];
     
     int camWidth;
     int camHeight;
     int camFrameRate;
     
     ofxSyphonServer mainOutputSyphonServer;
+    WebsocketStreamer websocketStream;
+    
     ofxPanel panel;
     ofxGuiGroup mainParams;
     bool bDrawGui;
@@ -37,7 +48,7 @@ class ofApp : public ofBaseApp{
     
     // fx
     ofShader effect;
-    ofxToggle bUseBw, bUseChroma, bUpdateColor;
+    ofxToggle bUseBw, bUseChroma, bUpdateColor, bUsePb, bUseWs;
     
     // Chroma
     ofImage bg_image;

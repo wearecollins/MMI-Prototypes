@@ -1,17 +1,16 @@
-#version 120
-#extension GL_EXT_gpu_shader4 : enable
-#extension GL_ARB_texture_rectangle : enable
+#version 150
 
-varying vec2 texCoord;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+in vec4  position;
+in vec2  texcoord;
+
+out vec2 texCoordVarying;
 
 void main()
 {
-    
-    gl_TexCoord[0] = gl_MultiTexCoord0;
-    
-    //get our current vertex position so we can modify it
-    vec4 pos = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
-    
-	texCoord = vec2(gl_MultiTexCoord0.xy);
-	gl_Position = pos;
+    texCoordVarying = texcoord;
+    gl_Position = modelViewProjectionMatrix * position;
 }

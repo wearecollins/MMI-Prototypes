@@ -31,16 +31,20 @@ public:
         params.setName("Recording params");
         params.add(recordInterval.set("Camera switch interval", 5000, 0, 15000));
         params.add(recordLength.set("Recording length", 15000, 1, 60000));
-        params.add(camWidth.set("Video width", 640, 1, 1920) );
-        params.add(camHeight.set("Video height", 480, 1, 1080) );
+        params.add(camWidth.set("Video width", 320, 1, 640) );
+        params.add(camHeight.set("Video height", 240, 1, 480) );
         
         bRecording = false;
         currentBgClip = "";
+        
+        frameRate = 1000./30.;
     }
     
     void update( const ofPixels & cameraOne, const ofPixels & cameraTwo ){
         if(bRecording){
             auto t = ofGetElapsedTimeMillis();
+            
+//            if ( t - lastFrameAdded < frameRate ) return;
             
             if (( t - lastTime ) >= recordInterval){
                 whichCamera = !whichCamera;
@@ -60,6 +64,8 @@ public:
             } else {
                 success = vidRecorder.addFrame(cameraTwo);
             }
+            
+            lastFrameAdded = t;
             
             if (!success) {
                 ofLogWarning("This frame was not added!");
@@ -83,7 +89,8 @@ public:
         
         currentBgClip = backgroundClip;
         
-        vidRecorder.setup(currentFileName, camWidth, camHeight, 30);
+        vidRecorder.setup(currentFileName, camWidth, camHeight, 30, 0, 0, true  );
+        
         vidRecorder.start();
     }
     
@@ -91,11 +98,14 @@ public:
         bRecording = false;
         vidRecorder.close();
         
+        // this is stupid!
+        sleep(2);
+        
         // after that, copy in the audio
         if ( currentBgClip != "" ){
             
-            string lastCmd = "bash --login -c 'ffmpeg -i " + currentFileName;
-            lastCmd +=" -i "+ currentBgClip + fileExt.get() +" -c copy -map 0:v:0 -map 1:a:0 -shortest "+currentFileName +"_final"+fileExt.get()+"'";
+            string lastCmd = "bash --login -c 'ffmpeg -i " + ofToDataPath(currentFileName, true);
+            lastCmd +=" -i "+ ofToDataPath(currentBgClip + fileExt.get(), true) +" -c copy -map 0:v:0 -map 1:a:0 -shortest "+ofToDataPath(currentFileName +"_final"+fileExt.get(), true)+"'";
             
             system(lastCmd.c_str() );
             currentFileName = currentFileName + "_final"+fileExt.get();
@@ -130,4 +140,7 @@ protected:
     
     uint64_t startTime, lastTime;
     int whichCamera;
+    
+    float frameRate;
+    uint64_t lastFrameAdded;
 };

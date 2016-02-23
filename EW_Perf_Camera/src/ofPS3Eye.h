@@ -16,7 +16,7 @@ public:
     ofPS3Eye(){
         camWidth = 640;
         camHeight = 480;
-        camFrameRate = 60;
+        camFrameRate = 30;
         
         params.add(gain.set("Gain", 1., 0., 100.));
         params.add(exposure.set("exposure", 1., 0., 100.));
@@ -42,32 +42,37 @@ public:
     void setup( int idx = 0, string name = "PS3 Eye 1"){
         params.setName(name);
         
-        vidGrabber.setDeviceID(idx);
-        vidGrabber.setDesiredFrameRate(camFrameRate);
-        vidGrabber.setup(camWidth, camHeight);
+        vidGrabber = std::make_shared<ofVideoGrabber>();
+        vidGrabber->setGrabber(std::make_shared<ofxPS3EyeGrabber>());
+        
+        vidGrabber->setDeviceID(idx);
+        vidGrabber->setDesiredFrameRate(camFrameRate);
+        
+        vidGrabber->setPixelFormat(OF_PIXELS_RGBA);
+        vidGrabber->setup(camWidth, camHeight);
 
-        vidGrabber.setFlip(true, false);
-//        vidGrabber.setAutogain(false);
-//        vidGrabber.setAutoWhiteBalance(false);
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setHorizontalFlip(true);
+//        vidGrabber->setAutogain(false);
+//        vidGrabber->setAutoWhiteBalance(false);
         tex.allocate(camWidth, camHeight, GL_RGBA);
     }
     
     bool update(){
-        vidGrabber.update();
+        vidGrabber->update();
         
-        vidGrabber.setGain(gain.get());
-        vidGrabber.setExposure(exposure.get());
-        vidGrabber.setSharpness(sharpness.get());
-        vidGrabber.setContrast(contrast.get());
-        vidGrabber.setBrightness(brightness.get());
-        vidGrabber.setHue(hue.get());
-        vidGrabber.setRedBalance(redBalance.get());
-        vidGrabber.setBlueBalance(blueBalance.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setGain(gain.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setExposure(exposure.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setSharpness(sharpness.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setContrast(contrast.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setBrightness(brightness.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setHue(hue.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setRedBalance(redBalance.get());
+        vidGrabber->getGrabber<ofxPS3EyeGrabber>()->setBlueBalance(blueBalance.get());
         
-        bool bNew = vidGrabber.isFrameNew();
+        bool bNew = vidGrabber->isFrameNew();
         
         if ( bNew ){
-            tex.loadData(vidGrabber.getPixels());
+//            tex.loadData(vidGrabber->getPixels());
         }
         
         return bNew;
@@ -76,16 +81,17 @@ public:
     void draw( float x, float y, float w=-1, float h=-1 ){
         if ( w == -1 ) w = camWidth;
         if ( h == -1 ) h = camHeight;
-        if ( tex.isAllocated() )
-            tex.draw(x,y,w,h);
+//        if ( tex.isAllocated() )
+//            tex.draw(x,y,w,h);
+        vidGrabber->draw(x,y,w,h);
     }
     
-    ofxPS3EyeGrabber & getCamera() {
-        return vidGrabber;
+    bool isFrameNew() {
+        return vidGrabber->isFrameNew();
     }
     
     void close(){
-        vidGrabber.close();
+        vidGrabber->close();
     }
     
     const ofTexture & getTexture(){
@@ -95,7 +101,8 @@ public:
     ofParameterGroup params;
     
 protected:
-    ofxPS3EyeGrabber vidGrabber;
+    std::shared_ptr<ofVideoGrabber> vidGrabber;
+//    ofxPS3EyeGrabber vidGrabber;
     ofTexture tex;
     
     ofParameter<float> gain, exposure, sharpness, contrast, brightness, hue, redBalance, blueBalance;

@@ -1,12 +1,14 @@
 #include "ofApp.h"
 
+ofImage * background;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
-    camWidth = 640;
-    camHeight = 480;
+    camWidth = 320;
+    camHeight = 240;
     camFrameRate = 30;
     
-    ofSetFrameRate(60);
+//    ofSetFrameRate(60);
     ofSetVerticalSync(false);
     
     // start gui
@@ -18,6 +20,8 @@ void ofApp::setup(){
     mainParams.add(bUseChroma.setup("Chroma Key filter", true));
     mainParams.add(bUpdateColor.setup("Update BG Color", true));
     mainParams.add(whichCameraTop.set("Which cam is top", 0, 0, 1));
+    mainParams.add(bUsePb.setup("Use pixelbuffer", true));
+    mainParams.add(bUseWs.setup("Use WebSocket", false));
     
     panel.add(&mainParams);
     
@@ -25,7 +29,8 @@ void ofApp::setup(){
     
     // add chroma to gui
     bg_image.load("background.jpg");
-    chromakey = new ofxChromaKeyShader(640, 480);
+    background = &bg_image;
+    chromakey = new ofxChromaKeyShader(camWidth, camHeight);
     
     panel.add(chromakey->generalParams);
     panel.add(chromakey->positionParams);
@@ -46,15 +51,19 @@ void ofApp::setup(){
     setupSpacebrew();
     
     // setup textures
-    videoTexture.allocate(camWidth, camHeight);
+    videoTexture.allocate(640, 480);
     
     mainOutputSyphonServer.setName("Screen Output");
+    //websocketStream.setup();
     
-    effect.load("shaders/bw");
+    if(ofIsGLProgrammableRenderer()){
+        effect.load("shaders/bw_150");
+    } else {
+        effect.load("shaders/bw");
+    }
     
     panel.loadFromFile("settings.xml");
     bDrawGui = true;
-    
     
     // to read in QT: ffmpeg -i testMovie2016-01-31-21-58-06-095.mp4 -vf format=yuv420p test02.mp4
 }
@@ -62,59 +71,152 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     // draw to stream texture
-    videoTexture.begin();
-    ofClear(0,255);
     int y = 0;
     
     bool bNewFrame = false;
+    
+    int ind1 = whichCameraTop.get();
+    int ind2 = (ind1 == 0) ? 1 : 0;
+    if ( cameras.size() < 2 ){
+        ind1 = ind2 = 0;
+    }
+    
+    auto * top = cameras[ind1];
+    
+    // temp hax
+    int ind = 0;
+    
+#ifdef USE_VG
+    for ( int i=0; i<2; i++ ){
+        auto * c = cameras[0];
+#else
     for ( auto * c : cameras ){
-        bool b = c->update();
-        if ( b || true ){
+#endif
+        c->update();
+        
+        if ( (ind == 0 && ind1 == 0) || ( ind == 1 && ind1 == 1) ){
+            cameraTop.begin();
+        } else {
+            cameraSide.begin();
+            
             if(bUseBw){
                 effect.begin();
-                effect.setUniformTexture("tex", c->getTexture(), 1);
+                effect.setUniformTexture("tex", c->getTexture(), 0);
             }
-            bNewFrame = true;
-            ofPushMatrix();
+        }
+        ofClear(0,255);
+        
+        ofPushMatrix();
+        
+        // this should be a var
+        c->draw(0,0);
+        ofPopMatrix();
+        
+        if ( ind == 0 ){
+            cameraTop.end();
+        } else {
+            cameraSide.end();
             
-            // this should be a var
-            c->draw(0,y,camWidth/2.0, camHeight/2.0);
-            ofPopMatrix();
             if(bUseBw){
                 effect.end();
             }
         }
-        y += camHeight/2.0;
+        ind++;
     }
-    videoTexture.end();
-    
-    static ofPixels readMe;
-    static bool bRead = false;
-    
-    if (bNewFrame) {
-        bRead = false;
         
-        if ( bUseChroma ){
-            if ( bUpdateColor ){
-                bUpdateColor = false;
-                auto & pix = cameras[whichCameraTop.get()]->getCamera().getPixels();
-                chromakey->updateBgColor( pix );
-            }
+#ifdef USE_VG
+    if ( cameras[ind1]->isFrameNew() || cameras[ind2]->isFrameNew() ){
+#else
+    if ( cameras[ind1]->isFrameNew() || cameras[ind2]->isFrameNew() ){
+#endif
+        bNewFrame = true;
         
-            chromakey->updateChromakeyMask(videoTexture.getTexture(), bg_image.getTexture());
+        if ( bUseChroma){
+            chromakey->updateChromakeyMask(cameraTop.getTexture(), background->getTexture());
         }
-        if ( videoTexture.isAllocated() ){
-            if (bUseChroma){
-                mainOutputSyphonServer.publishTexture(&(chromakey->getFinalImage().getTexture()));
+        
+        // STREAM
+        videoTexture.begin(); {
+            float drawWidth = (camWidth == videoTexture.getWidth() ) ? camWidth/2.0 : camWidth;
+            float drawHeight = (camHeight == videoTexture.getHeight() ) ? camHeight/2.0 : camHeight;
+            ofClear(0,255);
+            
+            if(bUseBw){
+                effect.begin();
+            }
+            if ( bUseChroma && background->isAllocated()){
+                effect.setUniformTexture("tex", chromakey->fbo_final.getTexture(), 0);
+                chromakey->drawFinalImage(0,0, drawWidth, drawHeight);
             } else {
-                mainOutputSyphonServer.publishTexture(&(videoTexture.getTexture()));
+                effect.setUniformTexture("tex", cameraTop.getTexture(), 0);
+                cameraTop.draw(0,0, drawWidth, drawHeight);
             }
+            if(bUseBw){
+                effect.end();
+            }
+            cameraSide.draw(0,drawHeight, drawWidth, drawHeight);
+        } videoTexture.end();
+        
+        static ofPixels pixelsTop;
+        static ofPixels pixelsBottom;
+        
+        if (bUsePb){
+             for (int i=0; i<2; i++){
+                 if ( i == 0 ){
+                     if (bUseChroma){
+                         chromakey->fbo_final.getTexture().copyTo(pixelBufferBack[i]);
+                     } else {
+                         cameraTop.getTexture().copyTo(pixelBufferBack[i]);
+                     }
+                 } else {
+                    cameraSide.getTexture().copyTo(pixelBufferBack[i]);
+                 }
+                 pixelBufferFront[i].bind(GL_PIXEL_UNPACK_BUFFER);
+                 unsigned char * p = pixelBufferFront[i].map<unsigned char>(GL_READ_ONLY);
+                 pixelBufferFront[i].unbind(GL_PIXEL_UNPACK_BUFFER);
+                 if ( i == 0 ){
+                     pixelsTop.setFromExternalPixels(p,cameraTop.getWidth(),cameraTop.getHeight(),OF_PIXELS_RGBA);
+                 } else {
+                     pixelsBottom.setFromExternalPixels(p,cameraSide.getWidth(),cameraSide.getHeight(),OF_PIXELS_RGBA);
+                 }
+                 pixelBufferFront[i].bind(GL_PIXEL_UNPACK_BUFFER);
+                 pixelBufferFront[i].unmap();
+                 pixelBufferFront[i].unbind(GL_PIXEL_UNPACK_BUFFER);
+                 swap(pixelBufferBack[i],pixelBufferFront[i]);
+//                 delete p;
+            }
+        } else {
+            if ( bUseChroma ){
+//                pixelsTop = chromakey->getFinalImage().getPixels();
+                chromakey->fbo_final.readToPixels(pixelsTop);
+                
+                // need to b-w post chromakey
+                if ( bUseBw ){
+                    pixelsTop.setImageType(OF_IMAGE_GRAYSCALE);
+                }
+            } else {
+                cameraTop.readToPixels(pixelsTop);
+            }
+            cameraSide.readToPixels(pixelsBottom);
         }
         
-        int ind1 = whichCameraTop.get();
-        int ind2 = (ind1 == 0) ? 1 : 0;
+        if ( bUpdateColor ){
+            bUpdateColor = false;
+            chromakey->updateBgColor( pixelsTop );
+        }
         
-        recorder.update(cameras[ind1]->getCamera().getPixels(), cameras[ind2]->getCamera().getPixels());
+        recorder.update(pixelsTop, pixelsBottom);
+    }
+
+        
+    // SYPHON
+    if (bNewFrame) {
+        if ( videoTexture.isAllocated() && !bUseWs){
+            mainOutputSyphonServer.publishTexture(&(videoTexture.getTexture()));
+        } else if ( videoTexture.isAllocated() && bUseWs ){
+            websocketStream.streamFbo(videoTexture);
+        } else {
+        }
     }
 }
 
@@ -127,24 +229,20 @@ void ofApp::draw(){
     
     ofPushMatrix();
     ofScale(s, s);
-    chromakey->getFinalImage().draw(0,0);
-    if ( ofGetKeyPressed('c') || !bUseChroma) {
-        videoTexture.draw(0, 0);
-    }
+    videoTexture.draw(0, 0);
     ofPopMatrix();
     
     std::stringstream ss;
-    
     ss << "App FPS: " << ofGetFrameRate() << std::endl;
-    
     
     ofDrawBitmapStringHighlight(ss.str(), ofPoint(10, 15));
     if ( bDrawGui ) panel.draw();
-    
+ 
 }
 
 //--------------------------------------------------------------
 void ofApp::setupCameras(){
+#ifndef USE_VG
     //we can now get back a list of devices.
     ofxPS3EyeGrabber dummy;
     
@@ -169,6 +267,21 @@ void ofApp::setupCameras(){
         
         ofLogNotice("ofApp::setup") << ss.str();
     }
+#else//we can now get back a list of devices.
+    
+    cameras.push_back( new ofVideoGrabber() );
+    cameras.back()->setDeviceID(2);
+    cameras.back()->setDesiredFrameRate(camFrameRate);
+    cameras.back()->setup(camWidth,camHeight);
+#endif
+    
+    cameraTop.allocate(camWidth, camHeight);
+    cameraSide.allocate(camWidth, camHeight);
+    
+    pixelBufferBack[0].allocate(camWidth*camHeight*4,GL_DYNAMIC_READ);
+    pixelBufferFront[0].allocate(camWidth*camHeight*4,GL_DYNAMIC_READ);
+    pixelBufferBack[1].allocate(camWidth*camHeight*4,GL_DYNAMIC_READ);
+    pixelBufferFront[1].allocate(camWidth*camHeight*4,GL_DYNAMIC_READ);
 }
 
 //--------------------------------------------------------------
@@ -187,7 +300,12 @@ void ofApp::keyPressed(int key){
     if ( key == 'g' ) bDrawGui = !bDrawGui;
     else if ( key == 'R' ){
         effect.unload();
-        effect.load("shaders/bw");
+        
+        if(ofIsGLProgrammableRenderer()){
+            effect.load("shaders/bw_150");
+        } else {
+            effect.load("shaders/bw");
+        }
     }
     
     // for now
@@ -199,8 +317,10 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::setupSpacebrew(){
     spacebrew.addPublish("recording", Spacebrew::TYPE_STRING);
-    spacebrew.addSubscribe("startRecording", "object");
-    spacebrew.connect(Spacebrew::SPACEBREW_CLOUD, Spacebrew::SPACEBREW_PORT);
+    spacebrew.addSubscribe("startRecording", "string");
+    spacebrew.addSubscribe("getReady", "string");
+    
+    spacebrew.connect("spacebrew.robotconscience.com", Spacebrew::SPACEBREW_PORT);
     
     ofAddListener( spacebrew.onMessageEvent, this, &ofApp::onMessage );
 }
@@ -208,26 +328,42 @@ void ofApp::setupSpacebrew(){
 //--------------------------------------------------------------
 void ofApp::onMessage( Spacebrew::Message & message ){
     if (message.name == "startRecording" ){
-        static Json::Reader jsonParser;
-        static Json::Value json;
-        if( jsonParser.parse(message.value, json) ){
-            /*****
-             data:
-             {
-                name:"clip name"
-             }
-             // other stuff
-             ****/
-            string clipName = json["name"].asString();
-            if ( clips.count(clipName) != 0 ){
-                
-                recorder.startRecording( clips[clipName].getClip() );
-            }
+//        static Json::Reader jsonParser;
+//        static Json::Value json;
+//        if( jsonParser.parse(message.value, json) ){
+//            /*****
+//             data:
+//             {
+//                name:"clip name"
+//             }
+//             // other stuff
+//             ****/
+//            string clipName = json["name"].asString();
+//            if ( clips.count(clipName) != 0 ){
+//                
+//                recorder.startRecording( clips[clipName].getClip() );
+//            }
+//        }
+        
+        if ( clips.count(message.valueString()) != 0 ){
+            background = &clips[message.valueString()].background;
+            recorder.startRecording( clips[message.valueString()].getClip() );
+        }
+    } else if (message.name == "getReady" ){
+        
+        if ( clips.count(message.valueString()) != 0 ){
+            background = &clips[message.valueString()].background;
         }
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::onRecordComplete( string & complete ){
-    spacebrew.sendString("recording", complete);
+    // ooooook
+    string cmd = "mv "+ofToDataPath(complete, true)+" ../../../../../_web/MMI_Performance/v3/public/uploads/" + complete;
+    
+    system(cmd.c_str() );
+    
+    spacebrew.sendString("recording", "uploads/" + complete);
+    background = &bg_image;
 }
