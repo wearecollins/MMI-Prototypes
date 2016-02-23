@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"path": "proto_scripts"
+		},
+		{
+			"path": "proto_scripts_stack"
+		},
+		{
+			"path": "proto_scripts_swipe"
+		},
+		{
+			"path": "v3"
+		}
+	]
+}

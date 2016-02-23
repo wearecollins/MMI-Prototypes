@@ -67,20 +67,23 @@ var App = function(){
 				"name":"C’est Ci Bon",
 				"id":"bon",
 				"video":"video/cest_ci_bon.mp4",
-				"content":"3 Performers"
+				"content":"3 Performers",
+				"cleanName":"cest_bon"
 			},
 			{
 				"name":"Ole Black Magic",
 				"id":"magic",
 				"video":"video/black_magic.mp4",
-				"content":"2 Performers"
+				"content":"2 Performers",
+				"cleanName":"black_magic"
 			},
 
 			{
 				"name":"A Horse Named Bill",
 				"id":"horse",
 				"video":"video/Kermit_banjo.mp4",
-				"content":"1 Performer"
+				"content":"1 Performer",
+				"cleanName":"horse_named_bill"
 			},
 
 		]
@@ -91,12 +94,12 @@ var App = function(){
 		setMode( STATE_INTRO );
 
 		// setup sb
-		// spacebrew.setup();
+		spacebrew.setup();
 
-		// window.addEventListener("drawer", this.onDrawer.bind(this) );
+		window.addEventListener("recording", this.onGotRecording.bind(this) );
 		// window.addEventListener("spin", this.onSpin.bind(this) );
 
-		// spacebrew.addListener("drawer", window );
+		spacebrew.addListener("recording", window );
 		// spacebrew.addListener("spin", window );
 
 		this.animate();
@@ -108,6 +111,14 @@ var App = function(){
 
 	this.draw 	= function(){
 		
+	}
+
+	this.onGotRecording = function( data ){
+		console.log( data );
+		var URL = data.detail;
+		console.log("GOT IT! "+data.detail);
+
+		setMode( STATE_SHARE, URL )
 	}
 
 	this.animate = function(){
@@ -273,8 +284,8 @@ var App = function(){
 				var template = Handlebars.getTemplate("share", "templates");
 				var html = template(
 					{
-						// video:data, id:"video"
-						video:"uploads/ghyqc41rok9gd4w31x6_merged.webm", id:"video"
+						video:data, id:"video"
+						// video:"uploads/ghyqc41rok9gd4w31x6_merged.webm", id:"video"
 					}
 				);
 
@@ -406,6 +417,8 @@ var App = function(){
     var countdownInterval = null;
 
     function setupPractice(){
+		spacebrew.sendGetReady( clipData.clips[dataManager.clipIndex].cleanName );
+
     	$("#b_next").click(function(){
     		$("#b_next").css("visibility", "hidden");
     		setupCountdown(function(){
@@ -463,97 +476,27 @@ var App = function(){
 		// rewind video
 		video.currentTime = 0;
 
-
-	    // global variables
-	    var currentBrowser = !!navigator.mozGetUserMedia ? 'gecko' : 'chromium';
-
-	    // Firefox can record both audio/video in single webm container
-	    // Don't need to create multiple instances of the RecordRTC for Firefox
-	    // You can even use below property to force recording only audio blob on chrome
-	    // var isRecordOnlyAudio = true;
-	    isRecordOnlyAudio = !!navigator.mozGetUserMedia;
-
-
-	    // if recording only audio, we should replace "HTMLVideoElement" with "HTMLAudioElement"
-	    if (isRecordOnlyAudio && currentBrowser == 'chromium') {
-	        var parentNode = videoElement.parentNode;
-	        parentNode.removeChild(videoElement);
-
-	        videoElement = document.createElement('audio');
-	        videoElement.style.padding = '.4em';
-	        videoElement.controls = true;
-	        parentNode.appendChild(videoElement);
-	    }
-
-	    // setTimeout(function(){
-	    
 		// set title
 		$(".title").html("Perform");
 
-		    // start recording
-		    captureUserMedia(function(stream) {
+		openWebCam(true);
 
-	            mediaStream = stream;
-
-	            videoElement.src = window.URL.createObjectURL(stream);
-	            videoElement.play();
-	            videoElement.muted = true;
-	            videoElement.controls = false;
-
-	            // it is second parameter of the RecordRTC
-	            // var audioConfig = {};
-
-	            // if (!isRecordOnlyAudio) {
-	            //     audioConfig.onAudioProcessStarted = function() {
-	            //     	console.log("START!");
-	            //         // invoke video recorder in this callback
-	            //         // to get maximum sync
-	            //     };
-	            // }
-
-	            // audioRecorder = RecordRTC(stream, audioConfig);
-
-	            if (!isRecordOnlyAudio) {
-	                // it is second parameter of the RecordRTC
-	                var videoConfig = {
-	                    type: 'video',
-	                    width:640,
-	                    height:480
-	                };
-	                videoRecorder = RecordRTC(stream, videoConfig);
-	            }
-
-	            currentCount = 3;
-	            setupCountdown(startPerform);
-	        })
-		// }, 500);
+        currentCount = 3;
+        setupCountdown(startPerform);
 	}
 
 	function startPerform(){
+		spacebrew.sendRecord( clipData.clips[dataManager.clipIndex].cleanName );
+
 		var video = document.getElementById(dataManager.id);
 		video.currentTime = 0;
 		video.play();
 
-		// audioRecorder.startRecording();
-        videoRecorder.startRecording();
-
 		video.addEventListener('ended',function(){
-			// if (isRecordOnlyAudio) {
-	  //           audioRecorder.stopRecording(function(){
-	  //           	console.log("yes");
-	  //           	onStopRecording( function( video ){setMode( STATE_SHARE, video )} );
-	  //           });				        	
-	  //       }
+			// send note to spacebrew
 
-	        if (!isRecordOnlyAudio) {
-	            // audioRecorder.stopRecording(function() {
-	                videoRecorder.stopRecording(function() {
-	                    onStopRecording( function( video ){
-	                    	setMode( STATE_SHARE, video )
-	                    } );
-	                });
-	            // });
-	        }
+			// 'video'
+			// setMode( STATE_SHARE, video )
 		},false);
 
 		progInterval = setInterval(function(){
@@ -562,110 +505,6 @@ var App = function(){
 			$("#timer").css("width", 100 - (pct * 100) + "%");
 		}, 250);
 	}
-
-    // reusable helpers
-
-    // this function submits both audio/video or single recorded blob to nodejs server
-    function postFiles(audio, video, onComplete) {
-        // getting unique identifier for the file name
-        fileName = generateRandomString();
-
-        // this object is used to allow submitting multiple recorded blobs
-        var files = {};
-
-        // recorded audio blob
-        // files.audio = {
-        //     name: fileName + '.' + audio.blob.type.split('/')[1],
-        //     type: audio.blob.type,
-        //     contents: audio.dataURL
-        // };
-
-        if (video) {
-            files.video = {
-                name: fileName + '.' + video.blob.type.split('/')[1],
-                type: video.blob.type,
-                contents: video.dataURL
-            };
-        }
-        files.clip = dataManager.video.split("/")[1].split(".")[0] +".webm";
-        files.uploadOnlyAudio = !video;
-
-        // this isn't really necessary, yeah?
-        // videoElement.src = '';
-        // videoElement.poster = '/ajax-loader.gif';
-
-        xhr('/upload', JSON.stringify(files), function(_fileName) {
-            var href = location.href.substr(0, location.href.lastIndexOf('/') + 1);
-            onComplete(href + 'uploads/' + _fileName);
-        });
-
-        if (mediaStream) mediaStream.stop();
-    }
-
-    // XHR2/FormData
-    function xhr(url, data, callback) {
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-            if (request.readyState == 4 && request.status == 200) {
-                callback(request.responseText);
-            }
-        };
-
-        request.upload.onprogress = function(event) {
-            // progressBar.max = event.total;
-            // progressBar.value = event.loaded;
-            // progressBar.innerHTML = 'Upload Progress ' + Math.round(event.loaded / event.total * 100) + "%";
-        };
-
-        request.upload.onload = function() {
-            // percentage.style.display = 'none';
-            // progressBar.style.display = 'none';
-        };
-        request.open('POST', url);
-        request.send(data);
-    }
-
-    // generating random string
-    function generateRandomString() {
-        if (window.crypto) {
-            var a = window.crypto.getRandomValues(new Uint32Array(3)),
-                token = '';
-            for (var i = 0, l = a.length; i < l; i++) token += a[i].toString(36);
-            return token;
-        } else {
-            return (Math.random() * new Date().getTime()).toString(36).replace(/\./g, '');
-        }
-    }
-
-    // when btnStopRecording is clicked
-    function onStopRecording(onComplete) {
-    	console.log("Stopping");
-        // audioRecorder.getDataURL(function(audioDataURL) {
-        //     var audio = {
-        //         blob: audioRecorder.getBlob(),
-        //         dataURL: audioDataURL
-        //     };
-
-            // if record both wav and webm
-            if (!isRecordOnlyAudio) {
-                videoRecorder.getDataURL(function(videoDataURL) {
-                    var video = {
-                        blob: videoRecorder.getBlob(),
-                        dataURL: videoDataURL
-                    };
-
-                    // console.log("POST!");
-
-                    //postFiles(null, video, onComplete);
-                    // postFiles(audio, video, onComplete);
-                    onComplete();
-                });
-            }
-
-            // if record only audio (either wav or ogg)
-            // if (isRecordOnlyAudio) postFiles(audio);
-        // });
-    }
 
     var mediaStream = null;
     // reusable getUserMedia
@@ -711,26 +550,36 @@ var SpacebrewManager = function(){
 	var sb;
 
 	this.setup = function( host ){
-		host = host === undefined ? "localhost" : host;
+		host = host === undefined ? "sandbox.spacebrew.cc" : host;
 		sb = new Spacebrew.Client();
 		var app_name = "Arch Display"
 		sb.name(app_name);
 		sb.description("");
-		sb.server = host;
+		// sb.server = host;
 
 		// configure the publication and subscription feeds
-		// sb.addSubscribe("spin", "range");
+		sb.addPublish("startRecording", "string");
+		sb.addPublish("getReady", "string");
+
+		sb.addSubscribe("recording", "string");
 		// sb.addSubscribe("drawer", "boolean");
 
 		// override Spacebrew events - this is how you catch events coming from Spacebrew
-		sb.onRangeMessage = this.onRangeMessage.bind(this);
-		sb.onBooleanMessage = this.onBooleanMessage.bind(this);
+		sb.onStringMessage = this.onStringMessage.bind(this);
 		// sb.onOpen = this.onOpen.bind(this);
 
 		// connect to spacbrew
 		sb.connect();
 
 		// setup events
+	}
+
+	this.sendGetReady = function( clip ){
+		sb.send("getReady", "string", clip)
+	}
+
+	this.sendRecord = function( clip ){
+		sb.send("startRecording", "string", clip)
 	}
 
 	var listeners = {};
@@ -745,45 +594,18 @@ var SpacebrewManager = function(){
 
 	var lastOpen = false;
 
-	this.onRangeMessage = function( name, value ){
-		var val = parseInt(value) / 180.;
-		if ( name == "spin" ){
-			var data = {
-				value: val,
-				open: (val > .5 ) // to-do: threshold
+	this.onStringMessage = function( name, value ){
+		var newEvent = new CustomEvent( name, {"detail":value});
+		
+		if ( listeners.hasOwnProperty(name) ){
+			for ( var l in listeners[name] ){
+				listeners[name][l].dispatchEvent(newEvent);
 			}
-
-			// this may change!
-			if ( data.open != lastOpen ){
-				var newEvent = new CustomEvent( "spin", {"detail":data});
-				
-				if ( listeners.hasOwnProperty(name) ){
-					for ( var l in listeners[name] ){
-						listeners[name][l].dispatchEvent(newEvent);
-					}
-				}
-			}
-
-			lastOpen = data.open;
 		}
 	}
 
 	var lastBoolean = false;
 
 	this.onBooleanMessage = function( name, value ){
-		if (name == "drawer"){
-			var val = value == "true";
-			if ( lastBoolean != val){
-				var newEvent = new CustomEvent( "drawer", {"detail":{value:val, index:0}});
-				
-				if ( listeners.hasOwnProperty(name) ){
-					for ( var l in listeners[name] ){
-						listeners[name][l].dispatchEvent(newEvent);
-					}
-				}
-			}
-			lastBoolean = val;
-
-		}
 	}
 }
