@@ -12,7 +12,7 @@
 //    self.nextResponder = self.webView;
     
 //    [webView load]
-    string urlText = "http://127.0.0.1:8080";
+    string urlText = "http://mrdoob.com";
     NSString * url = [NSString stringWithUTF8String:urlText.c_str()];
     [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
     
