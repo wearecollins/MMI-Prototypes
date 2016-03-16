@@ -1,0 +1,41 @@
+<div id="title_container" class="top">
+	<div id="info_prompt" class="prompt noselect">
+		<div id="selected_character">Select a Character</div>
+	</div>
+</div>
+<audio id="sound" src="sound/v02.mp3" autoplay />
+<div id="container_internal">
+    <div id="underlay"></div>
+    <div class="scriptContainer">
+		{{#each scripts}}
+
+		<div id="{{name_clean}}" class="script noselect">
+			<div class="scriptTitle noselect">
+				<div id="title" class="actualTitle noselect" style="background-color:{{colorFill}}">{{name}}</div>
+				<div id="text" class="scriptText noselect">
+				</div>
+			</div>
+			
+			<div id="img_{{name_clean}}" class="scriptImage noselect">
+				<img src="{{img}}" />
+			</div>
+			<div id="script_{{name_clean}}_click" class="scriptClick noselect"></div>
+		</div>
+
+	  	{{/each}}
+	</div>
+</div>
+<div id="prompt_container" class="bottom">
+	<div id="drawer_prompt" class="prompt noselect">
+		<div>
+			<div id="d_text"><strong>Open a Drawer</strong><br />to Start Building</div>
+			<audio id="a_drawer" src="sound/v03.mp3" />
+		</div>
+	</div>
+	<div id="spin_prompt" class="prompt noselect">
+		<div>
+			<div id="d_text"><strong>Spin the Puppet</strong><br />to Test on Camera</div>
+			<audio id="a_spin" src="sound/v04.mp3" />
+		</div>
+	</div>
+</div>

@@ -47,6 +47,8 @@ void setup(){
   sb.connect( server, name, description);
 }
 
+float runningVal = 0.;
+
 void draw() {
   background(off);
   stroke(on);
@@ -65,12 +67,16 @@ void draw() {
 
   // Draw a circle whose size corresponds to the value of an analog input.
   noFill();
- for (int i = 0; i < 2; i++) {
-    ellipse(280 + i * 30, 240, arduino.analogRead(i) / 16, arduino.analogRead(i) / 16);
-    if (i == 0 && arduino.analogRead(i) > 0) {
-      sb.send( "analog_"+i+"_val", arduino.analogRead(i));
+ for (int i = 0; i < 1; i++) {
+    int read = arduino.analogRead(i);
+    if ( read > 90 ){
+      runningVal = runningVal * .9 + 150 * .1;
     } else {
-      sb.send( "analog_"+i+"_val", arduino.analogRead(i));
+      runningVal = runningVal * .9;
     }
+    ellipse(280 + i * 30, 240, runningVal, runningVal);
   }
+  
+  sb.send("analog_0_val", int(runningVal));
+  
 }

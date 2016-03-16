@@ -1,0 +1,57 @@
+<!-- 
+	data: {
+		name: string (character name)
+	}
+ -->
+<div id="wrapper">
+	<div class="top">
+		Camera Test Your <br /><strong>{{name}}</strong>
+	</div>
+	<div id="video" class="">
+		<div id="capture_element"></div>
+		<div id="capture_output"></div>
+	</div>
+	<div id="buttons" class="bottom">
+		<div class="button_container" id="button_containerA">
+			<div id="b_photo" class="button">Take A Photo</div>
+			<div id="b_done" class="button">Start Over</div>
+		</div>
+  		<div id="countdown">
+  		</div>
+		<!-- <div id="share_container">
+			<div id="b_share" class="button">Share</div>
+			<div id="b_retake" class="button">Retake</div>
+			<div id="b_done" class="button">Start Over</div>
+		</div> -->
+		
+  		<audio id="sound" src="sound/v05.mp3" autoplay />
+	</div>
+	<div id="share_container" >
+		<div id="share_top">
+			<div id="b_share" class="button">Share</div>
+			<div id="b_email" class="button">Email</div>
+		</div>
+		<div id="share_set" class="share_set">
+			
+			<div id="i_text">
+				Share your creation on the Museum’s Facebook and Tumblr<br>
+				<strong>@movingimagenyc</strong>
+				<div id="b_share_go" class="button">Share</div>
+			</div>
+
+			<div id="e_text">
+				Thank you for sharing! View your image at <strong>fb.me/MovingImageMusuem</strong> &amp; <strong>tumblr.com/movingimagenyc</strong><br>
+				<strong>@movingimagenyc</strong>
+			</div>
+		</div>
+		<div id="email_set" class="share_set">
+			<div id="i_text">
+				Download your image at the Museum’s Gift Shop. Your unique name is <strong><span id="rname">AM Boy 25</span></strong>
+			</div>
+		</div>
+		<div class="button_container" id="share_button_container">
+			<div id="b_retake" class="button">Retake</div>
+			<div id="b_done_final" class="button">Start Over</div>
+		</div>
+	</div>
+</div>

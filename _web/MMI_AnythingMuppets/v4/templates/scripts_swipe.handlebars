@@ -1,0 +1,148 @@
+<!-- 
+	data: {
+		title:string
+	}
+ -->
+<style>
+	#container_internal {
+	    display: -webkit-flex;
+	    display: flex;
+	    -webkit-flex-flow: column;
+	    flex-flow: column;
+	    -webkit-align-items: center;
+	    align-items: center;
+	    -webkit-justify-content: center;
+	    justify-content: center;
+	    width: 100%;
+	    height: 100%;
+	    overflow: hidden;
+	    position: absolute;
+	}
+
+	#overlay {
+	  width: 100%;
+	  height: 100%;
+	  z-index: -1;
+	  background-color:rgba(0,0,0,0);
+	  position: absolute;
+	  transition: background-color ease-in-out .3s;
+	  transform: translate3d(0,0,0);
+	  -webkit-transform: translate3d(0,0,0);
+	}
+
+	#scriptContainer {
+		width: 450px;
+		height: 410px;
+		position: relative;
+	}
+
+	.script {
+	  position: absolute;
+	  /*height: 40px;*/
+	  /*overflow:hidden;*/
+	  background-color: white;
+	  color:white;
+	  padding:10px;
+	  width:300px;
+	  height:400px;
+	  z-index: 0;
+	  /*left:0px;*/
+	  transition: transform ease-in-out .5s, width ease-in-out .25s,height ease-in-out .5s, background-color ease-in-out .5s, box-shadow ease-in-out .5s;
+	  transform-origin: 50% 50%;
+	  box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+	  transform: translate3d(0,0,0);
+	  -webkit-transform: translate3d(0,0,0);
+	  -webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+	  -khtml-user-select: none;    /* Konqueror */
+	  -moz-user-select: none;      /* Firefox */
+	  -ms-user-select: none;       /* IE/Edge */
+	  user-select: none;           /* non-prefixed version, currently
+	                                  not supported by any browser */
+	}
+
+	.scriptText {
+	  background-color: white;
+	  color: black;
+	  font-size: 12px;
+	  line-height: 20px;
+	  padding: 20px;
+	  -webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+	  -khtml-user-select: none;    /* Konqueror */
+	  -moz-user-select: none;      /* Firefox */
+	  -ms-user-select: none;       /* IE/Edge */
+	  user-select: none;           /* non-prefixed version, currently
+	                                  not supported by any browser */
+	  height: 76%;
+	  overflow: hidden;
+	}
+
+	.scriptTitle {
+	  font-weight: bold;
+	  font-size:12px;
+	  padding: 10px;
+      line-height: 22px;
+	  -webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+	  -khtml-user-select: none;    /* Konqueror */
+	  -moz-user-select: none;      /* Firefox */
+	  -ms-user-select: none;       /* IE/Edge */
+	  user-select: none;           /* non-prefixed version, currently
+	                                  not supported by any browser */
+	  display: table-cell;
+	}
+
+	.scriptClick {
+	  position: absolute;
+	  left:0px;
+	  top:0px;
+	  width: 100%;
+	  height: 100%;
+	  -webkit-touch-callout: none; /* iOS Safari */
+	  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+	  -khtml-user-select: none;    /* Konqueror */
+	  -moz-user-select: none;      /* Firefox */
+	  -ms-user-select: none;       /* IE/Edge */
+	  user-select: none;           /* non-prefixed version, currently
+	                                  not supported by any browser */
+	}
+</style>
+<div class="title top">{{title}}</div>
+<div id="container_internal">
+    <div id="scriptContainer">
+		{{#each scripts}}
+			<div id="script_{{name_clean}}" class="script">
+				<div class="scriptTitle" style="background-color:{{fill}}">
+					{{name}}
+				</div>
+				<div id="text" class="scriptText">
+					{{{text}}}
+				</div>
+				<div id="script_{{name_clean}}_click" class="scriptClick"></div>
+			</div>
+	  	{{/each}}
+	</div>
+</div>
+	<div id="prompt_container" class="bottom">
+		<div id="info_prompt" class="prompt noselect">
+			<div>
+				<div id="">Build A</div>
+				<div id="info_name"></div>
+			</div>
+		</div>
+		<div id="drawer_prompt" class="prompt noselect">
+			<div>
+				<div id="d_text"><strong>Open a Drawer</strong><br />to Start Building</div>
+				<audio id="a_drawer" src="sound/v03.mp3" />
+			</div>
+		</div>
+		<div id="spin_prompt" class="prompt noselect">
+			<div>
+				<div id="d_text"><strong>Spin the Puppet</strong><br />to Test on Camera</div>
+				<audio id="a_spin" src="sound/v04.mp3" />
+			</div>
+		</div>
+	</div>
+	<audio src="sound/v02.mp3" autoplay />
+</div>
