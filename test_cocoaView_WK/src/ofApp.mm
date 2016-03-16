@@ -2,20 +2,23 @@
 
 @implementation ofApp
 
+@synthesize webView;
+
 - (void)setup
 {
     ofSetFrameRate(60);
     ofBackground(ofColor(255,255,255,0));
     [self setTranslucent:YES];
-//    [[self window] setIgnoresMouseEvents:YES];
-//    self->mouseEventsEnabled = NO;
-//    self->_nextResponder = self.webView;
-//    self.nextResponder = self.webView;
-    
-//    [webView load]
+
+//    WKWebViewConfiguration * config = [WKWebViewConfiguration init];
+    self.webView = [[WKWebView alloc] initWithFrame:[self frame]];//] configuration:config];
     string urlText = "http://localhost:8080";
     NSString * url = [NSString stringWithUTF8String:urlText.c_str()];
-    [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+
+    [self.webView setValue:@YES forKey:@"drawsTransparentBackground"];
+
+    [self addSubview:self.webView];
     
     camera.setup(640,480);
 }
@@ -71,7 +74,7 @@
 
 - (void)windowResized:(NSSize)size
 {
-    
+    [self.webView setFrame:[self frame]];
 }
 
 @end
