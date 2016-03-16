@@ -8,7 +8,7 @@ void ofApp::setup(){
     camHeight = 240;
     camFrameRate = 30;
     
-//    ofSetFrameRate(60);
+    ofSetFrameRate(60);
     ofSetVerticalSync(false);
     
     // start gui
