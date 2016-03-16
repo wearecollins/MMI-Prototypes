@@ -1,4 +1,0 @@
-ofxChromaKeyShader
-ofxCv
-ofxGui
-ofxOpenCv
