@@ -14,11 +14,10 @@ void ofApp::setup(){
     
     ofAddListener(webView.LOAD_URL,this,&ofApp::onPageLoad);
     
-    //doesn't seem to support WebGL
     //webView.loadURL("http://threejs.org/examples/#webgl_buffergeometry_rawshader");
     //webView.loadURL("http://localprojects.net");
-    webView.loadURL("http://127.0.0.1:8080");
-    
+//    webView.loadURL("http://127.0.0.1:8080");
+    webView.loadURL("http://mrdoob.com");
     webTexture.allocate(webView.getWidth(),webView.getHeight(),GL_RGBA);
     webTexture.clear();
     
