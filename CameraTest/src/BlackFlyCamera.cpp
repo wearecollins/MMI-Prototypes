@@ -19,21 +19,22 @@ namespace mmi {
     }
 
     //--------------------------------------------------------------
-    void BlackFlyCamera::setup( int width, int height, string guid ){
+    void BlackFlyCamera::setup( string guid, int width, int height, bool bColor ){
         if ( isSetup ){
             ofLogError()<<"[BlackFlyCamera] Camera is already setup! Returning";
             return;
         }
-        /*
-         DC1394_COLOR_FILTER_GBRG,
-         DC1394_COLOR_FILTER_GRBG,
-         DC1394_COLOR_FILTER_BGGR
-         */
-        camera.setBayerMode(DC1394_COLOR_FILTER_GBRG);
+        if ( bColor ){
+            /*
+             DC1394_COLOR_FILTER_RGGB
+             DC1394_COLOR_FILTER_GBRG,
+             DC1394_COLOR_FILTER_GRBG,
+             DC1394_COLOR_FILTER_BGGR
+             */
+            camera.setBayerMode(DC1394_COLOR_FILTER_RGGB);
+        }
         camera.setFormat7(true, 0); // this is required for the BlackFlys
         camera.setSize(width, height);
-        
-        cout << camera.getGuid() << endl;
         
         // actually connect
         isSetup = false;

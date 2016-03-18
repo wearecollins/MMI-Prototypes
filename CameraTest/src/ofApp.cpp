@@ -3,8 +3,8 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetLogLevel(OF_LOG_VERBOSE);
-    cameraOne.setup(1440,900, "b09d0100eefbf3" );
-    cameraTwo.setup(1440,900, "b09d0100eefc0c" );
+    cameraOne.setup("b09d0100eefbf3", 1440,900 );
+    cameraTwo.setup("b09d0100eefc0c", 1440,900 );
     ofSetLogLevel(OF_LOG_ERROR);
 }
 
@@ -20,6 +20,9 @@ void ofApp::draw(){
     cameraOne.drawDebug(0,0);
     cameraTwo.drawDebug(960,0);
     ofPopMatrix();
+    
+    auto fps = ofToString(ofGetFrameRate(),3);
+    ofSetWindowTitle(fps);
 }
 
 //--------------------------------------------------------------

@@ -18,7 +18,7 @@ namespace mmi {
     public:
         
         ~BlackFlyCamera();
-        void setup( int width = 960, int height = 600, string guid = "" );
+        void setup( string guid = "", int width = 960, int height = 600, bool bColor = true );
         void update( ofEventArgs & e );
         void draw(int x, int y );
         void drawDebug(int x, int y );
