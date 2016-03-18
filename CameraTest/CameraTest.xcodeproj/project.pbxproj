@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		018090911C9C796300DCF92E /* BlackFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0180908F1C9C796300DCF92E /* BlackFlyCamera.cpp */; };
+		015E710A1C9CB7A3003793AD /* BlackFlyCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 015E71081C9CB7A3003793AD /* BlackFlyCamera.cpp */; };
 		599656BC0881AA3833034457 /* Grabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2C29AB2A7D4E642ADEEB9FD7 /* Grabber.cpp */; };
 		96B2141B90682260BBE2C3F1 /* PointGrey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1623FFF19D70E657B9A15F3D /* PointGrey.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -47,8 +47,8 @@
 
 /* Begin PBXFileReference section */
 		005FB0E2C87C9CEBCDD4D2EB /* register.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = register.h; path = ../../../addons/ofxLibdc/libs/dc1394/include/dc1394/register.h; sourceTree = SOURCE_ROOT; };
-		0180908F1C9C796300DCF92E /* BlackFlyCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlackFlyCamera.cpp; sourceTree = "<group>"; };
-		018090901C9C796300DCF92E /* BlackFlyCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackFlyCamera.h; sourceTree = "<group>"; };
+		015E71081C9CB7A3003793AD /* BlackFlyCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlackFlyCamera.cpp; sourceTree = "<group>"; };
+		015E71091C9CB7A3003793AD /* BlackFlyCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlackFlyCamera.h; sourceTree = "<group>"; };
 		05B4DB536CB03B3E51FE357F /* libusb.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = libusb.h; path = "../../../addons/ofxLibdc/libs/libusb/include/libusb-1.0/libusb.h"; sourceTree = SOURCE_ROOT; };
 		158B0BC3FB968E614EFA8676 /* pixelink.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = pixelink.h; path = ../../../addons/ofxLibdc/libs/dc1394/include/dc1394/vendor/pixelink.h; sourceTree = SOURCE_ROOT; };
 		159AC0FCE0D973AB7124C63A /* format7.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = format7.h; path = ../../../addons/ofxLibdc/libs/dc1394/include/dc1394/format7.h; sourceTree = SOURCE_ROOT; };
@@ -98,8 +98,8 @@
 		0180908E1C9C796300DCF92E /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				0180908F1C9C796300DCF92E /* BlackFlyCamera.cpp */,
-				018090901C9C796300DCF92E /* BlackFlyCamera.h */,
+				015E71081C9CB7A3003793AD /* BlackFlyCamera.cpp */,
+				015E71091C9CB7A3003793AD /* BlackFlyCamera.h */,
 			);
 			name = Shared;
 			path = ../../Shared;
@@ -352,7 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				018090911C9C796300DCF92E /* BlackFlyCamera.cpp in Sources */,
+				015E710A1C9CB7A3003793AD /* BlackFlyCamera.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				FB82943EE8E497BB94F66016 /* Camera.cpp in Sources */,
