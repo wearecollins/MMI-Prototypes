@@ -13,5 +13,11 @@ ICON_FILE_PATH = $(OF_PATH)/libs/openFrameworksCompiled/project/osx/
 //IF YOU WANT AN APP TO HAVE A CUSTOM ICON - PUT THEM IN YOUR DATA FOLDER AND CHANGE ICON_FILE_PATH to:
 //ICON_FILE_PATH = bin/data/
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OF_CORE_FRAMEWORKS) -framework WebKit
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS)
+OF_LIBDC_H = "../../../addons/ofxLibdc/src" "../../../addons/ofxLibdc/libs/dc1394/include" "../../../addons/ofxLibdc/libs/dc1394/include/dc1394" "../../../addons/ofxLibdc/libs/libusb/include/"
+OF_LIBDC_L = "../../../addons/ofxLibdc/libs/dc1394/lib/osx/libdc1394.a" "../../../addons/ofxLibdc/libs/libusb/lib/osx/libusb-1.0.a"
+
+OF_COCOA = "../../../addons/ofxCocoaGLView/src"
+OF_GUI = "../../../addons/ofxGui/src"
+
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OF_CORE_FRAMEWORKS) -framework WKWebView $(OF_LIBDC_L)
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(OF_LIBDC_H) $(OF_COCOA) $(OF_GUI) "../Shared"

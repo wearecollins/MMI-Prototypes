@@ -1,12 +1,16 @@
 #pragma once
 
 #include "ofMain.h"
+#include "BlackFlyCamera.h"
 #include "ofxCocoaGLView.h"
+#include "WKDelegate.h"
 #import <WebKit/WebKit.h>
 
 @interface ofApp : ofxCocoaGLView {
     WKWebView *webView;
-    ofVideoGrabber camera;
+    mmi::BlackFlyCamera camera;
+    WKDelegate * delegate;
+    bool isLoaded;
 }
 
 - (void)setup;
@@ -24,6 +28,7 @@
 
 
 @property (retain) WKWebView *webView;
+@property (retain) WKDelegate *delegate;
 
 
 @end
