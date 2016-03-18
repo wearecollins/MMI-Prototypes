@@ -1,6 +1,13 @@
 # MMI-Prototypes
 Various prototypes for The Jim Henson Exhibition
 
+# Camera Test
+* Setup:
+``` 
+$cd /path/to/OF/addons
+$git clone https://github.com/robotconscience/ofxLibdc.git
+```
+
 # Prototypes of note
 ##_web/AnythingMuppets/v3
 * Near-final version of frontend
