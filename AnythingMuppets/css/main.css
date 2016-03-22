@@ -137,3 +137,37 @@ html, body {
 #promptSpinPuppet {
     background-color:#EE7773;
 }
+
+#shareRow {
+    height: 66%;
+    width: 100%;
+    background: wheat;
+}
+
+.share {
+    font-family: CooperLight;
+    font-size:.5rem;
+    line-height: .55rem;
+    background: #F5F6F6;
+    color: black;
+}
+
+.share .button {
+    color: white;
+    font-size:.5rem;
+    line-height: .55rem;
+    margin: .5rem;
+    padding: .25rem;
+    min-width: 25%;
+}
+
+#shareThanks {
+    margin:1rem;
+}
+
+#shareStartOverButton {
+}
+
+#shareStartOverRow {
+    width: 100%;
+}
