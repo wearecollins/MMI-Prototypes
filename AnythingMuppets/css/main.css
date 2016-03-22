@@ -131,6 +131,7 @@ html, body {
 }
 
 #promptSpin {
+    max-height: 50%;
     width: 80%;
     margin-bottom: 2rem; 
 }
@@ -139,9 +140,40 @@ html, body {
 }
 
 #shareRow {
-    height: 66%;
+    height: 50%;
     width: 100%;
     background: wheat;
+}
+
+#shareImageRight, #shareImageLeft {
+    width: 50%;
+    /* temp */
+    height: 100%; 
+    float: left;
+    display: flex;
+    flex-direction: column;
+    font-size:.4rem;
+    line-height: .44rem;
+}
+
+#shareImageRight img {
+    width: 100%;
+    /* temp */
+    height: 100%; 
+}
+ #shareImageLeft img {
+    width: 50%;
+    /* temp */
+    height: 100%; 
+
+ }
+
+#shareFinalAbout {
+    background: #553C58;
+    color: white;
+    font-size:.3rem;
+    line-height: .33rem;
+    padding: .6rem;
 }
 
 .share {
@@ -154,15 +186,15 @@ html, body {
 
 .share .button {
     color: white;
-    font-size:.5rem;
-    line-height: .55rem;
-    margin: .5rem;
+    font-size:.6rem;
+    line-height: .66rem;
+    margin: .6rem;
     padding: .25rem;
     min-width: 25%;
 }
 
 #shareThanks {
-    margin:1rem;
+    margin:2rem;
 }
 
 #shareStartOverButton {
