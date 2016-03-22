@@ -1,0 +1,139 @@
+/* Overall */
+
+@font-face {
+    font-family: CooperLight;
+    src:url("../fonts/CooperBT-Light.otf");
+}
+
+html, body {
+    font-family: CooperLight;
+    width: 100%;
+    height: 100%;
+    /* overflow: hidden; */
+    font-size: 70px;
+    font-family: Souvenir;
+    background: #E2BD47;
+    line-height: 1.1rem;
+    color: white;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+  html, body {
+    font-size: 30px;
+  }
+}
+@media (max-width: 500px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+.border {
+    border:3px solid white;
+}
+
+.titleBottom {
+    font-family: CooperLight;
+    min-width: 33%;
+    margin-bottom: 1rem; 
+}
+
+.button {
+    font-family: CooperLight;
+    min-width: 33%;
+    padding: .5rem;
+    cursor: pointer;
+    font-size: .8rem;
+    line-height: .88rem;
+    /* should this be elsewhere? */
+    margin-bottom: 1rem; 
+}
+
+@media (max-width: 700px) {
+    .border {
+        border:2px solid white;
+    }
+}
+@media (max-width: 500px) {
+    .border {
+        border:1px solid white;
+    }
+}
+
+/* Utilities */
+
+.fill {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.fillAbs {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+}
+
+.fillContainer {
+    width: 100%;
+}
+
+.centeredContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.columnCenteredContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+.bottomCenteredContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.greenBg {
+    background-color:#53B063;
+}
+
+.redBg {
+    background-color: #DF6252;
+}
+
+/* Specific states */
+#promptContainer {
+    height: 100%;
+}
+#promptOpenDrawers {
+    background-color:#523A55;
+}
+
+#promptArrow  {
+    height: 65%;
+    margin-bottom: 1rem; 
+}
+
+#promptSpin {
+    width: 80%;
+    margin-bottom: 2rem; 
+}
+#promptSpinPuppet {
+    background-color:#EE7773;
+}
