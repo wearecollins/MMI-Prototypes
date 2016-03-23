@@ -1,0 +1,10 @@
+<div id='attract'>
+<div class='animated'>
+  {{#each animatedText}}
+    <div>{{text}}</div>
+  {{/each}}
+</div>
+<div class='buttons'>
+  <div class='next'>{{nextText}}</div>
+</div>
+</div>

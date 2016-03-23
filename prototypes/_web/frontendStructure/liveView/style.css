@@ -1,0 +1,102 @@
+#liveView{
+  margin-top:-100vh;
+  position:absolute;
+  background-color:black;
+  height:100vh;
+  width:100vw;
+}
+
+#liveView .container{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background-size:cover;
+  position:absolute;
+  width:100vw;
+}
+
+#liveView img{
+  position:absolute;
+}
+
+#liveView .container .animated{
+  display:flex;
+  flex-grow:4;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+#liveView .container .buttons{
+  display:flex;
+  flex-grow:1;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-around;
+}
+
+#liveView .container .buttons div{
+  border-style:solid;
+  border-color:white;
+  border-width:1px;
+  padding:10px;
+  background-color:lightgreen;
+}
+
+#liveView .container .animated .numbers{
+  white-space:nowrap;
+  font-size:100px;
+  color:white;
+  font-weight:bold;
+  font-family:sans-serif;
+}
+
+#liveView .container .animated .numbers div{
+  opacity:0;
+  position:absolute;
+}
+
+@keyframes animateCount{
+  to {opacity:1;}
+}
+
+@keyframes animateOff{
+  to {margin-top:-100vh;}
+}
+
+@keyframes animateOn{
+  to {margin-top:0px;}
+}
+
+#liveView.countdown .container .animated .numbers div{
+  animation-timing-function:ease;
+  animation-name: animateCount;
+  animation-duration: .5s;
+  animation-iteration-count: 2;
+  animation-direction:alternate;
+}
+  
+#liveView.countdown .container .animated .numbers div:nth-of-type(2){
+  animation-delay:1s;
+}
+
+#liveView.countdown .container .animated .numbers div:nth-of-type(3){
+  animation-delay:2s;
+}
+
+#liveView.disabled .container .animated div{
+  animation-iteration-count: 1;
+}
+
+#liveView.disabled{
+  animation-name: animateOff;
+  animation-duration:1s;
+  animation-fill-mode:forwards;
+}
+
+#liveView{
+  animation-name: animateOn;
+  animation-duration: 1s;
+  animation-fill-mode:forwards;
+}

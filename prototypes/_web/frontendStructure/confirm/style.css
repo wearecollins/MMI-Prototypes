@@ -1,0 +1,71 @@
+#confirm{
+  margin-top:-100vh;
+  position:absolute;
+  background-color:black;
+  height:100vh;
+  width:100vw;
+  display:flex;
+  overflow:hidden;
+  flex-direction:column;
+}
+
+#confirm .container{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background-size:cover;
+  position:absolute;
+  width:100vw;
+}
+
+#confirm .content{
+  display:flex;
+  flex-grow:4;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+#confirm .buttons{
+  display:flex;
+  flex-grow:1;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-around;
+}
+
+#confirm .buttons div{
+  border-style:solid;
+  border-color:white;
+  border-width:1px;
+  padding:10px;
+}
+
+#confirm .buttons .next{
+  background-color:lightgreen;
+}
+
+#confirm .buttons .prev{
+  background-color:red;
+}
+
+@keyframes animateOff{
+  to {margin-top:-100vh;}
+}
+
+@keyframes animateOn{
+  to {margin-top:0px;}
+}
+
+#confirm.disabled{
+  animation-name: animateOff;
+  animation-duration:1s;
+  animation-fill-mode:forwards;
+}
+
+#confirm{
+  animation-name: animateOn;
+  animation-duration: 1s;
+  animation-fill-mode:forwards;
+}

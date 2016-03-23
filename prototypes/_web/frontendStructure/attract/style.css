@@ -1,0 +1,86 @@
+#attract{
+  background-color:pink;
+  height:100vh;
+  width:100vw;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  background-image:url(bg.gif);
+  background-size:cover;
+  position:absolute;
+}
+
+#attract .animated{
+  display:flex;
+  flex-grow:4;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+#attract .buttons{
+  display:flex;
+  flex-grow:1;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-around;
+}
+
+#attract .buttons div{
+  border-style:solid;
+  border-color:white;
+  border-width:1px;
+  padding:10px;
+  background-color:lightgreen;
+}
+
+#attract .animated div{
+  white-space:nowrap;
+  font-size:100px;
+  color:lightpink;
+  font-weight:bold;
+  font-family:sans-serif;
+  margin-left:-2000px;
+}
+
+@keyframes animateAcross{
+  to {margin-left:2000px;}
+}
+
+@keyframes animateOff{
+  to {margin-top:100vh;}
+}
+
+@keyframes animateOn{
+  to {margin-top:0px;}
+}
+
+#attract .animated div{
+  animation-timing-function:cubic-bezier(.3, 1, .7, 0);
+  animation-name: animateAcross;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+  
+#attract .animated div:nth-of-type(2){
+  animation-delay:.2s;
+}
+
+#attract .animated div:nth-of-type(3){
+  animation-delay:.4s;
+}
+
+#attract.disabled .animated div{
+  animation-iteration-count: 1;
+}
+
+#attract.disabled{
+  animation-name: animateOff;
+  animation-duration:1s;
+  animation-fill-mode:forwards;
+}
+
+#attract{
+  animation-name: animateOn;
+  animation-duration: 1s;
+}

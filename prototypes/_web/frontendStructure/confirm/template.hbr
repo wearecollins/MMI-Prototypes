@@ -1,0 +1,10 @@
+<div id='confirm' class='disabled'>
+  <div class='content'>
+    <img></img>
+    <div class='text'>{{text}}</div>
+  </div>
+  <div class='buttons'>
+    <div class='prev'>{{prevText}}</div>
+    <div class='next'>{{nextText}}</div>
+  </div>
+</div>
