@@ -163,9 +163,13 @@ function handleJson(msg){
   //if this is an event message
   if (data.event !== undefined){
     //trigger the event
-    var name = data.event.name;
-    delete(data.event.name);
-    window.dispatchEvent(new CustomEvent(name, data.event));
+    var evt;
+    if (data.event.detail){
+      evt = new CustomEvent(data.event.name, {detail:data.event.detail});
+    } else {
+      evt = new Event(data.event.name); 
+    }
+    window.dispatchEvent(evt);
   }
 };
 

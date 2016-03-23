@@ -59,7 +59,7 @@ void ofApp::switch1Changed(bool &toggle){
   Json::FastWriter writer;
 
   root["event"]["name"] = "switch1";
-  root["event"]["value"] = toggle;
+  root["event"]["detail"] = toggle;
 
   webSocketServer.send(writer.write(root));
 }
@@ -69,7 +69,7 @@ void ofApp::switch2Changed(bool &toggle){
   Json::FastWriter writer;
 
   root["event"]["name"] = "switch2";
-  root["event"]["value"] = toggle;
+  root["event"]["detail"] = toggle;
 
   webSocketServer.send(writer.write(root));
 }
