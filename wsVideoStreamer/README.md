@@ -4,4 +4,4 @@ This app creates a Websocket Server on port 9091.
 The app uses the websocket for two things:
 
 * Streaming a video file as binary jpg frames
-* Sending events as JSON {event:{name:"...", value:"..."}}
+* Sending events as JSON {event:{name:"...", detail:"..."}}

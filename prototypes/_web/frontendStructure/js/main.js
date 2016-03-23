@@ -9,6 +9,7 @@ function Manager(states, transitions){
     transitions = {};
   }
 var ws;
+this.configs = {'timeout':30};
 var streamTargets = [];
 var serverName = 'localhost';
 var serverPort = 9091;
@@ -83,6 +84,8 @@ function getTargetStateIndex(activeStateIndex, type){
   }
 };
 
+var activeTimeouts = [];
+
 function registerEvent(eventType){
   window.addEventListener(eventType, function(evt){
     var targetStateI = getTargetStateIndex(activeStateI, eventType);
@@ -90,8 +93,29 @@ function registerEvent(eventType){
     var targetStateKey = states[targetStateI];
     var activeStateName = states[activeStateKey].data.name;
     var targetStateName = states[targetStateKey].data.name;
+
+    //clean up previous state
+    while(activeTimeouts.length > 0){
+      clearTimeout(activeTimeouts.pop());
+    }
+    document.body.classList.remove('timingOut');
     document.getElementById(activeStateName).classList.add('disabled');
     states[activeStateKey].obj.exit(evt);
+
+    //go to new state
+    if (targetStateI !== 0 &&
+        targetStateI !== states.length - 1){
+      activeTimeouts.push(
+        setTimeout(function(){
+                     window.dispatchEvent(new Event('cancel'));
+                   }, 
+                   thisManager.configs.timeout * 1000));
+      activeTimeouts.push(
+        setTimeout(function(){
+                     document.body.classList.add('timingOut');
+                   },
+                   Math.max(1, (thisManager.configs.timeout - 5)) * 1000));
+    }
     activeStateI = targetStateI;
     document.getElementById(targetStateName).classList.remove('disabled');
     states[targetStateKey].obj.enter(evt);
