@@ -1,1 +1,3 @@
-{"nextText":"snap a pic"}
+{"name":"liveView",
+  "buttons":[{"type":"cancel","text":"NEVERmind (ugh)"},
+             {"type":"liveView_snap","text":"snap a pic"}]}

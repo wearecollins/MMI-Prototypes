@@ -1,50 +1,111 @@
+function Manager(states, transitions){
+  if (states === undefined ||
+      !Array.isArray(states)){
+    throw 'no states defined, or states is not an array.';
+  }
+  if (!transitions ||
+      typeof(transitions) !== 'object'){
+    console.warn('using default transitions');
+    transitions = {};
+  }
 var ws;
 var streamTargets = [];
 var serverName = 'localhost';
 var serverPort = 9091;
 var prevURL;
+var activeStateI = 0;
+var thisManager = this;
 
 function init(){
-  if (states === undefined){
-    console.error('no states defined');
-  } else {
-    for(var stateI = 0;
-        stateI < states.length;
-        stateI++){
-      loadState(states[stateI], stateI);
-    }
+  for(var stateI = 0;
+      stateI < states.length;
+      stateI++){
+    loadState(states[stateI], stateI);
   }
   createWebsocket();
-  registerEvents();
+  registerAllEvents();
+  document.body.onkeydown = handlekey;
 };
 
 window.onload = init;
 
-function registerEvents(){
-  window.addEventListener('attract_next', function(evt){
-    document.getElementById('attract').classList.add('disabled');
-    states['attract'].obj.exit();
-    document.getElementById('liveView').classList.remove('disabled');
-    states['liveView'].obj.enter(evt);
+function handlekey(evt){
+  var key = evt.keyCode || evt.which;
+  var keychar = String.fromCharCode(key);
+  if (keychar === 'a' || keychar === 'A') {
+    if (activeStateI < states.length - 1){
+      window.dispatchEvent(new Event('admin'));
+    }
+  }
+};
+
+function getTargetStateIndex(activeStateIndex, type){
+  var activeStateKey = states[activeStateIndex];
+  var nextStateKey;
+  if (transitions[activeStateKey] && 
+      transitions[activeStateKey][type] !== undefined){
+    nextStateKey = transitions[activeStateKey][type];
+  } else if (transitions['_globals_'] &&
+             transitions['_globals_'][type] !== undefined){
+    nextStateKey = transitions['_globals_'][type];
+  }
+  if (nextStateKey !== undefined){
+    for(var stateI = states.length - 1;
+        stateI >= 0;
+        stateI--){
+      if (states[stateI] === nextStateKey){
+        return stateI;
+      }
+    }
+    console.warn('can not find state',nextStateKey,
+                 'defined as target of',type,
+                 'event from',activeStateKey);
+  }
+
+  switch(type){
+    case "next":
+      if (activeStateIndex === (states.length - 2)){
+        return 0;
+      } else {
+        return activeStateIndex + 1;
+      }
+    case "prev":
+      if (activeStateIndex === 0){
+        return 0;
+      } else {
+        return activeStateIndex - 1;
+      }
+    case "admin":
+      return states.length - 1;
+    case "cancel":
+    default:
+      return 0;
+  }
+};
+
+function registerEvent(eventType){
+  window.addEventListener(eventType, function(evt){
+    var targetStateI = getTargetStateIndex(activeStateI, eventType);
+    var activeStateKey = states[activeStateI];
+    var targetStateKey = states[targetStateI];
+    var activeStateName = states[activeStateKey].data.name;
+    var targetStateName = states[targetStateKey].data.name;
+    document.getElementById(activeStateName).classList.add('disabled');
+    states[activeStateKey].obj.exit(evt);
+    activeStateI = targetStateI;
+    document.getElementById(targetStateName).classList.remove('disabled');
+    states[targetStateKey].obj.enter(evt);
   });
-  window.addEventListener('liveView_next', function(evt){
-    document.getElementById('liveView').classList.add('disabled');
-    states['liveView'].obj.exit();
-    document.getElementById('confirm').classList.remove('disabled');
-    states['confirm'].obj.enter(evt);
-  });
-  window.addEventListener('confirm_next', function(evt){
-    document.getElementById('confirm').classList.add('disabled');
-    states['confirm'].obj.exit();
-    document.getElementById('attract').classList.remove('disabled');
-    states['attract'].obj.enter(evt);
-  });
-  window.addEventListener('confirm_prev', function(evt){
-    document.getElementById('confirm').classList.add('disabled');
-    states['confirm'].obj.exit();
-    document.getElementById('liveView').classList.remove('disabled');
-    states['liveView'].obj.enter(evt);
-  });
+};
+
+function registerAllEvents(){
+  var events = ['next','prev','cancel','admin'];
+  for(var eventI = events.length - 1;
+      eventI >= 0;
+      eventI--){
+    var eventType = events[eventI];
+    registerEvent(eventType);
+  }
 };
 
 function createWebsocket(){
@@ -108,7 +169,7 @@ function handleJson(msg){
   }
 };
 
-function registerStreamTarget(func){
+this.registerStreamTarget = function(func){
   for(var targetI = streamTargets.length - 1;
       targetI >= 0;
       targetI--){
@@ -119,7 +180,7 @@ function registerStreamTarget(func){
   streamTargets.push(func);
 };
 
-function unregisterStreamTarget(func){
+this.unregisterStreamTarget = function(func){
   for(var targetI = streamTargets.length - 1;
       targetI >= 0;
       targetI--){
@@ -129,28 +190,32 @@ function unregisterStreamTarget(func){
   }
 };
 
-function loadState(stateName, stateI){
-  states[stateName] = {};
-  var state = states[stateName];
-  var dataPath = stateName+'/data.json';
-  var templatePath = stateName+'/template.hbr';
-  loadCSS(stateName+'/style.css');
+function loadState(stateKey, stateI){
+  states[stateKey] = {};
+  var state = states[stateKey];
+  state.index = stateI;
+  var dataPath = stateKey+'/data.json';
+  var templatePath = stateKey+'/template.hbr';
+  var scriptPath = stateKey+'/main.js';
+  var stylePath = stateKey+'/style.css';
+
+  loadCSS(stylePath);
   loadJSON(dataPath, function(response){
     state.data = response;
+    var stateName = state.data.name;
     loadTemplate(templatePath, function(response){
-      state.template = response;
-      state.script = Handlebars.compile(state.template);
+      state.templateString = response;
+      state.template = Handlebars.compile(state.templateString);
       var div = document.createElement('div');
-      div.innerHTML = state.script(state.data);
-      var children = div.childNodes;
-      for(var childI = 0;
-          childI < children.length;
-          childI++){
-        document.body.appendChild(children[childI]);
+      div.innerHTML = state.template(state.data);
+      var elem = div.getElementsByClassName('page')[0];
+      if (stateI !== 0){
+        elem.classList.add('disabled');
       }
-      add_script(stateName+'/main.js', function(){
+      document.body.appendChild(elem);
+      add_script(scriptPath, function(){
         try{
-          state.obj = new window[stateName]();
+          state.obj = new window[stateName](thisManager);
           if (stateI ===  0){
             state.obj.enter();
           }
@@ -239,4 +304,4 @@ function loadType(path, mimeType, callback){
     console.error('error retrieving', path, mimeType, e);
   }
 };
-
+};

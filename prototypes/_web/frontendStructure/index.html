@@ -5,10 +5,12 @@
 <head>
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
+  <link rel='stylesheet' type='text/css' href='style.css'>
   <script type='text/javascript' src='js/vendor/handlebars.min-v4.0.5.js'></script>
   <script type='text/javascript' src='js/main.js'></script>
   <script type='text/javascript'>
-    var states = ['attract','liveView','confirm'];
+    var manager = new Manager(
+        ['attract','liveView','confirm','admin']);
   </script>
 </head>
 <body style='overflow:hidden; margin:0; padding:0;'>

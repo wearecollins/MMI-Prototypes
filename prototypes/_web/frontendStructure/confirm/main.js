@@ -1,14 +1,4 @@
-function confirm(){
-  var buttons = document.getElementById('confirm').
-                  getElementsByClassName('buttons')[0];
-  buttons.getElementsByClassName('next')[0].
-    onclick = function(){
-      window.dispatchEvent(new Event('confirm_next'));
-    };
-  buttons.getElementsByClassName('prev')[0].
-    onclick = function(){
-      window.dispatchEvent(new Event('confirm_prev'));
-    };
+function confirm(manager){
   this.enter = function(evt){
     document.getElementById('confirm').
       getElementsByClassName('content')[0].

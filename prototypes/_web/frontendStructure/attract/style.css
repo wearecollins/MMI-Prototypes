@@ -1,40 +1,20 @@
-#attract{
-  background-color:pink;
-  height:100vh;
-  width:100vw;
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+#attract .background{
   background-image:url(bg.gif);
   background-size:cover;
-  position:absolute;
 }
 
-#attract .animated{
+#attract.disabled{
+  display:inline;
+}
+
+#attract .container .content{
   display:flex;
-  flex-grow:4;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 }
 
-#attract .buttons{
-  display:flex;
-  flex-grow:1;
-  flex-direction:row;
-  align-items:center;
-  justify-content:space-around;
-}
-
-#attract .buttons div{
-  border-style:solid;
-  border-color:white;
-  border-width:1px;
-  padding:10px;
-  background-color:lightgreen;
-}
-
-#attract .animated div{
+#attract .container .content div{
   white-space:nowrap;
   font-size:100px;
   color:lightpink;
@@ -47,40 +27,57 @@
   to {margin-left:2000px;}
 }
 
-@keyframes animateOff{
+@keyframes animateOffTop{
+  to {margin-top:-100vh;}
+}
+
+@keyframes animateOffBottom{
   to {margin-top:100vh;}
 }
 
-@keyframes animateOn{
-  to {margin-top:0px;}
+@keyframes animateOffRight{
+  to {margin-left:100vw;}
 }
 
-#attract .animated div{
+@keyframes animateOn{
+  to {margin:0px;}
+}
+
+#attract .container .content div{
   animation-timing-function:cubic-bezier(.3, 1, .7, 0);
   animation-name: animateAcross;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
   
-#attract .animated div:nth-of-type(2){
+#attract .container .content div:nth-of-type(2){
   animation-delay:.2s;
 }
 
-#attract .animated div:nth-of-type(3){
+#attract .container .content div:nth-of-type(3){
   animation-delay:.4s;
 }
 
-#attract.disabled .animated div{
-  animation-iteration-count: 1;
+#attract.disabled .container .content div{
+  animation:0;
+  transition:all 1s;
+  margin-left:200vw;
 }
 
-#attract.disabled{
-  animation-name: animateOff;
+#attract.disabled .background{
+  animation-name: animateOffTop;
   animation-duration:1s;
   animation-fill-mode:forwards;
 }
 
-#attract{
+#attract.disabled .container{
+  animation-name: animateOffBottom;
+  animation-duration:1s;
+  animation-delay:1s;
+  animation-fill-mode:forwards;
+}
+
+#attract .background{
   animation-name: animateOn;
   animation-duration: 1s;
 }

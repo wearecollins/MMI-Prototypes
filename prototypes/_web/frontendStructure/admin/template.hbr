@@ -2,8 +2,7 @@
   <div class='background'></div>
   <div class='container'>
     <div class='content'>
-      <img></img>
-      <div class='text'>{{text}}</div>
+      put Admin content here
     </div>
     <div class='buttons'>
       {{#each buttons}}

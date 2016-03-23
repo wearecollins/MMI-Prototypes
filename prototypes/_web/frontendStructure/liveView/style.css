@@ -1,50 +1,17 @@
-#liveView{
-  margin-top:-100vh;
-  position:absolute;
-  background-color:black;
-  height:100vh;
-  width:100vw;
-}
-
-#liveView .container{
-  height:100vh;
+#liveView .background{
   display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  background-size:cover;
-  position:absolute;
-  width:100vw;
+  align-items:center;
+  justify-content:center;
 }
 
-#liveView img{
-  position:absolute;
-}
-
-#liveView .container .animated{
+#liveView .container .content{
   display:flex;
-  flex-grow:4;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 }
 
-#liveView .container .buttons{
-  display:flex;
-  flex-grow:1;
-  flex-direction:row;
-  align-items:center;
-  justify-content:space-around;
-}
-
-#liveView .container .buttons div{
-  border-style:solid;
-  border-color:white;
-  border-width:1px;
-  padding:10px;
-  background-color:lightgreen;
-}
-
-#liveView .container .animated .numbers{
+#liveView .container .content .numbers{
   white-space:nowrap;
   font-size:100px;
   color:white;
@@ -52,7 +19,7 @@
   font-family:sans-serif;
 }
 
-#liveView .container .animated .numbers div{
+#liveView .container .content .numbers div{
   opacity:0;
   position:absolute;
 }
@@ -69,7 +36,7 @@
   to {margin-top:0px;}
 }
 
-#liveView.countdown .container .animated .numbers div{
+#liveView.countdown .container .content .numbers div{
   animation-timing-function:ease;
   animation-name: animateCount;
   animation-duration: .5s;
@@ -77,19 +44,20 @@
   animation-direction:alternate;
 }
   
-#liveView.countdown .container .animated .numbers div:nth-of-type(2){
+#liveView.countdown .container .content .numbers div:nth-of-type(2){
   animation-delay:1s;
 }
 
-#liveView.countdown .container .animated .numbers div:nth-of-type(3){
+#liveView.countdown .container .content .numbers div:nth-of-type(3){
   animation-delay:2s;
 }
 
-#liveView.disabled .container .animated div{
+#liveView.disabled .container .content div{
   animation-iteration-count: 1;
 }
 
 #liveView.disabled{
+  display:inline;
   animation-name: animateOff;
   animation-duration:1s;
   animation-fill-mode:forwards;
