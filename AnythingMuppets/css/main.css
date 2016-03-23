@@ -11,8 +11,7 @@ html, body {
     height: 100%;
     /* overflow: hidden; */
     font-size: 70px;
-    font-family: Souvenir;
-    background: #E2BD47;
+    background: grey;
     line-height: 1.1rem;
     color: white;
     text-align: center;
@@ -34,13 +33,11 @@ html, body {
 }
 
 .titleBottom {
-    font-family: CooperLight;
     min-width: 33%;
     margin-bottom: 1rem; 
 }
 
 .button {
-    font-family: CooperLight;
     min-width: 33%;
     padding: .5rem;
     cursor: pointer;
@@ -109,6 +106,10 @@ html, body {
                                   not supported by any browser */
 }
 
+.yellowBg {
+    background: #E2BD47;
+}
+
 .greenBg {
     background-color:#53B063;
 }
@@ -118,6 +119,21 @@ html, body {
 }
 
 /* Specific states */
+#scriptPage img {
+    height: 100%;
+}
+
+#scriptInfoContainer{
+    background: rgba(112,181,159,.9 );
+    font-size: .6rem;
+    line-height: .88rem;
+}
+
+#scriptTextContainer {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
 #promptContainer {
     height: 100%;
 }
@@ -138,6 +154,48 @@ html, body {
 #promptSpinPuppet {
     background-color:#EE7773;
 }
+
+/* Share capture */
+
+#sharePuppetCapture img {
+    width: 100%;
+    /* FPO */
+    height: 100%;
+}
+
+#captureTake, #captureCancel {
+    float: left;
+    width: 50%;
+    margin-bottom: 0;
+}
+
+#shareInfo {
+    margin:.5rem;
+}
+
+#shareLeft, #shareRight {
+    width: 50%;
+    text-align: left;
+    font-size: .6rem;
+    line-height: .66rem;
+}
+
+#shareRight {
+    font-size: .3rem;
+    line-height: .33rem;
+    padding: .5rem;
+}
+
+#postButton {
+    margin:0;
+    margin-top:.3rem;
+}
+
+#shareCaptureButtonContainer {
+    width: 100%;
+}
+
+/* Share end screen */
 
 #shareRow {
     height: 50%;
@@ -176,11 +234,14 @@ html, body {
     padding: .6rem;
 }
 
+.cdNumber {
+    height: 33%;
+}
+
 .share {
-    font-family: CooperLight;
     font-size:.5rem;
     line-height: .55rem;
-    background: #F5F6F6;
+    background: rgba(245, 246, 246,.75);
     color: black;
 }
 
