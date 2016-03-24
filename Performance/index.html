@@ -13,63 +13,76 @@
     </head>
     <body>
         <div id="startPage" class=" fill">
-            <div id="video" class="fillAbs" style="z-index:0">
+            <div id="introVideo" class="fillAbs" style="z-index:0">
+                <video class="" autoplay loop>
+                    <source src="video/intro.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div id="startBtnContainer" class="fillAbs centeredContainer title" style="z-index:1">
+                Puppetry for<br>the Screen
+            </div>
+            <div id="startBtnContainer" class="fillAbs bottomCenteredContainer" style="z-index:2">
+                <div class="button border noselect">Get Started</div>
+            </div>
+        </div>
+        <div id="grabPage" class="fill redBg">
+            <div class="fillAbs columnCenteredContainer" style="z-index:0">
+                <!-- Todo: Left arrow -->
+                <img src="svg/arrow_left.svg" id="promptLeftArrow" />
+                <div class="title noselect">Grab a Puppet</div>
+            </div>
+            <div class="fillAbs bottomCenteredContainer" style="z-index:1">
+                <div class="button border noselect">Next</div>
+            </div>
+        </div>
+        <div id="frontCamera" class=" fill">
+            <div id="camera" class="fillAbs" style="z-index:0">
                 <video class="fillContainer" autoplay loop>
                     <source src="video/" type="video/mp4">
                 </video>
             </div>
-            <div id="startBtnContainer" class="fillAbs bottomCenteredContainer" style="z-index:1">
-                <div class="button border noselect">Get Started</div>
-            </div>
+            <!-- <div id="startBtnContainer" class="fillAbs bottomCenteredContainer" style="z-index:2">
+                <div class="button border noselect">Next</div>
+            </div> -->
         </div>
-        <div id="grabPage" class="fill">
-            <div class="fillAbs columnCenteredContainer" style="z-index:0">
-                <!-- Todo: Left arrow -->
-                <img src="svg/arrow.svg" id="promptArrow" />
-            Grab a Puppet
+        <div id="leftCamera" class=" fill">
+            <div id="camera" class="fillAbs" style="z-index:0">
+                <video class="fillContainer" autoplay loop>
+                    <source src="video/" type="video/mp4">
+                </video>
             </div>
-            <div class="fillAbs bottomCenteredContainer" style="z-index:1">
-                <div class="button border noselect">Get Started</div>
-            </div>
+            <!-- <div id="startBtnContainer" class="fillAbs bottomCenteredContainer" style="z-index:2">
+                <div class="button border noselect">Next</div>
+            </div> -->
         </div>
-        <div id="promptOpenDrawers" class="bottomCenteredContainer fill">
-            <div id="promptContainer" class="columnCenteredContainer fill">
-                <img src="svg/arrow.svg" id="promptArrow" />
-                <div class="titleBottom noselect">Open the drawers <br>and start building</div>
+        <div id="selectPage" class="fill purpleBg">
+            <div class="fillAbs columnCenteredContainer" style="z-index:1; justify-content: flex-start;">
+                <div id="selectTitle" class="noselect">Select a Clip</div>
             </div>
-
-        </div>
-        <div id="scriptPage" class=" fill">
-            <div id="script" class="fillAbs centeredContainer" style="z-index:0">
-                <img src="img/script.jpg" />
-            </div>
-            <div id="scriptInfoContainer" class="fillAbs centeredContainer" style="z-index:1">
-                <div id="scriptTextContainer">
-                    <strong>Salesman:</strong><br><em>An AM Man enters dressed as a salesman, carrying his briefcase. The AM Man is in his thirties, has brown hair, a pointy nose, a friendly face, and speaks with a kind of nasal, slightly annoying voice.</em>
-                    <br><br><strong>Salesman:</strong><br>“Hello there. I’m your friendly neighborhood vacuum cleaner salesman.”
+            <div class="fillAbs centeredContainer" style="z-index:0">
+                <div id="videoContainer" class="fillCrop centeredContainer">
+                    <video class="" autoplay loop muted>
+                        <source src="video/Kermit_banjo.mp4" type="video/mp4">
+                    </video>
+                    <video class="" autoplay loop muted>
+                        <source src="video/black_magic.mp4" type="video/mp4">
+                    </video>
+                    <video class="" autoplay loop muted>
+                        <source src="video/cest_ci_bon.mp4" type="video/mp4">
+                    </video>
                 </div>
             </div>
-            <div id="scriptButtonContainer" class="fillAbs bottomCenteredContainer" style="z-index:2">
-                <div id="scriptGSButton" class="button border noselect">Done Building</div>
+            <div class="fillAbs bottomCenteredContainer" style="z-index:2">
+                <div class="button border noselect">Select</div>
             </div>
         </div>
-        <div id="promptSpinPuppet" class="bottomCenteredContainer fill">
-            <div id="promptSpinContainer" class="columnCenteredContainer fill">
-                <img src="svg/spin.svg" id="promptSpin" />
-                <div class="titleBottom noselect">Spin the Puppet <br>to test on camera</div>
+        <div id="readyPage" class="fill">
+            <div class="fillAbs columnCenteredContainer" style="z-index:0">
+                <div class="title noselect">Get Ready!</div>
             </div>
         </div>
-        <!-- These will all be in one 'share' container -->
-        <div id="sharePuppetCapture" class="fill">
-            <div id="liveCaptureContainer" class="fillAbs centeredContainer" style="z-index:0">
-                <img src="" id="liveCamera" />
-            </div>
-            <div id="captureButtonContainer" class="fillAbs bottomCenteredContainer" style="z-index:1">
-                <div id="captureTake" class="button noselect greenBg">Take a photo</div>
-                <div id="captureCancel" class="button noselect redBg">Start Over</div>
-            </div>
-        </div>
-        <div id="countDownTwo" class="fill">
+        <!-- These will all be in one 'capture' container -->
+        <div id="countDownThree" class="fill">
             <div id="liveCaptureContainer" class="fillAbs centeredContainer" style="z-index:0">
                 <img src="" id="liveCamera" />
             </div>
@@ -93,11 +106,21 @@
                 <img src="svg/one.svg" class="cdNumber" />
             </div>
         </div>
-        <div id="sharePuppetShare" class="fill">
+        <div id="livePerform" class="fill">
             <div id="liveCaptureContainer" class="fillAbs centeredContainer" style="z-index:0">
                 <img src="" id="liveCamera" />
             </div>
-            <div id="shareContainer" class="fillAbs columnCenteredContainer" style="z-index:1">
+            <div id="cdContainer" class="fillAbs trContainer" style="z-index:1">
+                <img src="svg/countdown.svg" class="" />
+            </div>
+        </div>
+
+        <!-- These will all be in one 'share' container -->
+        <div id="shareClip" class="fill greenBg">
+            <div id="liveCaptureContainer" class="fillAbs centeredContainer" style="z-index:0">
+                <img src="" id="liveCamera" />
+            </div>
+            <div id="shareContainer" class="fillAbs bcContainer" style="z-index:1">
                 <div id="shareInfoContainer" class="share">
                     <div id="shareInfo" class="centeredContainer">
                         <div id="shareLeft">
@@ -114,27 +137,23 @@
                     </div>
                 </div>
                 <div id="shareCaptureButtonContainer" class="bottomCenteredContainer">
-                    <div id="captureTake" class="button noselect yellowBg">Retake</div>
+                    <div id="captureTake" class="button noselect clearBg"></div>
                     <div id="captureCancel" class="button noselect redBg">Start Over</div>
                 </div>
             </div>
         </div>
-        <div id="sharePuppet" class="bottomCenteredContainer fill share">
-            <div id="sharePuppetContainer" class="columnCenteredContainer fill">
-                <div id="shareRow">
-                    <img id="shareImageLeft" />
-                    <div id="shareImageRight">
-                        <img class="" />
-                        <div id="shareFinalAbout"> ORIGINAL AM BOY<br>–<br>Sesame Street Episode 200,<br>“Max the Magniﬁcent”
-                        </div>
-                    </div>
-                </div>
-                <div id="shareThanks">
-                THANKS FOR SHARING!<br>–<br>Please Turn Puppet Around and <br>Return Features to Drawers
-                </div>
-                <div id="shareStartOverRow" class="redBg columnCenteredContainer">
-                    <div id="shareStartOverButton" class="button border">Start Over</div>
-                </div>
+        <div id="startPage" class=" fill">
+            <div id="video" class="fillAbs" style="z-index:0">
+                <video class="fillContainer" autoplay loop>
+                    <source src="video/" type="video/mp4">
+                </video>
+            </div>
+            <div id="endText" class="fillAbs columnCenteredContainer" style="z-index:1">
+                <div class="title" style="margin-bottom: .5rem;">Thanks for<br>Sharing</div>
+                <div>Why not give someone <br>else a turn?</div>
+            </div>
+            <div id="startBtnContainer" class="fillAbs bottomCenteredContainer" style="z-index:2">
+                <div class="button border noselect">Start Over</div>
             </div>
         </div>
     </body>

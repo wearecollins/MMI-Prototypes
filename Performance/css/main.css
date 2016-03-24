@@ -58,6 +58,73 @@ html, body {
     }
 }
 
+/* Performance */
+
+.title {
+    font-size: 1.5rem;
+    line-height: 1.65rem;
+}
+
+#promptLeftArrow {
+    width: 55%;
+    margin-bottom: 1rem;
+}
+
+#selectTitle {
+    margin-top:3rem;
+}
+
+#selectPage video {
+    height: 80%;
+    margin: .5%;
+}
+
+#selectPage .button {
+    margin-bottom: 3rem;
+}
+
+.purpleBg {
+    background-color:#523A55;
+}
+
+.clearBg {
+    background-color:rgba(0,0,0,0);
+}
+
+.fillCrop {
+    width: 100%;
+    height: 100%;
+}
+
+#videoContainer {
+    width: 250%;
+}
+
+#cdContainer img {
+    width: 15%;
+    opacity: .5;
+    margin: 1rem;
+}
+
+.trContainer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.bcContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#endText {
+}
+
+#introVideo video {
+    height: 100%;
+}
+
 /* Utilities */
 
 .fill {
@@ -196,6 +263,7 @@ html, body {
 #postButton {
     margin:0;
     margin-top:.3rem;
+    text-align: center;
 }
 
 #shareCaptureButtonContainer {
