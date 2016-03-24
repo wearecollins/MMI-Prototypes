@@ -91,6 +91,25 @@ html, body {
     background-color:rgba(0,0,0,0);
 }
 
+.whiteBg {
+    background: white;
+}
+
+.greyBg {
+    background: rgb(245, 246, 246);
+}
+
+#admin {
+    color: black;
+    font-size: .75rem;
+}
+
+#admin .button {
+    color: white;
+    min-width: 20%;
+    margin-bottom: .5rem;
+}
+
 .fillCrop {
     width: 100%;
     height: 100%;
@@ -104,6 +123,10 @@ html, body {
     width: 15%;
     opacity: .5;
     margin: 1rem;
+}
+
+.adminBtnContainer {
+    width: 50%;
 }
 
 .trContainer {
@@ -227,6 +250,10 @@ html, body {
 }
 #promptSpinPuppet {
     background-color:#EE7773;
+}
+
+.adminButtons {
+    height: 80%;
 }
 
 /* Share capture */
