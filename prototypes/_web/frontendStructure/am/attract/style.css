@@ -1,20 +1,20 @@
-#attract .background{
-  background-image:url(bg.gif);
+#{{name}} .background{
+  background-image:url({{@path}}/bg.gif);
   background-size:cover;
 }
 
-#attract.disabled{
+#{{name}}.disabled{
   display:inline;
 }
 
-#attract .container .content{
+#{{name}} .container .content{
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 }
 
-#attract .container .content div{
+#{{name}} .container .content div{
   white-space:nowrap;
   font-size:100px;
   color:lightpink;
@@ -43,41 +43,41 @@
   to {margin:0px;}
 }
 
-#attract .container .content div{
+#{{name}} .container .content div{
   animation-timing-function:cubic-bezier(.3, 1, .7, 0);
   animation-name: animateAcross;
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
   
-#attract .container .content div:nth-of-type(2){
+#{{name}} .container .content div:nth-of-type(2){
   animation-delay:.2s;
 }
 
-#attract .container .content div:nth-of-type(3){
+#{{name}} .container .content div:nth-of-type(3){
   animation-delay:.4s;
 }
 
-#attract.disabled .container .content div{
+#{{name}}.disabled .container .content div{
   animation:0;
   transition:all 1s;
   margin-left:200vw;
 }
 
-#attract.disabled .background{
+#{{name}}.disabled .background{
   animation-name: animateOffTop;
   animation-duration:1s;
   animation-fill-mode:forwards;
 }
 
-#attract.disabled .container{
+#{{name}}.disabled .container{
   animation-name: animateOffBottom;
   animation-duration:1s;
   animation-delay:1s;
   animation-fill-mode:forwards;
 }
 
-#attract .background{
+#{{name}} .background{
   animation-name: animateOn;
   animation-duration: 1s;
 }

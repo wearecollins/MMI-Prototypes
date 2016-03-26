@@ -1,5 +1,15 @@
+body,
+#liveView,
+#pages,
+#overlay,
 .page{
   position:absolute;
+}
+
+body{
+  overflow:hidden;
+  margin:0;
+  padding:0;
 }
 
 .page .background{
@@ -20,6 +30,10 @@
 
 .page .container .content{
   flex-grow:4;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 .page .container .buttons{

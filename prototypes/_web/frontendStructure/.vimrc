@@ -12,3 +12,4 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'rdnetto/YCM-Generator'
 call vundle#end()
 filetype plugin indent on
+nnoremap <F4> :!node_modules/eslint/bin/eslint.js "%:p"<cr>
