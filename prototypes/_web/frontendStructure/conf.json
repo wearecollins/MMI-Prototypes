@@ -1,6 +1,7 @@
 {
   "source":{
-    "include":["./js/Page.js","./js/StateHandler.js","./js/Loader.js"],
+    "include":["./js/Page.js","./js/StateHandler.js","./js/Loader.js",
+               "./js/WebsocketHandler.js"],
     "excludePattern":""
   }
 }

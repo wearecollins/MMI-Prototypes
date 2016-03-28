@@ -105,7 +105,7 @@ Loader.loadCSS = function loadCSS(path, contextPromise, options){
 /**
  * loads a Javascript file
  * @param {string} path filepath to the file
- * @returns {Promise<,Event>}
+ * @returns {Promise<undefined,Event>}
  *  resolves when the specified Javascript file has finished loading
  *  rejects if the Javascript file fails to load
  */
