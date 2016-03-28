@@ -1,5 +1,7 @@
 {
   "libs": [
-    "browser"
+    "browser",
+    "chai",
+    "ecma6"
   ]
 }
