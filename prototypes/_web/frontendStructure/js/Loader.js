@@ -14,7 +14,9 @@ Loader.MIME = {txt:'text/plain',
                css:'text/css',
                json:'application/json',
                html:'text/html',
-               hbr:'text/x-handlebars-template'};
+               hbr:'text/x-handlebars-template',
+               frag:'x-shader/x-fragment',
+               vert:'x-shared/x-vertex'};
 
 /**
  * Loads a JSON file

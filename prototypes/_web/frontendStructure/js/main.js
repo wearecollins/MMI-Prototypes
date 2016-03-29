@@ -51,7 +51,7 @@ function Manager(states, transitions){
 
   function createStreamHandler(){
     streamHandler = new StreamHandler();
-    streamHandler.init(ws, document.getElementById('liveView'));
+    return streamHandler.init(ws, document.getElementById('liveView'));
   }
 
   function createEventHandler(){
