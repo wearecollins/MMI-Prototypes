@@ -24,9 +24,10 @@ function Manager(states, transitions){
 
     //initialize everything
     libraryPromise.
+      then(instantiateHandlers).
       then(initStructure).
       then(loadStates).
-      then(createWebsocket).
+      then(connectWebsockets).
       then(createStreamHandler).
       then(createEventHandler).
       then( () => log.info('[Manager::init] done') );  
@@ -34,6 +35,13 @@ function Manager(states, transitions){
   }
   
   window.onload = init;
+
+  function instantiateHandlers(){
+    ws = new WebsocketHandler();
+    streamHandler = new StreamHandler();
+    eventHandler = new EventHandler();
+    stateHandler = new StateHandler();
+  }
 
   function loadLibrary(){
     var promises = [];
@@ -50,13 +58,16 @@ function Manager(states, transitions){
   }
 
   function createStreamHandler(){
-    streamHandler = new StreamHandler();
-    streamHandler.init(ws, document.getElementById('liveView'));
+    streamHandler.init(document.getElementById('liveView'));
+    //link publishers with subscribers
+    ws.addBinaryHandler(streamHandler.handleImage.bind(streamHandler));
   }
 
   function createEventHandler(){
-    eventHandler = new EventHandler();
-    eventHandler.init(ws, stateHandler);
+    eventHandler.init(stateHandler);
+    //link publishers with subscribers
+    ws.addTextHandler(eventHandler.handleJson.bind(eventHandler));
+    eventHandler.addJsonNotifier(ws.send.bind(ws));
   }
 
   function initLogging(){
@@ -94,12 +105,20 @@ function Manager(states, transitions){
   }
 
   function loadStates(container){
-    stateHandler = new StateHandler();
-    return stateHandler.init(states, transitions, container);
+    var promise = stateHandler.init(states, transitions, container);
+    //link publishers with subscribers
+    stateHandler.addJsonNotifier(ws.storeAndForward.bind(ws));
+    stateHandler.addStreamNotifier( function(show){
+      if (show){
+        streamHandler.showStream();
+      } else {
+        streamHandler.hideStream();
+      }
+    });
+    return promise;
   }
   
-  function createWebsocket(){
-    ws = new WebsocketHandler();
+  function connectWebsockets(){
     ws.connect('ws://'+serverName+':'+serverPort);
   }
   

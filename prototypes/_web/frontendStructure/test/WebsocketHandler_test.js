@@ -48,4 +48,24 @@ describe('WebsocketHandler', function(){
     };
     ws.send(testBinary);
   });
+  it('stored messages get sent to existing connections', function(done){
+    handleText = function handleText(msg, name){
+      expect(msg).to.equal(testText);
+      expect(name).to.equal(serverName);
+      handleText = undefined;
+      done();
+    };
+    ws.storeAndForward(testText);
+  });
+  it('stored messages also get sent to new connections', function(done){
+    var s2URL = 'ws://html5rocks.websocket.org/echo';
+    var s2Name = 'html5rocks';
+    handleText = function handleText(msg, name){
+      expect(msg).to.equal(testText);
+      expect(name).to.equal(s2Name);
+      handleText = undefined;
+      done();
+    };
+    ws.connect(s2URL, s2Name);
+  });
 });

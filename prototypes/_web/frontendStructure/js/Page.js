@@ -100,6 +100,27 @@ function Page(){
   };
 
   /**
+   * @returns {boolean} true if the auto-timeout should be disabled
+   */
+  this.disabledTimeout = function disabledTimeout(){
+    var propName = 'disableTimeout';
+    var propValue = true;
+    return (data.hasOwnProperty(propName) &&
+            (data[propName] === propValue));
+  };
+
+  /**
+   * @returns {boolean} true if the image stream 
+   *  should be shown along with this Page
+   */
+  this.shouldShowStream = function shouldShowStream(){
+    var propName = 'showStream';
+    var propValue = true;
+    return (data.hasOwnProperty(propName) &&
+            (data[propName] === propValue));
+  };
+
+  /**
    * loads the page's custom class.
    * @param {string} path filepath to load
    * @param {Loader} loader loader to use

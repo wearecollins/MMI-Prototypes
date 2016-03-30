@@ -7,7 +7,10 @@
 function StateHandler(){
   
   //### Private vars ###
-  /** the list of all pages */
+  /** 
+   * the list of all pages 
+   * @type {Page[]}
+   */
   var pages;
   /**
    * custom transitions between pages
@@ -15,10 +18,30 @@ function StateHandler(){
    * {sourcePagePath:{action:destinationPagePath},
    * ...,
    * '_globals_':{action:destinationPagePath}}
+   * @type {Object}
    */
   var transitions;
-  /** the currently active page index */
+  /** 
+   * the currently active page index 
+   * @type {number};
+   */
   var activeStateI = 0;
+  /**
+   * list of functions to notify on State changes
+   * @type {jsonNotifier[]}
+   */
+  var jsonNotifiers = [];
+  /**
+   * list of functions to call when the stream should be enabled/disabled
+   * @type {streamNotifier[]}
+   */
+  var streamNotifiers = [];
+
+  /**
+   * A callback for stream enable/disable notifications
+   * @callback streamNotifier
+   * @param {boolean} enable whether or not to enable the stream
+   */
 
   //### Public methods ###
   
@@ -45,6 +68,33 @@ function StateHandler(){
   };
 
   /**
+   * A callback for json notifications
+   * @callback jsonNotifier
+   * @param {string} json a JSON-encoded Object or map
+   */
+
+  /**
+   * adds a function to be called when the state transitions
+   * @param {jsonNotifier} func 
+   */
+  this.addJsonNotifier = function addJsonNotifier(func){
+    if (typeof(func) === 'function'){
+      jsonNotifiers.push(func);
+    }
+  };
+
+  /**
+   * adds a function to be called when 
+   *  the video stream should be shown/hidden
+   * @param {streamNotifier} func
+   */
+  this.addStreamNotifier = function addStreamNotifier(func){
+    if (typeof(func) === 'function'){
+      streamNotifiers.push(func);
+    }
+  };
+
+  /**
    * Handles transitioning States.
    * @param {string} action the action driving state transition.
    *  must be one of {@link StateHandler.ACTIONS}.
@@ -58,26 +108,54 @@ function StateHandler(){
       log.info(activeStateName,'->',targetStateName);
 
       pages[activeStateI].exit(evt);
+      notifyTransition(activeStateI, targetStateI);
+      manageStream(activeStateI, targetStateI);
       activeStateI = targetStateI;
       pages[targetStateI].enter(evt);
     }
   };
 
   /**
-   * Whether or not the current State is the Admin state.
-   * @returns {boolean} True if the current state is the Admin state.
+   * check if the stream should be shown or hidden, 
+   *  and notify relevant consumers
+   * @param {number} fromIndex the index number of the state we are leaving
+   * @param {number} toIndex the index number of the state we are entering
    */
-  this.isOnAdmin = function isOnAdmin(){
-    return activeStateI === (pages.length - 1);
+  function manageStream(fromStateI, toStateI){
+    var didShow = pages[fromStateI].shouldShowStream();
+    var shouldShow = pages[toStateI].shouldShowStream();
+    if (didShow !== shouldShow){
+      for(var notifierI = streamNotifiers.length - 1;
+          notifierI >= 0;
+          notifierI--){
+        streamNotifiers[notifierI](shouldShow);
+      }
+    }
+  }
+
+  /**
+   * check if the auto-timeout should be disabled for the current state
+   * @returns {boolean} true if the auto-timeout should be disabled
+   */
+  this.disabledTimeout = function disabledTimeout(){
+    return pages[activeStateI].disabledTimeout();
   };
 
   /**
-   * Whether or not the current State is the Attract state.
-   * @returns {boolean} True if the current state is the Attract state.
+   * Notifies all registered jsonNotifiers of the state transition
+   * @param {number} fromIndex the index number of the state we are leaving
+   * @param {number} toIndex the index number of the state we are entering
    */
-  this.isOnAttract = function isOnAttract(){
-    return activeStateI === 0;
-  };
+  function notifyTransition(fromIndex, toIndex){
+    var fromStateName = pages[fromIndex].getName();
+    var toStateName = pages[toIndex].getName();
+    var message = {state:{from:fromStateName, to:toStateName}};
+    for(var notifierI = jsonNotifiers.length - 1;
+        notifierI >= 0;
+        notifierI--){
+      jsonNotifiers[notifierI](message);
+    }
+  }
 
   /**
    * Loads all the specified pages.

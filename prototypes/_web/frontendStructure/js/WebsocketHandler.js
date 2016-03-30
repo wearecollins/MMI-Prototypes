@@ -24,6 +24,11 @@ function WebsocketHandler(){
    * @type {number}
    */
   var reconnectDelay = 3 * 1000;
+  /**
+   * the current state message to update all new connections
+   * @type {string|ArrayBuffer}
+   */
+  var storedMessage;
 
   /**
    * Connects to the specified WebSocket server.
@@ -57,9 +62,12 @@ function WebsocketHandler(){
 
   /**
    * Sends a message to all connected servers.
-   * @param {string|ArrayBuffer} message
+   * @param {string|ArrayBuffer|*} message
    */
   this.send = function send(message){
+    message = normalizeMessage(message);
+
+    //send message to all connections
     for(var wsI = websockets.length - 1;
         wsI >= 0;
         wsI--){
@@ -68,12 +76,37 @@ function WebsocketHandler(){
   };
 
   /**
+   * Sends a message to all currently-connected servers and stores the message
+   *  for sending to new connections in the future. This will overwrite any
+   *  previously stored message.
+   * @param {string|ArrayBuffer|*} message
+   */
+  this.storeAndForward = function storeAndForward(message){
+    message = normalizeMessage(message);
+    storedMessage = message;
+    //send message to all existing connections
+    this.send(message);
+  };
+
+  /**
+   * A callback for binary messages
+   * @callback WebsocketHandler~binaryHandler
+   * @param {ArrayBuffer} data the incoming message
+   * @param {string} [name] 
+   *  the name associated with the connection the data arrived on
+   */
+
+  /**
+   * A callback for text messages
+   * @callback WebsocketHandler~textHandler
+   * @param {string} message the incoming message
+   * @param {string} [name]
+   *  the name associated with the connection the message arrived on
+   */
+
+  /**
    * registers a function to be forwarded any incoming Binary messages.
-   * @param {function} func 
-   *  the function to be passed incoming Binary messages.
-   *  expected signature: function(data, name)
-   *  where data is an arraybuffer
-   *  and name is the associated name of the connection
+   * @param {WebsocketHandler~binaryHandler} func 
    */
   this.addBinaryHandler = function addBinaryHandler(func){
     binaryHandlers.push(func);
@@ -81,15 +114,28 @@ function WebsocketHandler(){
 
   /**
    * registers a function to be forwarded any incoming Text messages.
-   * @param {function} func 
-   *  the function to be passed incoming Text messages.
-   *  expected signature: function(data, name)
-   *  where data is a string
-   *  and name is the associated name of the connection
+   * @param {WebsocketHandler~textHandler} func 
    */
   this.addTextHandler = function addTextHandler(func){
     textHandlers.push(func);
   };
+
+  /**
+   * ensures the provided message is a string or ArrayBuffer.
+   *  all other types are JSON-encoded into strings.
+   * @param {string|ArrayBuffer|*} message
+   * @returns {string|ArrayBuffer}
+   */
+  function normalizeMessage(message){
+    //normalize Objects to JSON-encoded strings
+    if (typeof(message) !== 'string' &&
+        !(message instanceof ArrayBuffer)){
+      //attempt to JSON-encode
+      message = JSON.stringify(message);
+    }
+    return message;
+  }
+
 
   /**
    * removes the provided WebSocket from the list of connections.
@@ -111,6 +157,9 @@ function WebsocketHandler(){
    */
   function addWS(ws, name){
     websockets.push({ws, name});
+    if (storedMessage !== undefined){
+      ws.send(storedMessage);
+    }
   }
   
   /**

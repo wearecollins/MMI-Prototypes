@@ -3,6 +3,7 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 set colorcolumn=80
+set clipboard=unnamed
 highlight colorcolumn ctermbg=darkgray
 set nocompatible
 filetype off

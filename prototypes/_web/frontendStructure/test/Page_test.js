@@ -1,4 +1,4 @@
-/* globals chai, Page*/
+/* globals chai, Page, Loader*/
 var expect = chai.expect;
 window.log = console;
 
@@ -8,15 +8,6 @@ describe('Page', function(){
   function clearContainer(){
     container.innerHTML = '';
     expect(container.childElementCount).to.equal(0);
-  }
-  function Counter(toNum, done){
-    var count = 0;
-    this.inc = function(){
-      count++;
-      if (count == toNum){
-        done();
-      }
-    };
   }
 
   before(function(){
@@ -39,7 +30,7 @@ describe('Page', function(){
     var page = new Page();
     var loadPromise = page.load('pages/full', container, Loader);
     return loadPromise.
-      then( p => expect(container.childElementCount).to.equal(1) );
+      then( () => expect(container.childElementCount).to.equal(1) );
   });
   it('page info is loaded from data.json', function(){
     return new Page().
@@ -63,8 +54,9 @@ describe('Page', function(){
     clearContainer();
     return new Page().
       load('pages/full', container, Loader).
-      then( function resolve(page){
-        expect(container.childNodes[0].classList.contains('disabled')).to.be.true;
+      then( function resolve(){
+        expect(container.childNodes[0].classList.contains('disabled')).
+          to.be.true;
       });
   });
   it('enter and exit modify DOM element\'s Classes', function(){
@@ -72,11 +64,14 @@ describe('Page', function(){
     return new Page().
       load('pages/full', container, Loader).
       then( function resolve(page){
-        expect(container.childNodes[0].classList.contains('disabled')).to.be.true;
+        expect(container.childNodes[0].classList.contains('disabled')).
+          to.be.true;
         page.enter();
-        expect(container.childNodes[0].classList.contains('disabled')).to.be.false;
+        expect(container.childNodes[0].classList.contains('disabled')).
+          to.be.false;
         page.exit();
-        expect(container.childNodes[0].classList.contains('disabled')).to.be.true;
+        expect(container.childNodes[0].classList.contains('disabled')).
+          to.be.true;
       });
   });
   it('enter and exit call methods in custom class', function(){
@@ -84,7 +79,7 @@ describe('Page', function(){
       var entered = false;
       var exited = false;
       function check(){if(entered && exited){resolve();}}
-      window.addEventListener('definedName_enter', function(evt){
+      window.addEventListener('definedName_enter', function(){
         if (entered){
           reject('entered twice');
         } else {
@@ -92,7 +87,7 @@ describe('Page', function(){
         }
         check();
       });
-      window.addEventListener('definedName_exit', function(evt){
+      window.addEventListener('definedName_exit', function(){
         if (exited){
           reject('exited twice');
         } else {
@@ -101,7 +96,7 @@ describe('Page', function(){
         check();
       });
     });
-    var p = new Page().
+    new Page().
       load('pages/full', container, Loader).
       then( function resolve(page){
         page.enter();

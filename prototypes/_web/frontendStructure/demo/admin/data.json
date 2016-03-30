@@ -1,0 +1,4 @@
+{"name":"admin",
+ "disableTimeout":true,
+ "buttons":[{"type":"cancel","text":"cancel"},
+            {"type":"admin_save","text":"save"}]}
