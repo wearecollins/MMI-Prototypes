@@ -9,8 +9,6 @@ function Manager(states, transitions){
   }
   var ws;
   this.configs = {'timeout':30};
-  var serverName = 'localhost';
-  var serverPort = 9091;
   var streamHandler;
   var eventHandler;
   var stateHandler;
@@ -77,12 +75,19 @@ function Manager(states, transitions){
       then(function resolve(){
         //reference the logger from the window for global availability
         window.log = log4javascript.getLogger();
+        // set up browser logging
         var browserConsoleAppender = 
           new log4javascript.BrowserConsoleAppender();
         var timestampedLayout = 
           new log4javascript.PatternLayout('%-5p %d{HH:mm:ss,SSSS} - %m%n');
         browserConsoleAppender.setLayout(timestampedLayout);
         window.log.addAppender(browserConsoleAppender);
+        // set up AJAX logging
+        var ajaxAppender = 
+          new log4javascript.AjaxAppender(window.location.origin+'/');
+        //ensure messages log in-order on the server
+        ajaxAppender.setWaitForResponse(true);
+        window.log.addAppender(ajaxAppender);
       }).
       then(function resolve(){
         log.info('loaded Log4JS');
@@ -119,7 +124,7 @@ function Manager(states, transitions){
   }
   
   function connectWebsockets(){
-    ws.connect('ws://'+serverName+':'+serverPort);
+    ws.connect('ws://'+window.location.host);
   }
   
 /*
