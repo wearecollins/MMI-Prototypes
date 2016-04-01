@@ -1,6 +1,7 @@
 /*global Handlebars, log4javascript, Loader, 
  *       Page, StreamHandler, StateHandler, 
- *       WebsocketHandler, EventHandler*/
+ *       WebsocketHandler, EventHandler,
+ *       ConfigHandler*/
 
 function Manager(states, transitions){
   if (states === undefined ||
@@ -8,7 +9,7 @@ function Manager(states, transitions){
     throw 'no states defined, or states is not an array.';
   }
   var ws;
-  this.configs = {'timeout':30};
+  var configHandler;
   var streamHandler;
   var eventHandler;
   var stateHandler;
@@ -23,11 +24,13 @@ function Manager(states, transitions){
     //initialize everything
     libraryPromise.
       then(instantiateHandlers).
+      then(configHandlebars).
       then(initStructure).
       then(loadStates).
       then(connectWebsockets).
-      then(createStreamHandler).
-      then(createEventHandler).
+      then(initStreamHandler).
+      then(initEventHandler).
+      then(initConfigHandler).
       then( () => log.info('[Manager::init] done') );  
       //could also wait to connect to websockets until very end...
   }
@@ -39,13 +42,38 @@ function Manager(states, transitions){
     streamHandler = new StreamHandler();
     eventHandler = new EventHandler();
     stateHandler = new StateHandler();
+    configHandler = new ConfigHandler();
+  }
+
+  function configHandlebars(){
+    //TODO: if !Handlebars, the load via Loader
+    Handlebars.registerHelper('switch', function(value, options) {
+      this._switch_value_ = value;
+      var html = options.fn(this); // Process the body of the switch block
+      delete this._switch_value_;
+      return html;
+    });
+    Handlebars.registerHelper('case', function() {
+      // Convert "arguments" to a real array - stackoverflow.com/a/4775938
+      var args = Array.prototype.slice.call(arguments);
+
+      var options    = args.pop();
+      var caseValues = args;
+
+      if (caseValues.indexOf(this._switch_value_) === -1) {
+        return '';
+      } else {
+        return options.fn(this);
+      }
+    });
   }
 
   function loadLibrary(){
     var promises = [];
     var path = 'js';
     var files = ['Page.js','StateHandler.js','EventHandler.js',
-                 'WebsocketHandler.js','StreamHandler.js'];
+                 'WebsocketHandler.js','StreamHandler.js',
+                 'ConfigHandler.js'];
     for (var fileI = files.length - 1;
          fileI >= 0;
          fileI--){
@@ -55,17 +83,24 @@ function Manager(states, transitions){
     return Promise.all(promises);
   }
 
-  function createStreamHandler(){
+  function initStreamHandler(){
     streamHandler.init(document.getElementById('liveView'));
     //link publishers with subscribers
     ws.addBinaryHandler(streamHandler.handleImage.bind(streamHandler));
   }
 
-  function createEventHandler(){
-    eventHandler.init(stateHandler);
+  function initEventHandler(){
+    eventHandler.init(stateHandler, configHandler);
     //link publishers with subscribers
     ws.addTextHandler(eventHandler.handleJson.bind(eventHandler));
     eventHandler.addJsonNotifier(ws.send.bind(ws));
+  }
+
+  function initConfigHandler(){
+    configHandler.init();
+    //link publishers with subscribers
+    ws.addTextHandler(configHandler.handleJson.bind(configHandler));
+    configHandler.addJsonUpdater(ws.send.bind(ws));
   }
 
   function initLogging(){
@@ -110,7 +145,10 @@ function Manager(states, transitions){
   }
 
   function loadStates(container){
-    var promise = stateHandler.init(states, transitions, container);
+    var promise = stateHandler.init(states, 
+                                    transitions, 
+                                    container, 
+                                    configHandler);
     //link publishers with subscribers
     stateHandler.addJsonNotifier(ws.storeAndForward.bind(ws));
     stateHandler.addStreamNotifier( function(show){
@@ -124,7 +162,8 @@ function Manager(states, transitions){
   }
   
   function connectWebsockets(){
-    ws.connect('ws://'+window.location.host);
+    ws.connect('ws://'+window.location.host, 'node');
+    ws.connect('ws://localhost:9091', 'oF');
   }
   
 /*

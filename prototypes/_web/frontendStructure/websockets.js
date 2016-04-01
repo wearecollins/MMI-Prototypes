@@ -45,7 +45,11 @@ var Websockets = function(server, configer, logger){
         wsI--){
       var ws = wsConnections[wsI];
       if (ws !== wsToSkip){
-        wsConnections[wsI].send(msg);
+        try {
+          wsConnections[wsI].send(msg);
+        } catch (e) {
+          logger.error('problem sending message', e);
+        }
       }
     }
   }
@@ -54,7 +58,11 @@ var Websockets = function(server, configer, logger){
   //when a new websocket client connects
   wss.on('connection', function(ws){
     //add the new client to our list of connections
+    logger.info('adding connection');
     wsConnections.push(ws);
+
+    //send it current configs
+    ws.send(configer.getConfigString());
     
     ws.on('message', gotMessage.bind(ws));
   
@@ -64,7 +72,12 @@ var Websockets = function(server, configer, logger){
       for(var wsI = wsConnections.length - 1;
           wsI >= 0;
           wsI--){
-        if (wsConnections[wsI]=== ws){
+        var connection = wsConnections[wsI];
+        if (connection === ws){
+          logger.info('removing connection');
+          wsConnections.splice(wsI, 1);
+        } else if (connection.readyState === WebSocket.CLOSED){
+          logger.info('cleaning up connection');
           wsConnections.splice(wsI, 1);
         }
       }

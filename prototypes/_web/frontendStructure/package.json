@@ -19,5 +19,9 @@
     "log4js": "^0.6.33",
     "rwlock": "^5.0.0",
     "ws": "^1.0.1"
+  },
+  "optionalDependencies":{
+    "utf-8-validate": "^1.2.1",
+    "bufferutil": "^1.2.1"
   }
 }

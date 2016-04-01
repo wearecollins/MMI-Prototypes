@@ -1,4 +1,5 @@
 /* globals chai, WebsocketHandler*/
+/* eslint no-func-assign: 0 */
 var expect = chai.expect;
 window.log = console;
 

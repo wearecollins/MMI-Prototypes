@@ -5,9 +5,11 @@ function EventHandler(){
   var activeTimeouts = [];
   var stateHandler;
   var jsonNotifiers = [];
+  var configHandler;
 
-  this.init = function init(a_stateHandler){
+  this.init = function init(a_stateHandler, a_configHandler){
     stateHandler = a_stateHandler;
+    configHandler = a_configHandler;
     overloadDispatcher();
     registerAllEvents();
     document.body.onkeydown = handlekey;
@@ -28,7 +30,7 @@ function EventHandler(){
     try{
       data = JSON.parse(msg);
     }catch(e){
-      log.error('error parsing', msg, e);
+      log.error('[EventHandler::handleJson] error parsing', msg, e);
       return;
     }
     //if this is an event message
@@ -83,18 +85,19 @@ function EventHandler(){
   
     //set up timeouts
     if (!(stateHandler.disabledTimeout())){
+      var timeoutTime = configHandler.get('timeout', 30);
       activeTimeouts.push(
         setTimeout(
           function(){
             window.dispatchEvent(new Event('cancel'));
           }, 
-          30 * 1000));
+          timeoutTime * 1000));
       activeTimeouts.push(
         setTimeout(
           function(){
             document.body.classList.add('timingOut');
           },
-          Math.max(1, (30 - 5)) * 1000));
+          Math.max(1, (timeoutTime - 5)) * 1000));
     }
   }
   

@@ -5,15 +5,25 @@
 function Page(){
 
   // ### Private vars ###
-  /** data for this page, provided by data.json */
+  /** 
+   * data for this page, provided by data.json 
+   * @type {Object}
+   */
   var data;
-  /** the instance of the class containing 
+  /** 
+   * the instance of the class containing 
    * custom logic for this particular page 
    */
   var instance;
-  /** the DOM element for this page */
+  /** 
+   * the DOM element for this page 
+   * @type {Element}
+   */
   var domElem;
-  /** the path this page was loaded from */
+  /** 
+   * the path this page was loaded from 
+   * @type {string}
+   */
   var path;
 
   /**
@@ -26,12 +36,13 @@ function Page(){
    *  a main.js file containing a class for encapsulating custom functionality
    * @param {Element} container 
    *  the DOM container to load this page's markup into
+   * @param {ConfigHandler} configHandler
    * @param {Loader} loader the loader to use for loading files 
    *  from the specified directory.
    * @returns {Promise<Page>} A Promise that resolves to this Page once all
    *  elements are loaded
    */
-  this.load = function load(a_path, container, loader){
+  this.load = function load(a_path, container, configHandler, loader){
     path = a_path;
     var dataPath = path+'/data.json';
     var markupPath = path+'/template.hbr';
@@ -57,7 +68,7 @@ function Page(){
                         // we just want to wait until they complete
                         cssPromise.catch( () => undefined ),
                         htmlPromise.catch( () => undefined )]).
-                   then( () => loadJS(scriptPath, loader) ).
+                   then( () => loadJS(scriptPath, configHandler, loader) ).
                    then( ( () => this ).bind(this) );
   };
 
@@ -123,16 +134,17 @@ function Page(){
   /**
    * loads the page's custom class.
    * @param {string} path filepath to load
+   * @param {ConfigHandler} configHandler
    * @param {Loader} loader loader to use
    * @returns {Promise} resolves when the custom class is instantiated
    */
-  function loadJS(path, loader){
+  function loadJS(path, configHandler, loader){
     return loader.loadJS(path).
       then(function(){
         try{
           //the class in this Javascript file should
           // match the name of the state
-          instance = new window[data.name]();
+          instance = new window[data.name](data, configHandler);
         } catch(e){
           log.error('no constructor for',data.name,e);
         }

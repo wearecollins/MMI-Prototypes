@@ -41,6 +41,7 @@ Configer.prototype.load = function load(a_filename){
         logger.info('problem loading '+filename+': '+reason);
         return loadJson(filename+'.bak').
           then( function resolve(json){
+            logger.info('initializing from '+filename+'.bak');
             return writeConfig(filename, json).
               catch( 
                 reason => 
@@ -135,24 +136,29 @@ Configer.prototype.updateConfig = function updateConfig(json){
         //merge json into config
         var inKeys = Object.keys(json.config);
         var myKeys = Object.keys(config);
+        var mergedKeys = [];
         var updated = false;
         for(var keyI = inKeys.length - 1;
             keyI >= 0;
             keyI--){
           var key = inKeys[keyI];
-          if (myKeys.indexOf(key)){
+          if (myKeys.indexOf(key) >= 0){
+            mergedKeys.push(key);
             config[key] = json.config[key];
             updated = true;
           }
         }
         //write results
         if (updated){
+          logger.debug('[Configer::updateConfig] updated', mergedKeys);
           writeConfig(filename, config).
             catch( 
               reason => 
                 logger.warn('cannot write '+filename+': '+reason) ).
             then( () => {release(); resolve();} );
         } else {
+          logger.debug(
+            '[Configer::updateConfig] no provided keys exist to update');
           release();
           resolve();
         }

@@ -12,7 +12,7 @@
   ],
   "levels": {
     "[all]":"ALL",
-    "remote":"WARN",
+    "remote":"ALL",
     "server":"ALL",
     "websocket":"ALL"
   }

@@ -1,3 +1,0 @@
-{"name":"admin",
-  "buttons":[{"type":"cancel","text":"cancel"},
-             {"type":"admin_save","text":"save"}]}

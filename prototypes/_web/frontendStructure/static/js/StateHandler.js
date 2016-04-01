@@ -52,8 +52,12 @@ function StateHandler(){
    * @param {Object} [a_transitions={}] custom transitions to override defaults.
    *  Expected format described by {@link StateHandler~transitions}
    * @param {Element} container the DOM container to add {@link Page}s to
+   * @param {ConfigHandler} a_configHandler
    */
-  this.init = function init(a_pages, a_transitions, container){
+  this.init = function init(a_pages, 
+                            a_transitions, 
+                            container, 
+                            a_configHandler){
     if (!a_transitions ||
         typeof(a_transitions) !== 'object'){
       log.warn('using default transitions');
@@ -62,7 +66,7 @@ function StateHandler(){
 
     transitions = a_transitions;
 
-    return loadPages(a_pages, container).
+    return loadPages(a_pages, container, a_configHandler).
       then( result => (pages = result) ).
       then( initState );
   };
@@ -161,15 +165,16 @@ function StateHandler(){
    * Loads all the specified pages.
    * @param {string[]} pages list of directories to load {@link Page}s from.
    * @param {Element} container DOM container to load pages into.
+   * @param {ConfigHandler} configHandler
    * @returns {Promise<Page[]>}
    */
-  function loadPages(pages, container){
+  function loadPages(pages, container, configHandler){
     var pagePromises = [];
     for(var pageI = 0;
         pageI < pages.length;
         pageI++){
       pagePromises.push(
-        loadPage(pages[pageI], container).
+        loadPage(pages[pageI], container, configHandler).
           //catch any rejection so we wait for all states
           // to finish (whether they fail or succeed, we don't care here)
           catch( () => undefined ));
@@ -188,11 +193,12 @@ function StateHandler(){
    * Loads a particular page
    * @param {string} pagePath path to the Page
    * @param {Element} pageContainer DOM element to load Page DOM elements into
+   * @param {ConfigHandler} configHandler
    * @returns {Promise<Page>}
    */
-  function loadPage(pagePath, pageContainer){
+  function loadPage(pagePath, pageContainer, configHandler){
     var page = new Page();
-    return page.load(pagePath, pageContainer, Loader);
+    return page.load(pagePath, pageContainer, configHandler, Loader);
   }
 
   /*eslint-disable complexity*/
