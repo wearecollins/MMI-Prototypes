@@ -24,13 +24,20 @@ function Manager(states, transitions){
     //initialize everything
     libraryPromise.
       then(instantiateHandlers).
-      then(configHandlebars).
-      then(initStructure).
-      then(loadStates).
       then(connectWebsockets).
+      //wait for the persistent config to come from the server
+      // must come after connectWebsockets
+      then(initConfigHandler).
+      then(configHandlebars).
+      //load the basic DOM structure
+      then(initStructure).
+      //populate the basic DOM structure with all the pages
+      // must come immediately after initStructure
+      then(loadStates).
+      //link the stream handler with the DOM
+      // must come after initStructure
       then(initStreamHandler).
       then(initEventHandler).
-      then(initConfigHandler).
       then( () => log.info('[Manager::init] done') );  
       //could also wait to connect to websockets until very end...
   }
@@ -97,10 +104,11 @@ function Manager(states, transitions){
   }
 
   function initConfigHandler(){
-    configHandler.init();
+    var configPromise = configHandler.init();
     //link publishers with subscribers
     ws.addTextHandler(configHandler.handleJson.bind(configHandler));
     configHandler.addJsonUpdater(ws.send.bind(ws));
+    return configPromise;
   }
 
   function initLogging(){

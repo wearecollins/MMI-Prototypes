@@ -1,5 +1,12 @@
+/**
+ * @module websockets
+ */
+
 var WebSocket = require('ws');
 
+/**
+ * @constructor
+ */
 var Websockets = function(server, configer, logger){
   /**
    * Websocket server to handle websocket communication
@@ -39,6 +46,13 @@ var Websockets = function(server, configer, logger){
     }
   }
   
+  /**
+   * sends the provided message to all connections.
+   * @param {string|ArrayBuffer} msg the message to forward
+   * @param {websocketConnection} [wsToSkip] a connection to skip sending on.
+   *  for message duplication this would be the connection the original message
+   *  came from
+   */
   function sendMessage(msg, wsToSkip){
     for(var wsI = wsConnections.length - 1;
         wsI >= 0;
@@ -53,10 +67,14 @@ var Websockets = function(server, configer, logger){
       }
     }
   }
-  
-  
-  //when a new websocket client connects
-  wss.on('connection', function(ws){
+
+  /**
+   * When we get a new connection, 
+   *  set up handlers and make sure it gets 
+   *  appropriate initialization/catch-up messages.
+   * @param {websocketConnection} ws
+   */
+  function onConnect(ws){
     //add the new client to our list of connections
     logger.info('adding connection');
     wsConnections.push(ws);
@@ -82,7 +100,10 @@ var Websockets = function(server, configer, logger){
         }
       }
     });
-  });
+  }
+  
+  //when a new websocket client connects, call the appropriate handler
+  wss.on('connection', onConnect);
 };
 
 module.exports = Websockets;

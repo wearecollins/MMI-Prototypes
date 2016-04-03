@@ -1,4 +1,4 @@
-/*globals Page, Loader*/
+/*globals Page, Loader, Transitions*/
 
 /**
  * Manages the current State (aka {@link Page}) of the view. 
@@ -14,16 +14,12 @@ function StateHandler(){
   var pages;
   /**
    * custom transitions between pages
-   * this has the format
-   * {sourcePagePath:{action:destinationPagePath},
-   * ...,
-   * '_globals_':{action:destinationPagePath}}
-   * @type {Object}
+   * @type {Transitions}
    */
   var transitions;
   /** 
    * the currently active page index 
-   * @type {number};
+   * @type {number}
    */
   var activeStateI = 0;
   /**
@@ -36,6 +32,10 @@ function StateHandler(){
    * @type {streamNotifier[]}
    */
   var streamNotifiers = [];
+  /**
+   * @type {ConfigHandler}
+   */
+  var configHandler;
 
   /**
    * A callback for stream enable/disable notifications
@@ -49,8 +49,8 @@ function StateHandler(){
    * Loades the provided pages, drops them in the provided container
    * and uses the specified custom transitions.
    * @param {string[]} a_pages a list of paths to load {@link Page}s from
-   * @param {Object} [a_transitions={}] custom transitions to override defaults.
-   *  Expected format described by {@link StateHandler~transitions}
+   * @param {Transitions} [a_transitions] 
+   *  custom transitions to override defaults.
    * @param {Element} container the DOM container to add {@link Page}s to
    * @param {ConfigHandler} a_configHandler
    */
@@ -59,16 +59,17 @@ function StateHandler(){
                             container, 
                             a_configHandler){
     if (!a_transitions ||
-        typeof(a_transitions) !== 'object'){
+        !(a_transitions instanceof Transitions)){
       log.warn('using default transitions');
-      a_transitions = {};
+      a_transitions = new Transitions();
     }
 
     transitions = a_transitions;
+    configHandler = a_configHandler;
 
     return loadPages(a_pages, container, a_configHandler).
-      then( result => (pages = result) ).
-      then( initState );
+      then( result => (pages = pages.concat(result)) ).
+      then( initState.bind(this) );
   };
 
   /**
@@ -163,18 +164,24 @@ function StateHandler(){
 
   /**
    * Loads all the specified pages.
-   * @param {string[]} pages list of directories to load {@link Page}s from.
+   * @param {string[]} pageDirs list of directories to load {@link Page}s from.
    * @param {Element} container DOM container to load pages into.
    * @param {ConfigHandler} configHandler
    * @returns {Promise<Page[]>}
    */
-  function loadPages(pages, container, configHandler){
+  function loadPages(pageDirs, container, configHandler){
+    //initialize the loading page, so we have a state to "come from"
+    var loadingPage = new Page();
+    loadingPage.use(document.getElementById('loading'), {});
+    pages = [loadingPage];
+
+    //load all other pages
     var pagePromises = [];
     for(var pageI = 0;
-        pageI < pages.length;
+        pageI < pageDirs.length;
         pageI++){
       pagePromises.push(
-        loadPage(pages[pageI], container, configHandler).
+        loadPage(pageDirs[pageI], container, configHandler).
           //catch any rejection so we wait for all states
           // to finish (whether they fail or succeed, we don't care here)
           catch( () => undefined ));
@@ -183,10 +190,27 @@ function StateHandler(){
   }
 
   /**
+   * @param {string} path the state identifier
+   * @returns {number} the index of the state with a matching load path.
+   *  -1 if no match found
+   */
+  function statePathToIndex(path){
+    for(var stateI = pages.length - 1;
+        stateI >= 0;
+        stateI--){
+      if (pages[stateI].getPath() === path){
+        //return the custom state index
+        return stateI;
+      }
+    }
+    return -1;
+  }
+
+  /**
    * Used for initializing the current State after loading all Pages
    */
   function initState(){
-    pages[activeStateI].enter();
+    this.handleAction(StateHandler.ACTIONS.CANCEL);
   }
 
   /**
@@ -207,7 +231,7 @@ function StateHandler(){
   // readability.
   /**
    * Used for determining the default next State. 
-   *  can be overridden via {@link StateHandler~transitions}
+   *  can be overridden via {@link Transitions}
    * @param {number} activeStateIndex the current state index
    * @param {number} numStates the total number of states
    * @param {string} type the action. 
@@ -216,26 +240,59 @@ function StateHandler(){
    */
   function getDefaultTargetStateIndex(activeStateIndex, numStates, type){
     switch(type){
-      case 'next':
+      case StateHandler.ACTIONS.NEXT:
         if (activeStateIndex >= (numStates - 2)){
-          return 0;
+          return 1;
         } else {
           return activeStateIndex + 1;
         }
-      case 'prev':
-        if (activeStateIndex === 0){
-          return 0;
+      case StateHandler.ACTIONS.PREV:
+        if (activeStateIndex <= 1 ||
+            activeStateIndex === numStates - 1){
+          return 1;
         } else {
           return activeStateIndex - 1;
         }
-      case 'admin':
+      case StateHandler.ACTIONS.ADMIN:
         return numStates - 1;
-      case 'cancel':
+      case StateHandler.ACTIONS.CANCEL:
       default:
-        return 0;
+        return 1;
     }
   }
   /*eslint-enable*/
+
+  /**
+   * returns the currently active mode for handling transitions
+   * @param {ConfigHandler} configHandler
+   * @param {Transitions} transitions
+   * @returns {Mode}
+   */
+  function getCurrentMode(configHandler, transitions){
+    //get list of configured modes
+    var modeNames = transitions.getModeNames();
+    //see if there is a mode entry in the config
+    var modeName = configHandler.get('mode');
+    if (modeName !== undefined){
+      if (modeNames.indexOf(modeName) >= 0){
+        return transitions.getMode(modeName);
+      } else {
+        return transitions.getDefaultMode();
+      }
+    }
+    //alternately look for individual mode booleans in the config
+    for(var nameI = modeNames.length - 1;
+        nameI >= 0;
+        nameI--){
+      var name = modeNames[nameI];
+      var enabled = configHandler.get(name+'Mode', false);
+      if (enabled){
+        return transitions.getMode(name);
+      }
+    }
+    //if all else fails, use the default mode
+    return transitions.getDefaultMode();
+  }
 
   /**
    * Determines which state to transition to
@@ -245,21 +302,24 @@ function StateHandler(){
    */
   function getTargetStateIndex(activeStateIndex, type){
     var activeStatePath = pages[activeStateIndex].getPath();
-    var nextStatePath;
-    if (transitions[activeStatePath] && 
-        transitions[activeStatePath][type] !== undefined){
-      nextStatePath = transitions[activeStatePath][type];
-    } else if (transitions['_globals_'] &&
-               transitions['_globals_'][type] !== undefined){
-      nextStatePath = transitions['_globals_'][type];
+    var currMode = getCurrentMode(configHandler, transitions);
+    var nextStatePath = currMode.getDestination(activeStatePath, type);
+    var defaultNextStateIndex = 
+      getDefaultTargetStateIndex(activeStateIndex, pages.length, type);
+    //if we don't have a custom-defined next state,
+    // and the next default state is the start state.
+    //TODO: maybe we don't need a special 'start' state, 
+    // and can just override the global 'cancel' event
+    if (nextStatePath === undefined && defaultNextStateIndex === 1){
+      //use the custom-defined start state instead.
+      nextStatePath = currMode.getStart();
     }
+    //if a custom next state is defined
     if (nextStatePath !== undefined){
-      for(var stateI = pages.length - 1;
-          stateI >= 0;
-          stateI--){
-        if (pages[stateI].getPath() === nextStatePath){
-          return stateI;
-        }
+      //if the custom next state matches one of the loaded states
+      var nextStateI = statePathToIndex(nextStatePath);
+      if (nextStateI >= 0){
+        return nextStateI;
       }
       log.warn('can not find state',nextStatePath,
                    'defined as target of',type,
@@ -267,7 +327,7 @@ function StateHandler(){
     }
 
     log.debug('using default state transition');
-    return getDefaultTargetStateIndex(activeStateIndex, pages.length, type);
+    return defaultNextStateIndex;
   }
 }
 
@@ -275,3 +335,11 @@ function StateHandler(){
  * The list of actions supported by the StateHandler
  */
 StateHandler.ACTIONS = ['next','prev','cancel','admin'];
+//populate actions to variables
+// so 'next' can be accessed via StateHandler.ACTIONS.NEXT
+for(var i = StateHandler.ACTIONS.length -1;
+    i >= 0;
+    i--){
+  var action = StateHandler.ACTIONS[i];
+  StateHandler.ACTIONS[action.toUpperCase()] = action;
+}

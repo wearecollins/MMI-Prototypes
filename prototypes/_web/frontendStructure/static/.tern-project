@@ -5,6 +5,6 @@
     "ecma6"
   ],
   "loadEagerly": [
-    "*.js"
+    "js/*.js"
   ]
 }

@@ -8,12 +8,17 @@
   <link rel='stylesheet' type='text/css' href='style.css'>
   <script type='text/javascript' src='js/vendor/handlebars.min-v4.0.5.js'>
   </script>
+  <script type='text/javascript' src='js/Transitions.js'></script>
   <script type='text/javascript' src='js/Loader.js'></script>
   <script type='text/javascript' src='js/main.js'></script>
   <script type='text/javascript'>
-    var manager = new Manager(['demo/attract','demo/intro','demo/view',
-                               'demo/countdown',/*'demo/capture','demo/review',*/
-                               'demo/admin']);
+    var pages = ['demo/attract','demo/intro','demo/view',
+                 'demo/countdown',/*'demo/capture','demo/review',*/
+                 'demo/admin'];
+    var customTransitions = new Transitions();
+    var continuousMode = customTransitions.createMode('continuous');
+    continuousMode.setStart('demo/view');
+    var manager = new Manager(pages, customTransitions);
   </script>
 </head>
 <body style='overflow:hidden; margin:0; padding:0;'>

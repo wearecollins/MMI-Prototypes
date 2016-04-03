@@ -14,6 +14,11 @@ body,
   width:100vw;
 }
 
+#loading{
+  background-color:cyan;
+  color:pink;
+}
+
 body{
   overflow:hidden;
   margin:0;

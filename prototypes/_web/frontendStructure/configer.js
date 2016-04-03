@@ -1,3 +1,8 @@
+/**
+ * Manage persistent configuration
+ * @module configer
+ */
+
 var FileSystem = require('fs');
 var ReadWriteLock = require('rwlock');
 
@@ -106,7 +111,7 @@ Configer.prototype.getConfigString = function getConfigString(){
 /**
  * @param {string} filename
  * @param {Object} config
- * @returns {Promise<,Error|string>}
+ * @returns {Promise<undefined,Error|string>}
  */
 function writeConfig(filename, config){
   return new Promise( function(resolve, reject){

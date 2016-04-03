@@ -9,7 +9,8 @@
   },
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js .",
-    "doc": "./node_modules/jsdoc/jsdoc.js -c ./jsdoc_conf.json"
+    "doc": "./node_modules/jsdoc/jsdoc.js -c ./jsdoc_conf.json",
+    "doc_client":"./node_modules/jsdoc/jsdoc.js -c ./static/jsdoc_conf.json"
   },
   "author": "",
   "license": "ISC",

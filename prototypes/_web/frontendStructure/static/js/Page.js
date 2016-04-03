@@ -73,6 +73,18 @@ function Page(){
   };
 
   /**
+   * initializes the Page using already loaded elements
+   * @param {Element} elem the DOM element to use for this page
+   * @param {Object} a_data the configuration data used for this Page
+   * @param {Object} [inst] the page-specific logic
+   */
+  this.use = function use(elem, a_data, inst){
+    domElem = elem;
+    instance = inst;
+    data = a_data;
+  };
+
+  /**
    * tell this Page to become active on the screen
    */
   this.enter = function enter(){

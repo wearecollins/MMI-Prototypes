@@ -6,8 +6,18 @@
 function ConfigHandler(){
   var jsonUpdaters = [];
   var config = {};
+  var initializedContents = false;
+  var resolveInitialization;
 
+  /**
+   * @returns {Promise<ConfigHandler>} 
+   *  resolves once the current config is received from the server.
+   */
   this.init = function init(){
+    var self = this;
+    return new Promise(function (resolve, reject){
+      resolveInitialization = resolve.bind(this, self);
+    });
   };
 
   /**
@@ -68,6 +78,12 @@ function ConfigHandler(){
     //if this is a config message
     if (data.config !== undefined){
       mergeIn(data.config);
+      //if this is the first config message
+      if (!initializedContents){
+        //we can resolve the initialization Promise
+        initializedContents = true;
+        resolveInitialization();
+      }
     }
   };
 
