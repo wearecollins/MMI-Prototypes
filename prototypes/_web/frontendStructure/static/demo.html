@@ -12,12 +12,19 @@
   <script type='text/javascript' src='js/Loader.js'></script>
   <script type='text/javascript' src='js/main.js'></script>
   <script type='text/javascript'>
-    var pages = ['demo/attract','demo/intro','demo/view',
+    var pages = ['demo/freeplay','demo/attract','demo/intro','demo/view',
                  'demo/countdown',/*'demo/capture','demo/review',*/
                  'demo/admin'];
     var customTransitions = new Transitions();
+
+    var defaultMode = customTransitions.getDefaultMode();
+    defaultMode.addGlobalTransition('cancel', 'demo/attract');
+    //we don't want the last state to go to freeplay
+    defaultMode.addTransition('demo/countdown', 'next', 'demo/attract');
+
     var continuousMode = customTransitions.createMode('continuous');
-    continuousMode.setStart('demo/view');
+    continuousMode.addGlobalTransition('cancel', 'demo/freeplay');
+
     var manager = new Manager(pages, customTransitions);
   </script>
 </head>

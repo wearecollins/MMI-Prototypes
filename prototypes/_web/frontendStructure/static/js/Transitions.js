@@ -54,7 +54,6 @@ function Mode(){
 
   var globals = {};
   var transitions = {};
-  var start;
   
   /**
    * @param {string} from name for the starting state
@@ -68,22 +67,6 @@ function Mode(){
     }
     var fromT = transitions[from];
     fromT[action] = to;
-  };
-
-  /**
-   * Sets the "start" page for this mode
-   * @param {string} name
-   */
-  this.setStart = function setStart(name){
-    start = name;
-  };
-
-  /**
-   * gets the "start" page for this mode
-   * @returns {string}
-   */
-  this.getStart = function getStart(){
-    return start;
   };
 
   /**

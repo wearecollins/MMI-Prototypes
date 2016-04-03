@@ -304,16 +304,6 @@ function StateHandler(){
     var activeStatePath = pages[activeStateIndex].getPath();
     var currMode = getCurrentMode(configHandler, transitions);
     var nextStatePath = currMode.getDestination(activeStatePath, type);
-    var defaultNextStateIndex = 
-      getDefaultTargetStateIndex(activeStateIndex, pages.length, type);
-    //if we don't have a custom-defined next state,
-    // and the next default state is the start state.
-    //TODO: maybe we don't need a special 'start' state, 
-    // and can just override the global 'cancel' event
-    if (nextStatePath === undefined && defaultNextStateIndex === 1){
-      //use the custom-defined start state instead.
-      nextStatePath = currMode.getStart();
-    }
     //if a custom next state is defined
     if (nextStatePath !== undefined){
       //if the custom next state matches one of the loaded states
@@ -327,7 +317,7 @@ function StateHandler(){
     }
 
     log.debug('using default state transition');
-    return defaultNextStateIndex;
+    return getDefaultTargetStateIndex(activeStateIndex, pages.length, type);
   }
 }
 

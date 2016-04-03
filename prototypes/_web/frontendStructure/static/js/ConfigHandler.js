@@ -15,7 +15,7 @@ function ConfigHandler(){
    */
   this.init = function init(){
     var self = this;
-    return new Promise(function (resolve, reject){
+    return new Promise(function (resolve/*, reject*/){
       resolveInitialization = resolve.bind(this, self);
     });
   };
