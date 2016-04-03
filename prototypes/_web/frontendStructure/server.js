@@ -10,12 +10,21 @@ var Logger = require('log4js');
 var WebSocket = require('./websockets.js');
 var RemoteLogs = require('./log4javascript_to_log4js.js');
 
-//TODO: configurable via param
+var logger = Logger.getLogger('Server');
+
 /**
  * The station this is serving and configured for
  * @type {string}
  */
 var station = 'demo';
+
+var argv = process.argv;
+for (var argI = 0; argI < argv.length; argI++){
+  switch(argv[argI]){
+    case '--station':
+      station = argv[++argI];
+  }
+}
 
 // set up logging
 Logger.configure(require('./log4js_conf.json'));
@@ -26,7 +35,9 @@ Logger.configure(require('./log4js_conf.json'));
  */
 var config = new Configer(Logger.getLogger('Configer'));
 //load this station's config
-config.load('static/'+station+'/config.json');
+config.load('static/'+station+'/config.json').
+  catch( reason => 
+      logger.error('could not load configuration file', reason) );
 
 // set up HTTP handlers
 /**

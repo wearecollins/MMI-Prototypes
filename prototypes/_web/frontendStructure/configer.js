@@ -40,12 +40,17 @@ var Configer = function(a_logger){
 Configer.prototype.load = function load(a_filename){
   filename = a_filename;
   var self = this;
+  var resolve, reject;
+  var promise = new Promise(function (a_resolve, a_reject){
+    resolve = a_resolve;
+    reject = a_reject;
+  });
   fileLock.writeLock(function (release){
-    return loadJson(filename).
-      catch( function reject(reason){
+    loadJson(filename).
+      catch( function f_reject(reason){
         logger.info('problem loading '+filename+': '+reason);
         return loadJson(filename+'.bak').
-          then( function resolve(json){
+          then( function f_resolve(json){
             logger.info('initializing from '+filename+'.bak');
             return writeConfig(filename, json).
               catch( 
@@ -56,18 +61,19 @@ Configer.prototype.load = function load(a_filename){
           });
       }).
       then( 
-        function resolve(json){
+        function f_resolve(json){
           config = json;
           release();
-          return self;
+          resolve(self);
         },
-        function reject(reason){
+        function f_reject(reason){
           //set default empty config
           config = {};
           release();
-          return Promise.reject(reason);
+          reject(reason);
         });
   });
+  return promise;
 };
 
 /**
