@@ -23,14 +23,14 @@ describe('Page', function(){
   it('returned promise resolves to itself', function(){
     var page = new Page();
     var loadPromise = page.load('pages/full', container, Loader);
-    return loadPromise.then( p => expect(p).to.equal(page) );
+    return loadPromise.then( function(p){ return expect(p).to.equal(page)} );
   });
   it('load resolves once markup is loaded into container', function(){
     clearContainer();
     var page = new Page();
     var loadPromise = page.load('pages/full', container, Loader);
     return loadPromise.
-      then( () => expect(container.childElementCount).to.equal(1) );
+      then( function(){ return expect(container.childElementCount).to.equal(1)} );
   });
   it('page info is loaded from data.json', function(){
     return new Page().
@@ -43,8 +43,8 @@ describe('Page', function(){
   it('empty directory rejects', function(){
     return new Page().
       load('pages/empty', container, Loader).
-      then( () => Promise.reject(),
-            () => Promise.resolve() );
+      then( function(){Promise.reject()},
+            function(){Promise.resolve()} );
   });
   it('missing css is fine', function(){
     return new Page().

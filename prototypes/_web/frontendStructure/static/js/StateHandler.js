@@ -68,7 +68,7 @@ function StateHandler(){
     configHandler = a_configHandler;
 
     return loadPages(a_pages, container, a_configHandler).
-      then( result => (pages = pages.concat(result)) ).
+      then( function(result){(pages = pages.concat(result))} ).
       then( initState.bind(this) );
   };
 
@@ -184,7 +184,7 @@ function StateHandler(){
         loadPage(pageDirs[pageI], container, configHandler).
           //catch any rejection so we wait for all states
           // to finish (whether they fail or succeed, we don't care here)
-          catch( () => undefined ));
+          catch( function() { return undefined} ));
     }
     return Promise.all(pagePromises);
   }

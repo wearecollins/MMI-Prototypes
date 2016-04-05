@@ -38,7 +38,7 @@ function Manager(states, transitions){
       // must come after initStructure
       then(initStreamHandler).
       then(initEventHandler).
-      then( () => log.info('[Manager::init] done') );  
+      then( function(){log.info('[Manager::init] done')} );  
       //could also wait to connect to websockets until very end...
   }
   

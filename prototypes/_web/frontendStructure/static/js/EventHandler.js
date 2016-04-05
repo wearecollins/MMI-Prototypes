@@ -57,9 +57,9 @@ function EventHandler(){
 
   function overloadDispatcher(){
     var defaultDispatch = window.dispatchEvent;
-    window.dispatchEvent = function(...args){
-      dispatchedEvent(...args);
-      defaultDispatch(...args);
+    window.dispatchEvent = function(args){
+      dispatchedEvent(args);
+      defaultDispatch(args);
     };
   }
 

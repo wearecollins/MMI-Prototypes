@@ -66,10 +66,10 @@ function Page(){
     return Promise.all([jsonPromise,
                         //we don't care if these promises succeed or fail
                         // we just want to wait until they complete
-                        cssPromise.catch( () => undefined ),
-                        htmlPromise.catch( () => undefined )]).
-                   then( () => loadJS(scriptPath, configHandler, loader) ).
-                   then( ( () => this ).bind(this) );
+                        cssPromise.catch( function(){return undefined} ),
+                        htmlPromise.catch( function(){return undefined} )]).
+                   then( function(){ return loadJS(scriptPath, configHandler, loader)} ).
+                   then( ( function(){ return this} ).bind(this) );
   };
 
   /**

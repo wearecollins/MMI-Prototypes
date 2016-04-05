@@ -24,7 +24,7 @@ describe('Loader', function(){
   });
   it('loading JSON returns JSON', function(){
     return Loader.loadJSON('to_load/test.json').
-      then( json => expect(json).to.deep.equal({test:true}) );
+      then( function(json){ return expect(json).to.deep.equal({test:true})} );
   });
   it('loading invalid JSON rejects', function(){
     return Loader.loadJSON('to_load/test.hbr').
@@ -58,7 +58,7 @@ describe('Loader', function(){
   });
   it('HTML context can also be a Promise', function(){
     return Loader.loadHTML('to_load/test.hbr', 
-                           new Promise( resolve => resolve(HTMLcontext) )).
+                           new Promise( function(resolve){return resolve(HTMLcontext) })).
       then( checkContent );
   });
   it.skip('loading HTML also applies options', function(){
@@ -69,12 +69,12 @@ describe('Loader', function(){
     }
     var numScript = getNumScript();
     return Loader.loadJS('to_load/test.js').
-      then( () => expect(getNumScript()).to.equal(numScript + 1) );
+      then( function(){ return expect(getNumScript()).to.equal(numScript + 1)} );
   });
   it('loading JS notifies success after script is loaded', function(){
     expect(typeof testProp).to.equal('undefined');
     return Loader.loadJS('to_load/testProp.js').
-      then( () => expect(testProp).to.exist );
+      then( function(){return expect(testProp).to.exist} );
   });
 
   function checkLastStyle(color){
@@ -90,7 +90,7 @@ describe('Loader', function(){
     }
     var numStyle = getNumStyle();
     return Loader.loadCSS('to_load/test.css').
-      then( () => expect(getNumStyle()).to.equal(numStyle + 1) );
+      then( function(){ return expect(getNumStyle()).to.equal(numStyle + 1)} );
   });
   it('loading templated CSS applies context', function(){
     var color = 'white';
@@ -100,7 +100,7 @@ describe('Loader', function(){
   it('loading CSS accepts Promise for context', function(){
     var color = 'blue';
     return Loader.loadCSS('to_load/style.hbr', 
-                          new Promise( resolve => resolve({color}) )).
+                          new Promise( function(resolve){resolve({color})} )).
       then( checkLastStyle.bind(this, color) );
   });
   it('loading template CSS also applies options', function(){
