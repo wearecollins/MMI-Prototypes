@@ -2,6 +2,7 @@ var Express = require('express');
 var Facebook = require('fb');
 var BodyParser = require('body-parser');
 var FileSystem = require('fs');
+var Path = require('path');
 
 var configs = require(process.argv[2]);
 
@@ -10,7 +11,7 @@ Facebook.options({appId:     configs.facebook.app.id,
 		              version:   'v2.5'});
 
 var app = Express();
-app.use(Express.static('static'));
+app.use(Express.static(Path.join(__dirname, 'static')));
 app.use(BodyParser.urlencoded({extended:false}));
 app.post('/', function (client_req, client_res){
   var shortToken = client_req.body.token;
@@ -44,7 +45,7 @@ app.post('/', function (client_req, client_res){
               console.log('[server::gotPageToken] token:',
                           pageToken);
               //store token
-              var filename = '../token.json';
+              var filename = Path.join(__dirname, '..', 'token.json');
               FileSystem.writeFile(
                 filename, 
                 JSON.stringify({page: {token: pageToken,

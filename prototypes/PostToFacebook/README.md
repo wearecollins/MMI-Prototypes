@@ -5,7 +5,22 @@ This Node.js server posts videos and photos to a Page on Facebook.
 configuration settings go in config.json. 
 A sample is in [config.json.sample]() with sensitive data removed.
 In order to get the appropriate Access Tokens from Facebook, 
-you need to do the following.
+you need to follow the instructions in [#setup]().
+
+## usage
+
+start this server with `npm start` (after `npm install`-ing dependencies). 
+It will start an HTTP server on port 8013.
+
+In order to upload Videos, post the _publicly-accessible_ url of the video to 
+`/video` like so: 
+`curl --data "url=http://momi-auth.ngrok.io/myvideo.mov" http://localhost:8013/video`
+
+In order to upload Photos, post the _publicly-accessible_ url of the photo to
+`/photo` like so: 
+`curl --data "url=http://momi-auth.ngrok.io/myphoto.png" http://localhost:8013/photo`
+
+## setup
 
 ### setup [ngrok](https://ngrok.com/)
 
@@ -19,10 +34,10 @@ and host the server at that address.
 * following the instructions after you sign in, authenticate the ngrok app using your authtoken
     - eg. `~/Downloads/ngrok authtoken [YOUR AUTHTOKEN HERE]`
 
-### startup the fetchToken server
+### startup the token-fetching server
 
-* cd to [fetchToken]()
-* `npm start`
+* `npm install`
+* `npm run token`
 
 ### startup ngrok
 
