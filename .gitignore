@@ -292,3 +292,6 @@ DerivedData
 #custom
 MuppetDetector/bin/data/read
 MuppetDetector/bin/data/_test
+prototypes/PostToFacebook/config.json
+prototypes/PostToFacebook/token.json
+prototypes/PostToFacebook/fetchToken/config.json
