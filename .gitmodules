@@ -1,3 +1,9 @@
 [submodule "_web/spacebrew"]
 	path = _web/spacebrew
 	url = https://github.com/Spacebrew/spacebrew.git
+[submodule "Shared/ofxLibwebsockets"]
+	path = Shared/ofxLibwebsockets
+	url = https://github.com/labatrockwell/ofxLibwebsockets.git
+[submodule "Shared/ofxLog4Cpp"]
+	path = Shared/ofxLog4Cpp
+	url = https://github.com/quinkennedy/ofxLog4Cpp.git
