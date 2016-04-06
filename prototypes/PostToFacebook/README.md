@@ -4,8 +4,9 @@ This Node.js server posts videos and photos to a Page on Facebook.
 
 configuration settings go in config.json. 
 A sample is in [config.json.sample]() with sensitive data removed.
+
 In order to get the appropriate Access Tokens from Facebook, 
-you need to follow the instructions in [#setup]().
+you need to follow the instructions in [#get-tokens]().
 
 ## usage
 
@@ -20,14 +21,14 @@ In order to upload Photos, post the _publicly-accessible_ url of the photo to
 `/photo` like so: 
 `curl --data "url=http://momi-auth.ngrok.io/myphoto.png" http://localhost:8013/photo`
 
-## setup
+## get tokens
 
 ### setup [ngrok](https://ngrok.com/)
 
-ngrok is used for running a localhost server 
-and having it be accessible from the internet. An altertative to using ngrok
-would be to configure the FB App's allowed domains to be a domain you own,
-and host the server at that address.
+ngrok is used for accessing local servers from the internet. 
+
+An altertative to using ngrok would be to configure the FB App's 
+allowed domains to be a domain you own, and host the server at that address.
 
 * download & unzip [ngrok](https://ngrok.com/download)
 * create an [ngrok](https://ngrok.com/) account
@@ -35,6 +36,8 @@ and host the server at that address.
     - eg. `~/Downloads/ngrok authtoken [YOUR AUTHTOKEN HERE]`
 
 ### startup the token-fetching server
+
+from the same directory as this README:
 
 * `npm install`
 * `npm run token`
@@ -44,6 +47,10 @@ and host the server at that address.
 * `~/Downloads/ngrok http -subdomain=momi-auth 8012`
     - you need to register for an account in order to use the `-subdomain` flag
 
-### register app and select Page
+### authenticate
+
+Authenticate the FB App, and select the Page/Album/Video List to upload to
 
 * visit [http://momi-auth.ngrok.io/]()
+* once you reach the Thank You screen, 
+you can shutdown the ngrok and the server
