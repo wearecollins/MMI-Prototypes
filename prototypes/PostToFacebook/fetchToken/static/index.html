@@ -4,6 +4,9 @@
 .hidden{
   display:none;
 }
+.item{
+  float:top;
+}
 </style>
 </head>
 <body>
@@ -86,38 +89,98 @@ var accessToken;
   // successful.  See statusChangeCallback() for when this call is made.
   function getPages() {
     console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me/accounts', function(response) {
+    var endpoint = '/me/accounts';
+    FB.api(endpoint, function(response) {
       var talkBack = document.getElementById('status');
 			if (!response.data || response.data.length <= 0){
-        talkBack.innerHTML = 'no Pages returned';
-        talkBack.classList.add('error');
+          talkBack.innerHTML = 'no Pages returned';
+          talkBack.classList.add('error');
         } else {
           talkBack.classList.remove('error');
           talkBack.innerHTML = 'select the Page you wish to upload media to';
           var select = document.getElementById('ddlPages');
-          for(var pageI = 0;
-              pageI < response.data.length;
-              pageI++){
-            var page = response.data[pageI];
-            var option = document.createElement('option');
-            option.value = page.id;
-            option.innerHTML = page.name;
-            select.appendChild(option);
-          }
+          updateDDL(endpoint, select, true, false, response);
+          select.onchange = updateLists;
+          updateLists();
           document.getElementById('detailsForm').classList.remove('hidden');
         }
     });
   }
+
+function updateDDL(endpoint, ddl, clearBefore, addEmpty, response){
+  var option;
+  if (clearBefore){
+    ddl.innerHTML = '';
+  }
+  if (addEmpty){
+    option = document.createElement('option');
+    ddl.appendChild(option);
+  }
+  for(var i = 0; i < response.data.length; i++){
+    var item = response.data[i];
+    option = document.createElement('option');
+    option.value = item.id;
+    option.innerHTML = item.name || item.title;
+    ddl.appendChild(option);
+  }
+  //try to page
+  if (response.data.length > 0){
+    FB.api(endpoint, 
+           {before: response.paging.cursors.before},
+           updateDDL.bind(this, endpoint, ddl, false, false));
+  }
+}
+
+function httpGetJsonAsync(url, callback){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', nextURL, true);
+    xhttp.onreadystatechange = function(){
+      if (xhttp.readyState === 4 && xhttp.status === 200){
+        callback(JSON.parse(xhttp.responseText));
+      }
+    };
+    xhttp.send();
+}
+
+function updateLists(){
+  var select = document.getElementById('ddlPages');
+  var ddlAlbums = document.getElementById('ddlAlbums');
+  var ddlVideoLists = document.getElementById('ddlVideoLists');
+  var pageId = select.options[select.selectedIndex].value;
+  var albumsEndpoint = pageId+'/albums';
+  var videoListsEndpoint = pageId+'/video_lists';
+
+  FB.api(albumsEndpoint, 
+         updateDDL.bind(this, albumsEndpoint, ddlAlbums, true, true));
+  FB.api(videoListsEndpoint, 
+         updateDDL.bind(this, videoListsEndpoint, ddlVideoLists, true, true));
+}
 </script>
 <div id='status'></div>
 <fb:login-button scope="pages_show_list,manage_pages,publish_pages" onlogin="checkLoginState();">
 </fb:login-button>
 <form id='detailsForm' class='hidden' action='/' method='post'>
   <input type='hidden' name='token' id='token' />
-  <label for='ddlPages'>Pages</label>
-  <select id='ddlPages' name='page'>
-  </select>
-  <input type='submit' value='Submit' />
+  <div class='item'>
+    <label for='ddlPages'>Pages</label>
+    <select id='ddlPages' name='page'>
+    </select>
+  </div>
+  <div class='item'>
+    <label for='ddlAlbums'>Album</label>
+    <select id='ddlAlbums' name='album'>
+    </select>
+    <input type='text' name='new_album' />
+  </div>
+  <div class='item'>
+    <label for='ddlVideoLists'>Video List</label>
+    <select id='ddlVideoLists' name='video_list'>
+    </select>
+    <input type='text' name='new_video_list' />
+  </div>
+  <div class='item'>
+    <input type='submit' value='Submit' />
+  </div>
 </form>
 </body>
 </html>

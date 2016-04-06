@@ -6,15 +6,15 @@ var Path = require('path');
 var configs = require(process.argv[2]);
 
 Facebook.options({appId:     configs.facebook.app.id,
-		              appSecret: configs.facebook.app.secret,
-		              version:   'v2.5'});
+                  appSecret: configs.facebook.app.secret,
+                  version:   'v2.5'});
 
-PublishType = {PHOTO:{in_path:'/photo',
-                      fb_edge:'/photos',
-                      url_key:'url'},
-               VIDEO:{in_path:'/video',
-                      fb_edge:'/videos',
-                      url_key:'file_url'}};
+var PublishType = {PHOTO:{in_path:'/photo',
+                          fb_edge:'/photos',
+                          url_key:'url'},
+                   VIDEO:{in_path:'/video',
+                          fb_edge:'/videos',
+                          url_key:'file_url'}};
 
 var app = Express();
 app.use(BodyParser.urlencoded({extended:false}));
@@ -74,4 +74,4 @@ function publish(type, url){
       } 
     }
   });
-};
+}

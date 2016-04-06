@@ -5,8 +5,9 @@
   "main": "post.js",
   "scripts": {
     "start": "node post.js ./config.json",
-    "token": "node fetchToken/server.js ./config.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "token": "node fetchToken/server.js ../config.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "node_modules/eslint/bin/eslint.js ."
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +15,8 @@
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "fb": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^2.7.0"
   }
 }
