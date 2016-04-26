@@ -1,8 +1,14 @@
-var Express = require('express');
-var Facebook = require('fb');
-var BodyParser = require('body-parser');
+//standard libraries
 var FileSystem = require('fs');
 var Path = require('path');
+//external dependencies
+var Logger = require('log4js');
+var Express = require('express');
+var BodyParser = require('body-parser');
+var Facebook = require('fb');
+
+Logger.configure(require(Path.join(__dirname, 'log4js_conf.json')));
+var logger = Logger.getLogger('fetchToken');
 
 var configs = require(process.argv[2]);
 
@@ -21,14 +27,14 @@ app.post('/', function (client_req, client_res){
   var albumName = client_req.body.new_album;
   var videoListName = client_req.body.new_video_list;
 
-  console.log('[server::post::/] token:', shortToken);
-  console.log('[server::post::/] page:', pageId);
+  logger.debug('[server::post::/] token:', shortToken);
+  logger.debug('[server::post::/] page:', pageId);
 
   //elevate token to long-live token
   var longTokenPromise = shortTokenToLong(shortToken);
   longTokenPromise.catch(
     function reject(reason){
-      console.error('[server::longTokenPromise]', 
+      logger.error('[server::longTokenPromise]', 
                     reason ? reason : 'error');
     });
 
@@ -38,7 +44,7 @@ app.post('/', function (client_req, client_res){
       then(longTokenToPageToken.bind(this, pageId));
   pageTokenPromise.catch(
     function reject(reason){
-      console.error('[server::pageTokenPromise]',
+      logger.error('[server::pageTokenPromise]',
                     reason ? reason : 'error');
     });
 
@@ -203,5 +209,5 @@ function storeData(data){
 
 var port = 8012;
 /*var server = */app.listen(port, function(){
-  console.log('server listening on port',port);
+  logger.info('server listening on port',port);
 });

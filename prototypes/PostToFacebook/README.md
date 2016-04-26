@@ -21,6 +21,12 @@ In order to upload Photos, post the _publicly-accessible_ url of the photo to
 `/photo` like so: 
 `curl --data "url=http://momi-auth.ngrok.io/myphoto.png" http://localhost:8013/photo`
 
+If the computer you are working from cannot serve files to the internet, 
+you can use ngrok and a static server to open a tunnel to the media directory 
+(configured in config.json). 
+Follow the instructions in [#setup-ngrok]() 
+and [#startup-ngrok]() to get it running.
+
 ## get tokens
 
 ### setup [ngrok](https://ngrok.com/)

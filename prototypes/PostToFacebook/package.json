@@ -4,7 +4,7 @@
   "description": "posts content to linked social networks",
   "main": "post.js",
   "scripts": {
-    "start": "node post.js ./config.json",
+    "start": "node server.js ./config.json",
     "token": "node fetchToken/server.js ../config.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "node_modules/eslint/bin/eslint.js ."
